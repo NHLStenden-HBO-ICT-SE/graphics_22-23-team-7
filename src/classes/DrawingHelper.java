@@ -38,16 +38,6 @@ public class DrawingHelper implements ComponentListener {
     }
 
     public void Blank() {
-        /*for (int j = (int)(this.window.getHeight() - 1.0); j >= 0; --j) {
-            for (int i = 0; i < this.window.getWidth(); ++i) {
-                // Check if the window has been resized or moved, which usually disrupts the current image.
-                if (halt) {
-                    halt = false;
-                    return;
-                }
-                this.window.Draw(i, j, Color.white);
-            }
-        }*/
         this.window.removeComponentListener(this);
         this.window.setSize(this.window.getWidth(), this.window.getHeight() - 1);
         this.window.setSize(this.window.getWidth(), this.window.getHeight() + 1);

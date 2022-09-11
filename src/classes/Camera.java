@@ -1,9 +1,11 @@
 package classes;
 
+import classes.Utility.Vector3D;
+
 public class Camera {
-    V3 position;
-    V3 direction;
-    V3 center;
-    V3 topLeft, topRight, bottomLeft;
+    Vector3D position;
+    Vector3D direction;
+    Vector3D center;
+    Vector3D topLeft, topRight, bottomLeft;
     float fieldOfVision;
 }

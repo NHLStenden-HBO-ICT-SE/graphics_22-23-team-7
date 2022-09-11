@@ -1,8 +1,8 @@
 package classes;
 
-import javax.swing.text.Position;
+import classes.Utility.Vector3D;
 
 public class Light {
-    V3 Position, colour;
+    Vector3D Position, colour;
     float intensity;
 }

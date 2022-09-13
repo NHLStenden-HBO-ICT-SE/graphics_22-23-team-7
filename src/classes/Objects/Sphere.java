@@ -37,24 +37,33 @@ public class Sphere {
     }
 
 
+    //TODO: change this method
     public void intersection(Ray ray) {
 
         //normalize the direction of the ray
         Vector3D normalizedDirection = ray.direction.normalize();
 
-        //gets vector from point origin and point center of sphere
+        //gets vector from points: ray origin and sphere center
         Vector3D ocVec = ray.origin.getVector(center);
 
         //get dot product of origin-center-Vector and normalizedDirection
         double t = ocVec.dot(normalizedDirection);
 
-
+        //length from ray origin to sphere center
         Vector3D q = ray.direction.multiply(t).sub(ocVec);
+
+        // |q|^2
         double p2 = q.dot(q);
 
-        if (p2 > radius * radius) return;
+        //radius^2
+        double r2 = radius * radius;
 
-        t = t - Math.sqrt(radius * radius - p2);
+        if (p2 > r2) return; //a smart way to check if ray intersects before taking the sqrt
+
+        t = t - Math.sqrt(r2 - p2);
+
+        //TODO: return bool maybe?
+
         if (t < ray.t && t > 0) {
             ray.t = t;
         }

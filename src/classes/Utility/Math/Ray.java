@@ -1,0 +1,15 @@
+package classes.Utility.Math;
+
+public class Ray {
+    public Point3D origin; /*Ray origin */
+    public Vector3D direction; /*Ray direction */
+    public double t; /*distance */
+
+
+    public Ray(Point3D origin, Vector3D direction, float distance) {
+        this.origin = new Point3D(origin);
+        this.direction = new Vector3D(direction);
+        this.t = distance;
+    }
+
+}

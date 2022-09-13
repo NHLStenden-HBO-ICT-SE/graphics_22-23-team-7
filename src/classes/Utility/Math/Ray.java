@@ -12,4 +12,10 @@ public class Ray {
         this.t = distance;
     }
 
+    public Ray(Vector3D direction, float distance) {
+        this.origin = new Point3D(0, 0, 0);
+        this.direction = new Vector3D(direction);
+        this.t = distance;
+    }
+
 }

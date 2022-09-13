@@ -1,6 +1,6 @@
-package classes;
+package classes.Utility;
 
-import classes.Utility.Vector3D;
+import classes.Utility.Math.Vector3D;
 
 public class Camera {
     Vector3D position;

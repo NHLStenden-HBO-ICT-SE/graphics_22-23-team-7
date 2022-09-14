@@ -1,8 +1,8 @@
-package classes.Objects;
+package classes.objects;
 
-import classes.Utility.Math.Point3D;
-import classes.Utility.Math.Ray;
-import classes.Utility.Math.Vector3D;
+import classes.utility.math.Point3D;
+import classes.utility.math.Ray;
+import classes.utility.math.Vector3D;
 
 public class Sphere {
     protected Point3D center;
@@ -50,7 +50,7 @@ public class Sphere {
         double t = ocVec.dot(normalizedDirection);
 
         //length from ray origin to sphere center
-        Vector3D q = ray.direction.multiply(t).sub(ocVec);
+        Vector3D q = normalizedDirection.multiply(t).sub(ocVec);
 
         // |q|^2
         double p2 = q.dot(q);
@@ -65,6 +65,9 @@ public class Sphere {
         //TODO: return bool maybe?
 
         if (t < ray.t && t > 0) {
+
+            //TODO: to get the point of intersection -> normalizedDirection.multiply(ray.t);
+
             ray.t = t;
         }
     }

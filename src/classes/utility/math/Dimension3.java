@@ -1,4 +1,4 @@
-package classes.Utility.Math;
+package classes.utility.math;
 
 /**
  * ==============================================================
@@ -16,7 +16,7 @@ package classes.Utility.Math;
  * </p>
  * ==============================================================
  */
-public class Dimension3 {
+public class Dimension3 { //TODO: abstract??? interface???
     protected double x, y, z;
 
     /**

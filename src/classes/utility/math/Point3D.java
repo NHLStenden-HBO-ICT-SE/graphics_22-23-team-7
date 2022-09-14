@@ -1,4 +1,4 @@
-package classes.Utility.Math;
+package classes.utility.math;
 
 /**
  * ==============================================================
@@ -88,7 +88,7 @@ public class Point3D extends Dimension3 {
 
 
     public Vector3D getVector(Point3D point) {
-        return new Vector3D(point.x - x, point.y - y, point.z - z);
+        return new Vector3D(point.x - x, point.y - y, point.z - z); //TODO: figure out what happens with negative points
     }
 
     /**

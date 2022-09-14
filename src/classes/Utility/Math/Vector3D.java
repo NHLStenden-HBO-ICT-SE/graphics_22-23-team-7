@@ -1,4 +1,4 @@
-package classes.Utility.Math;
+package classes.utility.math;
 
 /**
  * ==============================================================

@@ -1,4 +1,4 @@
-package classes.Utility.Math;
+package classes.utility.math;
 
 public class Ray {
     public Point3D origin; /*Ray origin */

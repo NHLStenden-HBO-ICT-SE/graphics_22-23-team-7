@@ -1,4 +1,4 @@
-package classes.Utility.Math;
+package classes.math;
 
 /**
  * ==============================================================
@@ -20,7 +20,7 @@ package classes.Utility.Math;
  * </p>
  * ==============================================================
  */
-public class Point3D extends Dimension3 {
+public class Point3D extends Dimension3<Point3D> { //TODO: volgende week zal wouter uitleg geven over self-generic types
     //*****************************
     // Constructors
     //*****************************
@@ -41,54 +41,13 @@ public class Point3D extends Dimension3 {
     // Methods
     //*****************************
 
-    /**
-     * adds a 3D vector to current 3D point
-     *
-     * @param vector
-     * @return
-     */
-    public Point3D add(Vector3D vector) {
-        return new Point3D(x + vector.x, y + vector.y, z + vector.z);
-    }
-
-    /**
-     * adds a 3D vector to current 3D point
-     * and sets the current object to the result
-     *
-     * @param vector
-     * @return new 3D point
-     */
-    public void setAdd(Vector3D vector) {
-        this.x += vector.x;
-        this.y += vector.y;
-        this.z += vector.z;
-    }
-
-
-    /**
-     * subtracts a 3D vector from current point
-     *
-     * @param vector
-     * @return new 3D point
-     */
-    public Point3D sub(Vector3D vector) {
-        return new Point3D(x - vector.x, y - vector.y, z - vector.z);
-    }
-
-    /**
-     * subtracts a 3D vector from current point
-     * and sets the current object to the result
-     * @param vector
-     */
-    public void setSub(Vector3D vector) {
-        this.x -= vector.x;
-        this.y -= vector.y;
-        this.z -= vector.z;
-    }
-
 
     public Vector3D getVector(Point3D point) {
         return new Vector3D(point.x - x, point.y - y, point.z - z);
+    }
+
+    public Point3D addVector(Vector3D point) {
+        return new Point3D(point.x + x, point.y + y, point.z + z);
     }
 
     /**

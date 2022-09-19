@@ -11,12 +11,12 @@ package classes.math;
  * x.add(y)          means x = x + y.
  *
  * <br></br>
- *
+ * <p>
  * x.add(y,z)        means x = y + z.
  * </p>
  * ==============================================================
  */
-public class Vector3D extends Dimension3 {
+public class Vector3D extends Dimension3<Vector3D> { //TODO: volgende week zal wouter uitleg geven over self-generic types
 
     //*****************************
     // Constructors
@@ -42,92 +42,14 @@ public class Vector3D extends Dimension3 {
     //*****************************
 
     /**
-     * subtracts two 3D vectors
-     *
-     * @param vector
-     * @return subtraction
-     */
-    public Vector3D sub(Vector3D vector) {
-        return new Vector3D((this.x - vector.x), (this.y - vector.y), (this.z - vector.z));
-    }
-
-    /**
-     * subtracts two 3D vectors
-     * and sets the current object to the result
-     *
-     * @param vector
-     */
-    public void setSub(Vector3D vector) {
-        this.x -= vector.x;
-        this.y -= vector.y;
-        this.z -= vector.z;
-    }
-
-    /**
-     * calculates the sum of this vector and another 3D vector
-     *
-     * @param vector
-     * @return sum
-     */
-    public Vector3D add(Vector3D vector) {
-        return new Vector3D((this.x + vector.x), (this.y + vector.y), (this.z + vector.z));
-    }
-
-    /**
-     * calculates the sum of this vector and another 3D vector
-     * and sets the current object to the result
-     *
-     * @param vector
-     */
-    public void setAdd(Vector3D vector) {
-        this.x += vector.x;
-        this.y += vector.y;
-        this.z += vector.z;
-    }
-
-    /**
      * multiplication of vector with n
      *
      * @param n
      * @return multiplication
      */
     public Vector3D multiply(double n) {
-        return new Vector3D((this.x * n), (this.y * n), (this.z * n));
-    }
-
-    /**
-     * multiplication of vector with n
-     * and sets the current object to the result
-     *
-     * @param n
-     */
-    public void setMultiply(double n) {
-        this.x *= n;
-        this.y *= n;
-        this.z *= n;
-    }
-
-    /**
-     * divides all elements in a vector by n
-     *
-     * @param n
-     * @return division
-     */
-    public Vector3D divide(int n) {
-        return new Vector3D((this.x / n), (this.y / n), (this.z / n));
-    }
-
-    /**
-     * divides all elements in a vector by n
-     * and sets the current object to the result
-     *
-     * @param n
-     */
-    public void setDivide(int n) {
-        this.x /= n;
-        this.y /= n;
-        this.z /= n;
-    }
+        return new Vector3D(this.x * n, this.y * n, this.z * n);
+    } //TODO:
 
     /**
      * calculates cross product from this vector and another one

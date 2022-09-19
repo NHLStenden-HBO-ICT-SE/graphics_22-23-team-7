@@ -9,11 +9,6 @@ public class MainWindow extends JFrame {
     private BufferedImage image;
     private final JLabel iLabel;
 
-    // Initialize the main window with a preset size
-    public MainWindow() {
-        this(640, 480);
-    }
-
     // Initialize the main window with a specific size
     public MainWindow(int width, int height) {
         this.setSize(width, height);
@@ -32,7 +27,7 @@ public class MainWindow extends JFrame {
     }
 
     // Blank the screen
-    public void Blank() {
+    public void blank() {
         this.image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
         this.iLabel.setIcon(new ImageIcon(this.image));
     }

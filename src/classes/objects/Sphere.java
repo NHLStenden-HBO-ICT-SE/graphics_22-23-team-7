@@ -5,8 +5,8 @@ import classes.math.Ray;
 import classes.math.Vector3D;
 
 public class Sphere {
-    protected Point3D center;
-    protected double radius;
+    private Point3D center;
+    private double radius;
 
     public Sphere() {
         this.center = new Point3D();
@@ -38,7 +38,7 @@ public class Sphere {
 
 
     //TODO: change this method
-    public void intersection(Ray ray) {
+    public Boolean intersection(Ray ray) {
 
         //normalize the direction of the ray
         Vector3D normalizedDirection = ray.direction.normalize();
@@ -58,18 +58,14 @@ public class Sphere {
         //radius^2
         double r2 = radius * radius;
 
-        if (p2 > r2) return; //a smart way to check if ray intersects before taking the sqrt
+        if (p2 > r2) return false; //a smart way to check if ray intersects before taking the sqrt
 
         t = t - Math.sqrt(r2 - p2);
 
-        //TODO: return bool maybe?
+        //TODO: to get the point of intersection -> normalizedDirection.multiply(ray.t);
+        //            ray.t = t;
 
-        if (t < ray.t && t > 0) {
-
-            //TODO: to get the point of intersection -> normalizedDirection.multiply(ray.t);
-
-            ray.t = t;
-        }
+        return t < ray.t && t > 0;
     }
 
 

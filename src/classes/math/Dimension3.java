@@ -16,9 +16,8 @@ package classes.math;
  * </p>
  * ==============================================================
  */
-public class Dimension3 { //TODO: abstract??? interface???
-    protected double x, y, z;
-
+public abstract class Dimension3<T extends Dimension3> { //TODO: volgende week zal wouter uitleg geven over self-generic types
+    public double x, y, z;
     /**
      * generic constructor with x, y and z = 0
      */
@@ -42,24 +41,110 @@ public class Dimension3 { //TODO: abstract??? interface???
     /**
      * generic constructor with Dimension3
      *
-     * @param dimension3
+     * @param T
      */
 
-    public Dimension3(Dimension3 dimension3) {
-        this.x = dimension3.x;
-        this.y = dimension3.y;
-        this.z = dimension3.z;
+    public Dimension3(T T) {
+        this.x = T.x;
+        this.y = T.y;
+        this.z = T.z;
+    }
+
+
+    /**
+     * subtracts two 3D vectors
+     *
+     * @param T
+     * @return subtraction
+     */
+    public T sub(T T) {
+        T.x -= this.x;
+        T.y -= this.y;
+        T.z -= this.z;
+        return T;
     }
 
     /**
-     * sets x, y and z values of object
+     * subtracts two 3D vectors
+     * and sets the current object to the result
      *
-     * @param dimension3
+     * @param T
      */
-    public void set(Dimension3 dimension3) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public void setSub(T T) {
+        this.x -= T.x;
+        this.y -= T.y;
+        this.z -= T.z;
+    }
+
+    /**
+     * calculates the sum of this dimension3 and another 3D dimension3
+     *
+     * @param T
+     * @return sum
+     */
+    public T add(T T) {
+        T.x += this.x;
+        T.y += this.y;
+        T.z += this.z;
+        return T;
+    }
+
+    /**
+     * calculates the sum of this T and another 3D T
+     * and sets the current object to the result
+     *
+     * @param T
+     */
+    public void setAdd(T T) {
+        this.x += T.x;
+        this.y += T.y;
+        this.z += T.z;
+    }
+
+    /**
+     * multiplication of vector with n
+     *
+     * @param n
+     * @return multiplication
+     */
+    public T selfMultiply(double n) {
+        this.setMultiply(n);
+        return (T) this;
+    }
+
+    /**
+     * multiplication of vector with n
+     * and sets the current object to the result
+     *
+     * @param n
+     */
+    public void setMultiply(double n) {
+        this.x *= n;
+        this.y *= n;
+        this.z *= n;
+    }
+
+    /**
+     * divides all elements in a vector by n
+     *
+     * @param n
+     * @return division
+     */
+    public T selfDivide(int n) {
+        this.setDivide(n);
+        return (T) this;
+    }
+
+    /**
+     * divides all elements in a vector by n
+     * and sets the current object to the result
+     *
+     * @param n
+     */
+    public void setDivide(int n) {
+        this.x /= n;
+        this.y /= n;
+        this.z /= n;
     }
 
 

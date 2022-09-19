@@ -1,6 +1,6 @@
-package classes.Utility;
+package classes.view;
 
-import classes.Utility.Math.Vector3D;
+import classes.math.Vector3D;
 
 public class Light {
     Vector3D Position, colour;

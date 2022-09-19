@@ -1,4 +1,4 @@
-package classes.utility;
+package classes.view;
 
 public class Color
 {

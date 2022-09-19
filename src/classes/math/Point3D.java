@@ -1,4 +1,4 @@
-package classes.utility.math;
+package classes.math;
 
 /**
  * ==============================================================

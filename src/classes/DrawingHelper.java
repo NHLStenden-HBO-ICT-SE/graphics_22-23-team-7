@@ -12,25 +12,17 @@ public class DrawingHelper {
     }
 
     public DrawingHelper() {
-        this.window = new MainWindow();
+        this(480,480);
     }
 
-    public boolean Draw(Camera camera, Sphere sphere) {
+    public boolean draw(Camera camera, Sphere sphere) {
         // Render
 
         for (int j = 0; j < this.window.getHeight(); j++) {
             for (int i = 0; i < this.window.getWidth(); i++) {
-//                double r = i / ((double) this.window.getWidth() - 1);
-//                double g = j / ((double) this.window.getHeight() - 1);
-//                double b = 0.25;
-//
-//                int ir = (int) (255.999 * r);
-//                int ig = (int) (255.999 * g);
-//                int ib = (int) (255.999 * b);
 
                 var ray = camera.makeRay((double) i / this.window.getWidth(), (double) j / this.window.getHeight());
                 var intersection = sphere.intersection(ray);
-
 
                 if (intersection) {
 
@@ -42,7 +34,15 @@ public class DrawingHelper {
     }
 
     // Blank the screen
-    public void Blank() {
-        this.window.Blank();
+    public void blank() {
+        this.window.blank();
+    }
+
+    public int getHeight() {
+        return this.window.getHeight();
+    }
+
+    public int getWidth() {
+        return this.window.getWidth();
     }
 }

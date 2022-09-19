@@ -6,13 +6,6 @@ import classes.view.Camera;
 
 public class App {
     public static void main(String[] args) throws Exception {
-//        DrawingHelper dh = new DrawingHelper(1280, 720);
-//        while (true) {
-//            if (dh.Draw()) {
-//                Thread.sleep(1500);
-//                dh.Blank();
-//            }
-//}
         //view direction
         Vector3D direction = new Vector3D(0, 0, 1);
 
@@ -24,16 +17,24 @@ public class App {
         DrawingHelper dh = new DrawingHelper();
 
         //init camera
-        var camera = new Camera(direction, 4F);
+        Camera camera = new Camera(direction, 4F, dh.getHeight(), dh.getWidth());
 
-        //draw sphere
+        int lastHeight = dh.getHeight();
+        int lastWidth = dh.getWidth();
+
+        //repeatedly draw scene
         while (true) {
-            if (dh.Draw(camera, sphere)) {
+            //check if window size changed
+            if (lastHeight != dh.getHeight() || lastWidth != dh.getWidth()) {
+                camera = new Camera(direction, 4F, dh.getHeight(), dh.getWidth()); //make new camera with proper canvas
+                lastHeight = dh.getHeight();
+                lastWidth = dh.getWidth();
+            }
+            if (dh.draw(camera, sphere)) {
                 Thread.sleep(1500);
-                dh.Blank();
+                dh.blank();
             }
         }
-
     }
 }
 

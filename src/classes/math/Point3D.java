@@ -43,7 +43,7 @@ public class Point3D extends Dimension3<Point3D> { //TODO: volgende week zal wou
 
 
     public Vector3D getVector(Point3D point) {
-        return new Vector3D(point.x - x, point.y - y, point.z - z);
+        return new Vector3D(point.x - x, point.y - y, point.z - z); //TODO: figure out what happens with negative points
     }
 
     public Point3D addVector(Vector3D point) {

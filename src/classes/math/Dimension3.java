@@ -18,7 +18,6 @@ package classes.math;
  */
 public abstract class Dimension3<T extends Dimension3> { //TODO: volgende week zal wouter uitleg geven over self-generic types
     public double x, y, z;
-
     /**
      * generic constructor with x, y and z = 0
      */

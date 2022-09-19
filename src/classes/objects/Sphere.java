@@ -66,7 +66,6 @@ public class Sphere {
         //            ray.t = t;
 
         return t < ray.t && t > 0;
-
     }
 
 

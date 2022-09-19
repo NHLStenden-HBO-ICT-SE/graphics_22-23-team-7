@@ -11,7 +11,7 @@ public class MainWindow extends JFrame {
 
     // Initialize the main window with a preset size
     public MainWindow() {
-        this(640, 480);
+        this(480, 480);
     }
 
     // Initialize the main window with a specific size

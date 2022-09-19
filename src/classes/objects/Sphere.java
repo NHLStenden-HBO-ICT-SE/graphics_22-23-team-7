@@ -1,8 +1,8 @@
 package classes.objects;
 
-import classes.utility.math.Point3D;
-import classes.utility.math.Ray;
-import classes.utility.math.Vector3D;
+import classes.math.Point3D;
+import classes.math.Ray;
+import classes.math.Vector3D;
 
 public class Sphere {
     protected Point3D center;

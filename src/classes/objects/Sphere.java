@@ -8,11 +8,20 @@ public class Sphere {
     private Point3D center;
     private double radius;
 
+    /**
+     * center = 0,0,0
+     * radius = 1
+     */
     public Sphere() {
         this.center = new Point3D();
         this.radius = 1.0;
     }
 
+    /**
+     *
+     * @param point
+     * @param radius
+     */
     public Sphere(Point3D point, double radius) {
         this.center = point;
         this.radius = radius;
@@ -36,9 +45,7 @@ public class Sphere {
         this.radius = radius;
     }
 
-
-    //TODO: change this method
-    public Boolean intersection(Ray ray) {
+    public Object intersection(Ray ray) {
 
         //normalize the direction of the ray
         Vector3D normalizedDirection = ray.direction.normalize();
@@ -58,14 +65,14 @@ public class Sphere {
         //radius^2
         double r2 = radius * radius;
 
-        if (p2 > r2) return false; //a smart way to check if ray intersects before taking the sqrt
+        if (p2 > r2) return new Object(false); //a smart way to check if ray intersects before taking the sqrt
 
         t = t - Math.sqrt(r2 - p2);
 
-        //TODO: to get the point of intersection -> normalizedDirection.multiply(ray.t);
-        //            ray.t = t;
-
-        return t < ray.t && t > 0;
+        if (t < ray.t && t > 0) {
+            return new Object(true, ray.origin.addVector(normalizedDirection.multiply(t)));
+        }
+        return new Object(false);
     }
 
 

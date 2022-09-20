@@ -9,18 +9,6 @@ public class Matrix <T extends Matrix>{
       public Matrix(double[][] items){
           this.matrixContent = items;
       }
-
-      //initialize matrix without values. needs an x length and an y length. note that 0 counts!
-      public Matrix(int capacityRows, int capacityColumns){
-          //set capacity for x
-         matrixContent = new double[capacityRows][capacityColumns];
-          for(int x = 0; x < capacityRows; x++){
-              //set capacity for y
-            for (int y = 0; x < capacityColumns; x++) {
-              this.matrixContent[x][y] = 0.0;  
-            }
-          }
-      }
   
 
       public void setMatrix(double[][] items){
@@ -103,47 +91,24 @@ public class Matrix <T extends Matrix>{
         }
         return new Matrix(sum);
     }
-
-    public Vector3D multiply(Vector3D vector3d){
-        if(this.getRowSize() > 3 | this.getColSize() > 3){
-         System.err.println("vector projection with matrix failed.. matrix dimensions not 3x3");
-        return vector3d;
-        }
-        else
-        {
-
-        
-            int row = this.getRowSize();
-            int column = this.getColSize();
-            double[][] sum = new double[3][1];
-            double[][] second = {{vector3d.x},{vector3d.y},{vector3d.z}};
-            for (int r = 0; r < row; r++) {
-                for (int c = 0; c < column; c++) {
-                    sum[r][0] += this.matrixContent[r][c] * second[c][0];
-                }
-            }
-        
-            return new Vector3D(sum[0][0],sum[1][0],sum[2][0]);
-        }
-
         //has to be tested
         
         public T multiply(T input){
+            //criteria for multiplying a matrix
             if(this.getColSize()  != input.getRowSize()){
              System.err.println("vector projection with matrix failed.. dimensions dont match");
             return input;
             }
             else
             {
-    
-            
+                //matrix calculation for sum
                 int row = this.getRowSize();
                 int column = input.getColSize();
                 double[][] sum = new double[this.getRowSize()][input.getColSize()];
-                for(int z = 0; z < input.getColSize(); z++){
+                for(int z = 0; z <  input.getColSize(); z++){
                     for (int r = 0; r < row; r++) {
-                        for (int c = 0; c < column; c++) {
-                            sum[r][z] += this.matrixContent[r][c] * input.getMatrix()[c][z];
+                        for (int c = 0; c <= column; c++) {
+                            sum[r][z] += (this.matrixContent[r][c]) * (input.getMatrix()[c][z]);
                         }
                     }
                 }

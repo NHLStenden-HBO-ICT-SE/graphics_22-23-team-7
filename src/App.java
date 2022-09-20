@@ -3,6 +3,8 @@ import classes.math.Point3D;
 import classes.math.Vector3D;
 import classes.objects.Sphere;
 import classes.view.Camera;
+import classes.view.Color;
+import classes.view.Light;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -13,8 +15,12 @@ public class App {
         Point3D originS = new Point3D(0, 0, 12);
         Sphere sphere = new Sphere(originS, 1);
 
+        //light
+        Point3D originL = new Point3D(0, 1, 10);
+        Light light = new Light(1.5, originL, new Color());
+
         //init drawinghelper
-        DrawingHelper dh = new DrawingHelper();
+        DrawingHelper dh = new DrawingHelper(1920, 1080);
 
         //init camera
         Camera camera = new Camera(direction, 4F, dh.getHeight(), dh.getWidth());
@@ -30,7 +36,7 @@ public class App {
                 lastHeight = dh.getHeight();
                 lastWidth = dh.getWidth();
             }
-            if (dh.draw(camera, sphere)) {
+            if (dh.draw(camera, sphere, light)) {
                 Thread.sleep(1500);
                 dh.blank();
             }

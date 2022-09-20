@@ -1,7 +1,12 @@
 package classes;
 
+import classes.math.Ray;
+import classes.objects.Object;
 import classes.objects.Sphere;
 import classes.view.Camera;
+import classes.view.Light;
+
+import java.awt.*;
 
 public class DrawingHelper {
     private final MainWindow window;
@@ -12,21 +17,26 @@ public class DrawingHelper {
     }
 
     public DrawingHelper() {
-        this(480,480);
+        this(480, 480);
     }
 
-    public boolean draw(Camera camera, Sphere sphere) {
+    public boolean draw(Camera camera, Sphere sphere, Light light) {
         // Render
 
         for (int j = 0; j < this.window.getHeight(); j++) {
             for (int i = 0; i < this.window.getWidth(); i++) {
 
-                var ray = camera.makeRay((double) i / this.window.getWidth(), (double) j / this.window.getHeight());
-                var intersection = sphere.intersection(ray);
+                Ray ray = camera.makeRay((double) i / this.window.getWidth(), (double) j / this.window.getHeight());
+                Object object = sphere.intersection(ray);
 
-                if (intersection) {
+                //check if ray intersects with sphere
+                if (object.intersects) {
 
-                    this.window.Draw(i, j, java.awt.Color.black);
+                    double intensity = light.getIntensity(object.point);
+
+                    //light on a black object
+                    //new color should be moved to light
+                    this.window.Draw(i, j,  new Color((int) (255 * intensity), (int) (255 * intensity), (int) (255 * intensity)));
                 }
             }
         }

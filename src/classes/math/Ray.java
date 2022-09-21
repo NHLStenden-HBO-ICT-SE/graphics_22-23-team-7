@@ -1,9 +1,9 @@
 package classes.math;
 
 public class Ray {
-    public Point3D origin; /*Ray origin */
-    public Vector3D direction; /*Ray direction */
-    public double t; /*distance */
+    private Point3D origin; /*Ray origin */
+    private Vector3D direction; /*Ray direction */
+    private double t; /*distance */
 
     //*****************************
     // Constructors
@@ -19,4 +19,31 @@ public class Ray {
         this.t = distance;
     }
 
+    //*****************************
+    // Methods
+    //*****************************
+
+    /**
+     * gets origin of ray
+     * @return origin
+     */
+    public Point3D getOrigin() {
+        return origin;
+    }
+
+    /**
+     * gets direction of ray
+     * @return vector
+     */
+    public Vector3D getDirection() {
+        return direction;
+    }
+
+    /**
+     * gets length of ray
+     * @return length
+     */
+    public double getLength() {
+        return t;
+    }
 }

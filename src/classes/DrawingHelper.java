@@ -1,7 +1,7 @@
 package classes;
 
 import classes.math.Ray;
-import classes.objects.Object;
+import classes.objects.Shape;
 import classes.objects.Sphere;
 import classes.view.Camera;
 import classes.view.Light;
@@ -33,10 +33,10 @@ public class DrawingHelper {
             for (int i = 0; i < this.window.getWidth(); i++) {
 
                 Ray ray = camera.makeRay((double) i / this.window.getWidth(), (double) j / this.window.getHeight());
-                Object object = sphere.intersection(ray);
+                Shape object = sphere.intersection(ray);
 
                 //check if ray intersects with sphere
-                if (object.intersects) {
+                if (object.isIntersects()) {
 
                     double intensity = light.getIntensity(object.point);
 

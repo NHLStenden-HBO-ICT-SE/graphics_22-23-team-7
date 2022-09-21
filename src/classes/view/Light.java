@@ -54,7 +54,7 @@ public class Light {
      * @return intensity across distance
      */
     public double getIntensity(Ray ray) {
-        var length = ray.origin.distance(this.position);
+        var length = ray.getOrigin().distance(this.position);
         return clampIntensity(1 / ((length * length) / intensity));
     }
 

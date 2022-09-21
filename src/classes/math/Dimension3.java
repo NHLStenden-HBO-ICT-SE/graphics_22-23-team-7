@@ -18,11 +18,26 @@ package classes.math;
  */
 public abstract class Dimension3<T extends Dimension3> { //TODO: volgende week zal wouter uitleg geven over self-generic types
     public double x, y, z;
+
     /**
      * generic constructor with x, y and z = 0
      */
+
+    //*****************************
+    // Constructors
+    //*****************************
     public Dimension3() {
         this(0, 0, 0);
+    }
+
+    /**
+     * generic constructor with Dimension3
+     *
+     * @param T
+     */
+
+    public Dimension3(T T) {
+        this(T.x, T.y, T.z);
     }
 
     /**
@@ -38,18 +53,9 @@ public abstract class Dimension3<T extends Dimension3> { //TODO: volgende week z
         this.z = z;
     }
 
-    /**
-     * generic constructor with Dimension3
-     *
-     * @param T
-     */
-
-    public Dimension3(T T) {
-        this.x = T.x;
-        this.y = T.y;
-        this.z = T.z;
-    }
-
+    //*****************************
+    // Methods
+    //*****************************
 
     /**
      * subtracts two 3D vectors

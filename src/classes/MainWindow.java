@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 
 public class MainWindow extends JFrame {
 
-    private BufferedImage image;
     private final JLabel iLabel;
+    private BufferedImage image;
 
     // Initialize the main window with a specific size
     public MainWindow(int width, int height) {

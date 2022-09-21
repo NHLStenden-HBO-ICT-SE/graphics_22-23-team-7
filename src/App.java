@@ -3,7 +3,6 @@ import classes.math.Point3D;
 import classes.math.Vector3D;
 import classes.objects.Sphere;
 import classes.view.Camera;
-import classes.view.Color;
 import classes.view.Light;
 
 public class App {
@@ -17,7 +16,7 @@ public class App {
 
         //light
         Point3D originL = new Point3D(0, 1, 10);
-        Light light = new Light(1.5, originL, new Color());
+        Light light = new Light(1.5, originL);
 
         //init drawinghelper
         DrawingHelper dh = new DrawingHelper(1920, 1080);

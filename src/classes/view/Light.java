@@ -6,14 +6,21 @@ import classes.math.Ray;
 public class Light {
     private final Point3D position;
     private final double intensity;
-    private Color color;
+    private final Color color; //add later
 
     //*****************************
     // Constructors
     //*****************************
 
     /**
-     *
+     * @param intensity
+     * @param position
+     */
+    public Light(double intensity, Point3D position) {
+        this(intensity, position, new Color());
+    }
+
+    /**
      * @param intensity
      * @param position
      * @param color
@@ -21,16 +28,6 @@ public class Light {
     public Light(double intensity, Point3D position, Color color) {
         this.intensity = intensity;
         this.color = color;
-        this.position = position;
-    }
-
-    /**
-     *
-     * @param intensity
-     * @param position
-     */
-    public Light(double intensity, Point3D position) {
-        this.intensity = intensity;
         this.position = position;
     }
 
@@ -57,7 +54,7 @@ public class Light {
      * @return intensity across distance
      */
     public double getIntensity(Ray ray) {
-        var length = ray.origin.distance(this.position);
+        var length = ray.getOrigin().distance(this.position);
         return clampIntensity(1 / ((length * length) / intensity));
     }
 
@@ -89,10 +86,11 @@ public class Light {
 
     /**
      * input can't exceed 1
+     *
      * @param input
      * @return
      */
-    private double clampIntensity(double input){
+    private double clampIntensity(double input) {
         return input > 1 ? 1 : input;
     }
 

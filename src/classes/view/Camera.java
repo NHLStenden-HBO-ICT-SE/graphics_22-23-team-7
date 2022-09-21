@@ -13,6 +13,10 @@ public class Camera {
     private final Vector3D horizontalV; //top left to top right 3D vector
     private final Vector3D verticalV; //top left to bot left 3D vector
 
+    //*****************************
+    // Constructors
+    //*****************************
+
     public Camera(Vector3D direction, float fov, double screenHeight, double screenWidth) { //TODO: make overloads?
 
         //gets the normalized direction of camera viewing point
@@ -29,15 +33,19 @@ public class Camera {
         Point3D center = this.origin.addVector(this.direction.multiply(fov));
 
         //defines all edges of the viewing window
-        this.topLeft = center.add(new Point3D(-1*(viewportWidth/2), 1*(viewportHeight/2), 0));
-        this.topRight = center.add(new Point3D(1*(viewportWidth/2), 1*(viewportHeight/2), 0));
-        this.botLeft = center.add(new Point3D(-1*(viewportWidth/2), -1*(viewportHeight/2), 0));
+        this.topLeft = center.add(new Point3D(-1 * (viewportWidth / 2), 1 * (viewportHeight / 2), 0));
+        this.topRight = center.add(new Point3D(1 * (viewportWidth / 2), 1 * (viewportHeight / 2), 0));
+        this.botLeft = center.add(new Point3D(-1 * (viewportWidth / 2), -1 * (viewportHeight / 2), 0));
 
 
         //defines all vectors between edges
         this.horizontalV = topLeft.getVector(topRight);
         this.verticalV = topLeft.getVector(botLeft);
     }
+
+    //*****************************
+    // Methods
+    //*****************************
 
     public Ray makeRay(double width, double height) {
         //defines all vectors between edges

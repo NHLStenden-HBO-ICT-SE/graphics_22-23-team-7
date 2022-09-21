@@ -1,5 +1,7 @@
 package classes.math;
 
+import interfaces.math.Operators;
+
 /**
  * ==============================================================
  * This class assumes when:
@@ -20,20 +22,20 @@ package classes.math;
  * </p>
  * ==============================================================
  */
-public class Point3D extends Dimension3<Point3D> { //TODO: volgende week zal wouter uitleg geven over self-generic types
+public class Point3D extends Dimension3 implements Operators<Point3D> {
     //*****************************
     // Constructors
     //*****************************
     public Point3D() {
-        super(0, 0, 0);
+        this(0, 0, 0);
+    }
+
+    public Point3D(Point3D point) {
+        this(point.x, point.y, point.z);
     }
 
     public Point3D(double x, double y, double z) {
         super(x, y, z);
-    }
-
-    public Point3D(Point3D point) {
-        super(point);
     }
 
 
@@ -42,8 +44,14 @@ public class Point3D extends Dimension3<Point3D> { //TODO: volgende week zal wou
     //*****************************
 
 
+    /**
+     * gets vector between two points
+     *
+     * @param point
+     * @return
+     */
     public Vector3D getVector(Point3D point) {
-        return new Vector3D(point.x - x, point.y - y, point.z - z); //TODO: figure out what happens with negative points
+        return new Vector3D(point.x - x, point.y - y, point.z - z);
     }
 
     public Point3D addVector(Vector3D point) {
@@ -65,5 +73,51 @@ public class Point3D extends Dimension3<Point3D> { //TODO: volgende week zal wou
         return Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
+    @Override
+    public Point3D sub(Point3D T) {
+        return new Point3D(x - T.x, y - T.y, z - T.z);
+    }
 
+    @Override
+    public void setSub(Point3D T) {
+        x -= T.x;
+        y -= T.y;
+        z -= T.z;
+    }
+
+    @Override
+    public Point3D add(Point3D T) {
+        return new Point3D(x + T.x, y + T.y, z + T.z);
+    }
+
+    @Override
+    public void setAdd(Point3D T) {
+        x += T.x;
+        y += T.y;
+        z += T.z;
+    }
+
+    @Override
+    public Point3D multiply(double n) {
+        return new Point3D(x * n, y * n, z * n);
+    }
+
+    @Override
+    public void setMultiply(double n) {
+        x *= n;
+        y *= n;
+        z *= n;
+    }
+
+    @Override
+    public Point3D divide(int n) {
+        return new Point3D(x / n, y / n, z / n);
+    }
+
+    @Override
+    public void setDivide(int n) {
+        x /= n;
+        y /= n;
+        z /= n;
+    }
 }

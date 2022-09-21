@@ -1,5 +1,7 @@
 package classes.math;
 
+import interfaces.math.Operators;
+
 /**
  * ==============================================================
  * This class assumes when:
@@ -16,7 +18,7 @@ package classes.math;
  * </p>
  * ==============================================================
  */
-public class Vector3D extends Dimension3<Vector3D> { //TODO: volgende week zal wouter uitleg geven over self-generic types
+public class Vector3D extends Dimension3 implements Operators<Vector3D> {
 
     //*****************************
     // Constructors
@@ -25,21 +27,70 @@ public class Vector3D extends Dimension3<Vector3D> { //TODO: volgende week zal w
         this(0, 0, 0);
     }
 
-    public Vector3D(double x, double y, double z) {
-        super(x, y, z);
-    }
-
     public Vector3D(Point3D point1, Point3D point2) {
         this(point2.x - point1.x, point2.y - point1.y, point2.z - point1.z);
     }
 
     public Vector3D(Vector3D vector) {
-        super(vector);
+        this(vector.x, vector.y, vector.z);
     }
+
+    public Vector3D(double x, double y, double z) {
+        super(x, y, z);
+    }
+
 
     //*****************************
     // Methods
     //*****************************
+
+    /**
+     * subtracts two generic types
+     *
+     * @param T
+     * @return subtraction
+     */
+    @Override
+    public Vector3D sub(Vector3D T) {
+        return new Vector3D(x - T.x, y - T.y, z - T.z);
+    }
+
+    /**
+     * subtracts two generic types
+     * and sets the current object to the result
+     *
+     * @param T
+     */
+    @Override
+    public void setSub(Vector3D T) {
+        x -= T.x;
+        y -= T.y;
+        z -= T.z;
+    }
+
+    /**
+     * calculates the sum of this dimension3 and another 3D dimension3
+     *
+     * @param T
+     * @return sum
+     */
+    @Override
+    public Vector3D add(Vector3D T) {
+        return new Vector3D(x + T.x, y + T.y, z + T.z);
+    }
+
+    /**
+     * calculates the sum of this T and another T
+     * and sets the current object to the result
+     *
+     * @param T
+     */
+    @Override
+    public void setAdd(Vector3D T) {
+        x += T.x;
+        y += T.y;
+        z += T.z;
+    }
 
     /**
      * multiplication of vector with n
@@ -48,8 +99,45 @@ public class Vector3D extends Dimension3<Vector3D> { //TODO: volgende week zal w
      * @return multiplication
      */
     public Vector3D multiply(double n) {
-        return new Vector3D(this.x * n, this.y * n, this.z * n);
-    } //TODO:
+        return new Vector3D(x * n, y * n, z * n);
+    }
+
+    /**
+     * multiplication of generic type with n
+     * and sets the current object to the result
+     *
+     * @param n
+     */
+    @Override
+    public void setMultiply(double n) {
+        x *= n;
+        y *= n;
+        z *= n;
+    }
+
+    /**
+     * divides all elements in a generic type by n
+     *
+     * @param n
+     * @return division
+     */
+    @Override
+    public Vector3D divide(int n) {
+        return new Vector3D(x / n, y / n, z / n);
+    }
+
+    /**
+     * divides all elements in a generic type by n
+     * and sets the current object to the result
+     *
+     * @param n
+     */
+    @Override
+    public void setDivide(int n) {
+        x /= n;
+        y /= n;
+        z /= n;
+    }
 
     /**
      * calculates cross product from this vector and another one
@@ -134,11 +222,13 @@ public class Vector3D extends Dimension3<Vector3D> { //TODO: volgende week zal w
     public double angle(Vector3D vector) {
         return Math.acos(this.dot(vector) / (this.length() * vector.length()));
     }
-    public Matrix getMatrix(){
-        return new Matrix<>(new double[][]{{this.x},{this.y},{this.z}});
+
+    public Matrix getMatrix() {
+        return new Matrix<>(new double[][]{{this.x}, {this.y}, {this.z}});
     }
+
     //sets matrix value to the vector3D
-    public void setMatrix(Matrix<Matrix> m){
+    public void setMatrix(Matrix<Matrix> m) {
         this.x = m.getMatrix()[0][0];
         this.y = m.getMatrix()[1][0];
         this.z = m.getMatrix()[2][0];

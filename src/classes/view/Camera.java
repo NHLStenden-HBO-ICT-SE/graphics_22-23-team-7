@@ -43,6 +43,10 @@ public class Camera {
         this.verticalV = topLeft.getVector(botLeft);
     }
 
+    //*****************************
+    // Methods
+    //*****************************
+
     public Ray makeRay(double width, double height) {
         //defines all vectors between edges
         Vector3D widthV = horizontalV.multiply(width);

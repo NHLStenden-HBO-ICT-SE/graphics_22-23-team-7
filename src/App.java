@@ -17,7 +17,7 @@ public class App {
 
         //light
         Point3D originL = new Point3D(0, 1, 10);
-        Light light = new Light(1.5, originL, new Color());
+        Light light = new Light(1.5, originL);
 
         //init drawinghelper
         DrawingHelper dh = new DrawingHelper(1920, 1080);

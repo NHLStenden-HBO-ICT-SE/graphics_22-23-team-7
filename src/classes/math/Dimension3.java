@@ -54,6 +54,10 @@ public abstract class Dimension3<T extends Dimension3> { //TODO: volgende week z
         this.z = z;
     }
 
+    //*****************************
+    // Methods
+    //*****************************
+
     /**
      * subtracts two 3D vectors
      *

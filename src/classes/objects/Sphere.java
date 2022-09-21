@@ -17,7 +17,6 @@ public class Sphere {
     }
 
     /**
-     *
      * @param point
      * @param radius
      */

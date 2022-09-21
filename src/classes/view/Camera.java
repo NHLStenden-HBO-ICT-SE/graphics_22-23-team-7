@@ -33,9 +33,9 @@ public class Camera {
         Point3D center = this.origin.addVector(this.direction.multiply(fov));
 
         //defines all edges of the viewing window
-        this.topLeft = center.add(new Point3D(-1*(viewportWidth/2), 1*(viewportHeight/2), 0));
-        this.topRight = center.add(new Point3D(1*(viewportWidth/2), 1*(viewportHeight/2), 0));
-        this.botLeft = center.add(new Point3D(-1*(viewportWidth/2), -1*(viewportHeight/2), 0));
+        this.topLeft = center.add(new Point3D(-1 * (viewportWidth / 2), 1 * (viewportHeight / 2), 0));
+        this.topRight = center.add(new Point3D(1 * (viewportWidth / 2), 1 * (viewportHeight / 2), 0));
+        this.botLeft = center.add(new Point3D(-1 * (viewportWidth / 2), -1 * (viewportHeight / 2), 0));
 
 
         //defines all vectors between edges

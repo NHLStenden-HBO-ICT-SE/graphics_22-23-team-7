@@ -3,16 +3,15 @@ package classes.objects;
 import classes.math.Point3D;
 
 public class Shape {
-    private boolean intersects;
-    private double intensity; //might not need this, have to check later
     public Point3D point;
+    private final boolean intersects;
+    private double intensity; //might not need this, have to check later
 
     //*****************************
     // Constructors
     //*****************************
 
     /**
-     *
      * @param intersects
      */
     public Shape(boolean intersects) {
@@ -20,7 +19,6 @@ public class Shape {
     }
 
     /**
-     *
      * @param intersects
      * @param point
      */

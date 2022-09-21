@@ -3,7 +3,6 @@ import classes.math.Point3D;
 import classes.math.Vector3D;
 import classes.objects.Sphere;
 import classes.view.Camera;
-import classes.view.Color;
 import classes.view.Light;
 
 public class App {

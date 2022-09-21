@@ -6,7 +6,7 @@ import classes.math.Ray;
 public class Light {
     private final Point3D position;
     private final double intensity;
-    private Color color; //add later
+    private final Color color; //add later
 
     //*****************************
     // Constructors

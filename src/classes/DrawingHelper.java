@@ -15,14 +15,12 @@ public class DrawingHelper {
     // Constructors
     //*****************************
 
-    public DrawingHelper()
-    {
+    public DrawingHelper() {
         this(480, 480);
     }
 
     // Initialize DrawingHelper and window at a specified size
-    public DrawingHelper(int width, int height)
-    {
+    public DrawingHelper(int width, int height) {
         this.window = new MainWindow(width, height);
     }
 
@@ -42,7 +40,7 @@ public class DrawingHelper {
 
                     //light on a black object
                     //new color should be moved to light
-                    this.window.Draw(i, j,  new Color((int) (255 * intensity), (int) (255 * intensity), (int) (255 * intensity)));
+                    this.window.Draw(i, j, new Color((int) (255 * intensity), (int) (255 * intensity), (int) (255 * intensity)));
                 }
             }
         }

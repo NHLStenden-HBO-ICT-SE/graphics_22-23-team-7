@@ -22,7 +22,7 @@ public class Vector3D extends Dimension3<Vector3D> { //TODO: volgende week zal w
     // Constructors
     //*****************************
     public Vector3D() {
-        this(0,0,0);
+        this(0, 0, 0);
     }
 
     public Vector3D(double x, double y, double z) {

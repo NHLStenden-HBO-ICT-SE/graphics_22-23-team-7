@@ -13,6 +13,10 @@ public class Camera {
     private final Vector3D horizontalV; //top left to top right 3D vector
     private final Vector3D verticalV; //top left to bot left 3D vector
 
+    //*****************************
+    // Constructors
+    //*****************************
+
     public Camera(Vector3D direction, float fov, double screenHeight, double screenWidth) { //TODO: make overloads?
 
         //gets the normalized direction of camera viewing point

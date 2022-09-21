@@ -13,8 +13,7 @@ public class Sphere {
      * radius = 1
      */
     public Sphere() {
-        this.center = new Point3D();
-        this.radius = 1.0;
+        this(new Point3D(), 1.0);
     }
 
     /**

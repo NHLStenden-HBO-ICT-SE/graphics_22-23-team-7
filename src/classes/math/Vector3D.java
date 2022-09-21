@@ -22,19 +22,19 @@ public class Vector3D extends Dimension3<Vector3D> { //TODO: volgende week zal w
     // Constructors
     //*****************************
     public Vector3D() {
-        super(0, 0, 0);
+        this(0,0,0);
     }
 
     public Vector3D(double x, double y, double z) {
         super(x, y, z);
     }
 
-    public Vector3D(Vector3D vector) {
-        super(vector);
+    public Vector3D(Point3D point1, Point3D point2) {
+        this(point2.x - point1.x, point2.y - point1.y, point2.z - point1.z);
     }
 
-    public Vector3D(Point3D point1, Point3D point2) {
-        super(point2.x - point1.x, point2.y - point1.y, point2.z - point1.z);
+    public Vector3D(Vector3D vector) {
+        super(vector);
     }
 
     //*****************************

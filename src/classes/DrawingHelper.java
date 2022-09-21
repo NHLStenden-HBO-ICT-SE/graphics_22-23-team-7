@@ -11,13 +11,19 @@ import java.awt.*;
 public class DrawingHelper {
     private final MainWindow window;
 
-    // Initialize DrawingHelper and window at a specified size
-    public DrawingHelper(int width, int height) {
-        this.window = new MainWindow(width, height);
+    //*****************************
+    // Constructors
+    //*****************************
+
+    public DrawingHelper()
+    {
+        this(480, 480);
     }
 
-    public DrawingHelper() {
-        this(480, 480);
+    // Initialize DrawingHelper and window at a specified size
+    public DrawingHelper(int width, int height)
+    {
+        this.window = new MainWindow(width, height);
     }
 
     public boolean draw(Camera camera, Sphere sphere, Light light) {

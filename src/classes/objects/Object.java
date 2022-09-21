@@ -9,7 +9,7 @@ public class Object {
     public Point3D point;
 
     //*****************************
-    // Constructor
+    // Constructors
     //*****************************
 
     /**
@@ -17,8 +17,7 @@ public class Object {
      * @param intersects
      */
     public Object(boolean intersects) {
-        this.intersects = intersects;
-        this.point = null; //maybe change to new Point3D()
+        this(intersects, null); //maybe change to new Point3D()
     }
 
     /**

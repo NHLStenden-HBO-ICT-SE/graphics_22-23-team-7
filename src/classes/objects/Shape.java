@@ -3,7 +3,7 @@ package classes.objects;
 import classes.math.Point3D;
 
 public class Shape {
-    public Point3D point;
+    private Point3D point;
     private final boolean intersects;
     private double intensity; //might not need this, have to check later
 
@@ -36,7 +36,11 @@ public class Shape {
         return intensity;
     }
 
-    public boolean isIntersects() {
+    public boolean isIntersected() {
         return intersects;
+    }
+
+    public Point3D getPoint() {
+        return point;
     }
 }

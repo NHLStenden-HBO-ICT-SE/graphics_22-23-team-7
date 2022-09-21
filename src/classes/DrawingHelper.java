@@ -31,14 +31,14 @@ public class DrawingHelper {
             for (int i = 0; i < this.window.getWidth(); i++) {
 
                 Ray ray = camera.makeRay((double) i / this.window.getWidth(), (double) j / this.window.getHeight());
-                Shape object = sphere.intersection(ray);
+                Shape shape = sphere.intersection(ray);
 
                 //check if ray intersects with sphere
-                if (object.isIntersects()) {
+                if (shape.isIntersected()) {
 
-                    double intensity = light.getIntensity(object.point);
+                    double intensity = light.getIntensity(shape.getPoint());
 
-                    //light on a black object
+                    //light on a black shape
                     //new color should be moved to light
                     this.window.Draw(i, j, new Color((int) (255 * intensity), (int) (255 * intensity), (int) (255 * intensity)));
                 }

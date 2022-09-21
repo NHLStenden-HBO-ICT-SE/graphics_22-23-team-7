@@ -27,7 +27,6 @@ public abstract class Dimension3<T extends Dimension3> { //TODO: volgende week z
     // Constructors
     //*****************************
     public Dimension3() {
-
         this(0, 0, 0);
     }
 

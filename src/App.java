@@ -36,9 +36,12 @@ public class App {
                 lastWidth = dh.getWidth();
             }
             if (dh.draw(camera, sphere, light)) {
-                Thread.sleep(1500);
-                dh.blank();
+                dh.update();
+                // Additional sleep as update returns before finishing render
+                Thread.sleep(7, 500);
             }
+            // Sphere movement
+            sphere.setCenter(sphere.getCenter().add(new Point3D(0.03, 0, 0)));
         }
     }
 }

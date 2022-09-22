@@ -36,7 +36,7 @@ public class DrawingHelper {
                 //check if ray intersects with sphere
                 if (shape.isIntersected()) {
 
-                    double intensity = light.getIntensity(shape.getPoint());
+                    double intensity = light.calculateIntensity(shape.getPoint());
 
                     //light on a black shape
                     //new color should be moved to light

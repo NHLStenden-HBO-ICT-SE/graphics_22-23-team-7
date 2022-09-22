@@ -31,16 +31,28 @@ public class Shape {
     // Methods
     //*****************************
 
-
+    /**
+     * gets intensity of the light hitting the shape
+     * @return
+     */
     public double getIntensity() {
         return intensity;
     }
 
+    /**
+     * gets point of shape
+     * @return
+     */
+    public Point3D getPoint() {
+        return point;
+    }
+
+    /**
+     * returns true if ray intersects with shape
+     * @return
+     */
     public boolean isIntersected() {
         return intersects;
     }
 
-    public Point3D getPoint() {
-        return point;
-    }
 }

@@ -4,9 +4,9 @@ import classes.math.Point3D;
 import classes.math.Ray;
 
 public class Light {
-    private final Point3D position;
-    private final double intensity;
-    private final Color color; //add later
+    private Point3D position;
+    private double intensity;
+    private Color color; //add later
 
     //*****************************
     // Constructors
@@ -35,6 +35,41 @@ public class Light {
     // Methods
     //*****************************
 
+    /**
+     * gets intensity of the light
+     *
+     * @return
+     */
+    public double getIntensity() {
+        return intensity;
+    }
+
+    /**
+     * sets intensity of the light
+     *
+     * @param intensity
+     */
+    public void setIntensity(double intensity) {
+        this.intensity = intensity;
+    }
+
+    /**
+     * gets color of the light
+     *
+     * @return
+     */
+    public Color getColor() {
+        return color;
+    }
+
+    /**
+     * gets color of the light
+     *
+     * @param color
+     */
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
     /**
      * get position of light
@@ -46,6 +81,15 @@ public class Light {
     }
 
     /**
+     * sets position of the light
+     *
+     * @param position
+     */
+    public void setPosition(Point3D position) {
+        this.position = position;
+    }
+
+    /**
      * inverse square law
      * <br>
      * read more at: https://en.wikipedia.org/wiki/Inverse-square_law
@@ -53,7 +97,7 @@ public class Light {
      * @param ray
      * @return intensity across distance
      */
-    public double getIntensity(Ray ray) {
+    public double calculateIntensity(Ray ray) {
         var length = ray.getOrigin().distance(this.position);
         return clampIntensity(1 / ((length * length) / intensity));
     }
@@ -66,7 +110,7 @@ public class Light {
      * @param point
      * @return intensity across distance
      */
-    public double getIntensity(Point3D point) {
+    public double calculateIntensity(Point3D point) {
         var length = point.distance(this.position);
         return clampIntensity(1 / ((length * length) / intensity));
     }
@@ -80,7 +124,7 @@ public class Light {
      * @return intensity across distance
      */
 
-    public double getIntensity(double length) {
+    public double calculateIntensity(double length) {
         return clampIntensity(1 / ((length * length) / intensity));
     }
 

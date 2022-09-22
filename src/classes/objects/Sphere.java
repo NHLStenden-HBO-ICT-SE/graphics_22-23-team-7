@@ -26,12 +26,28 @@ public class Sphere {
     }
 
     /**
+     * gets center of the sphere
+     * @return
+     */
+    public Point3D getCenter() {
+        return center;
+    }
+
+    /**
      * sets the center of the sphere
      *
      * @param point
      */
     public void setCenter(Point3D point) {
         this.center = point;
+    }
+
+    /**
+     * gets radius of sphere
+     * @return
+     */
+    public double getRadius() {
+        return radius;
     }
 
     /**
@@ -43,6 +59,11 @@ public class Sphere {
         this.radius = radius;
     }
 
+    /**
+     * calculates intersection ray -> sphere, returns a new object of shape
+     * @param ray
+     * @return new shape
+     */
     public Shape intersection(Ray ray) {
 
         //normalize the direction of the ray

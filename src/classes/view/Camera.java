@@ -26,7 +26,7 @@ public class Camera {
         this.origin = new Point3D();
 
         double aspectRatio = screenWidth / screenHeight;
-        double viewportHeight = 4.0;
+        double viewportHeight = 2.0;
         double viewportWidth = aspectRatio * viewportHeight;
 
         //gets the center point of the viewing screen

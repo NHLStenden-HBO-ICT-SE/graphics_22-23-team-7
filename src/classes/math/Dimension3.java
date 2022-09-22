@@ -1,5 +1,8 @@
 package classes.math;
-public abstract class Dimension3 {
+
+import interfaces.math.Operators;
+
+public abstract class Dimension3<T extends Dimension3> implements Operators<T> {
     public double x, y, z;
 
     /**

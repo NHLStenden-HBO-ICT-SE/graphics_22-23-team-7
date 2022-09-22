@@ -22,7 +22,7 @@ import interfaces.math.Operators;
  * </p>
  * ==============================================================
  */
-public class Point3D extends Dimension3 implements Operators<Point3D> {
+public class Point3D extends Dimension3<Point3D> {
     //*****************************
     // Constructors
     //*****************************

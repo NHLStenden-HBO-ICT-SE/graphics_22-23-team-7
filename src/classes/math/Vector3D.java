@@ -18,7 +18,7 @@ import interfaces.math.Operators;
  * </p>
  * ==============================================================
  */
-public class Vector3D extends Dimension3 implements Operators<Vector3D> {
+public class Vector3D extends Dimension3<Vector3D> {
 
     //*****************************
     // Constructors

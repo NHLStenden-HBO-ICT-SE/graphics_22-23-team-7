@@ -23,12 +23,16 @@ public class MainWindow extends JFrame {
     // Draw a pixel
     public void Draw(int x, int y, Color color) {
         this.image.setRGB(x, y, color.getRGB());
-        this.iLabel.setIcon(new ImageIcon(this.image));
+    }
+
+    public void update() {
+        // Fetch new image from pointer and display
+        this.repaint();
     }
 
     // Blank the screen
     public void blank() {
         this.image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        this.iLabel.setIcon(new ImageIcon(this.image));
+        this.update();
     }
 }

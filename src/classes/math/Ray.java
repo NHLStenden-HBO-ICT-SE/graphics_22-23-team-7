@@ -9,11 +9,11 @@ public class Ray {
     // Constructors
     //*****************************
 
-    public Ray(Vector3D direction, double distance) {
+    public Ray(Vector3D direction, float distance) {
         this(new Point3D(), direction, distance);
     }
 
-    public Ray(Point3D origin, Vector3D direction, double distance) {
+    public Ray(Point3D origin, Vector3D direction, float distance) {
         this.origin = new Point3D(origin);
         this.direction = new Vector3D(direction).normalize();
         this.t = distance;

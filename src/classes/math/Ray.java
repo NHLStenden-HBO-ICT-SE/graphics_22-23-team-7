@@ -15,7 +15,7 @@ public class Ray {
 
     public Ray(Point3D origin, Vector3D direction, float distance) {
         this.origin = new Point3D(origin);
-        this.direction = new Vector3D(direction).normalize();
+        this.direction = new Vector3D(direction); //TODO: normalize?
         this.t = distance;
     }
 

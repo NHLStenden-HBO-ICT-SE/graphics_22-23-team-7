@@ -1,10 +1,9 @@
 package classes.objects;
 
 import classes.math.Point3D;
-import classes.math.Vector3D;
 
 public class Shape {
-    private Vector3D vector;
+    private Point3D point;
     private final boolean intersects;
     private double intensity; //might not need this, have to check later
 
@@ -21,11 +20,11 @@ public class Shape {
 
     /**
      * @param intersects
-     * @param vector
+     * @param point
      */
-    public Shape(boolean intersects, Vector3D vector) {
+    public Shape(boolean intersects, Point3D point) {
         this.intersects = intersects;
-        this.vector = vector;
+        this.point = point;
     }
 
     //*****************************
@@ -45,7 +44,7 @@ public class Shape {
      * @return
      */
     public Point3D getPoint() {
-        return vector;
+        return point;
     }
 
     /**

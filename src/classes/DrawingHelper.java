@@ -1,13 +1,11 @@
 package classes;
 
 import classes.math.Ray;
-import classes.objects.Shape;
-import classes.objects.Sphere;
 import classes.view.Camera;
 import classes.view.Light;
+import interfaces.objects.Shape;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class DrawingHelper {
         this.window = new MainWindow(width, height);
     }
 
-    public boolean draw(Camera camera, Sphere sphere, Light light) {
+    public boolean draw(Camera camera, Shape[] shapes, Light[] lights) {
         // Render
 
         // Get amount of threads available to the JVM
@@ -51,8 +49,7 @@ public class DrawingHelper {
                 // Add a render job with the remainder of the pixels
                 renderBlocks.add(new RenderBatch(start, remainingLines % maxBatchSize));
                 remainingLines = 0;
-            }
-            else {
+            } else {
                 // Add a render job with the maximum batch size and set the next start
                 renderBlocks.add(new RenderBatch(start, maxBatchSize));
                 remainingLines -= maxBatchSize;
@@ -70,23 +67,14 @@ public class DrawingHelper {
                     for (int j = batch.getStart(); j < batch.getStart() + batch.getLength(); j++) {
                         //vertical pixels
                         for (int i = 0; i < window.getWidth(); i++) {
+
                             //create new ray current position on the screen, reason for division is normalization (between 0 and 1)
                             Ray ray = camera.makeRay((double) i / window.getWidth(), (double) j / window.getHeight());
-                            //checking if my ray intersects with my sphere and returns status of intersect in bool and position of intersect in point3
-                            Shape shape = sphere.intersection(ray);
 
-                            //check if ray intersects with sphere
-                            if (shape.isIntersected()) {
+                            Scene scene = new Scene(camera, shapes, lights);
 
-                                double intensity = light.calculateIntensity(shape.getPoint());
+                            window.Draw(i, j, scene.calculatePixel(ray));
 
-                                //light on a black shape
-                                //new color should be moved to light
-                                window.Draw(i, j, new Color((int) (255 * intensity), (int) (255 * intensity), (int) (255 * intensity)));
-                            }
-                            else {
-                                window.Draw(i, j, Color.white);
-                            }
                         }
                     }
                     return null;
@@ -99,7 +87,8 @@ public class DrawingHelper {
             worker.execute();
         }
         // Wait for workers
-        while (workers.stream().anyMatch(w -> !w.isDone())) { }
+        while (workers.stream().anyMatch(w -> !w.isDone())) {
+        }
         return true;
     }
 

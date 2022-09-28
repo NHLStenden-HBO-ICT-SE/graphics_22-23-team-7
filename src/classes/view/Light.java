@@ -99,7 +99,7 @@ public class Light {
      */
     public double calculateIntensity(Ray ray) {
         var length = ray.getOrigin().distance(this.position);
-        return 1 / ((length * length) / intensity);
+        return clampIntensity(1 / ((length * length) / intensity));
     }
 
     /**
@@ -112,7 +112,7 @@ public class Light {
      */
     public double calculateIntensity(Point3D point) {
         var length = point.distance(this.position);
-        return 1 / ((length * length) / intensity);
+        return clampIntensity(1 / ((length * length) / intensity));
     }
 
     /**
@@ -125,6 +125,17 @@ public class Light {
      */
 
     public double calculateIntensity(double length) {
-        return 1 / ((length * length) / intensity);
+        return clampIntensity(1 / ((length * length) / intensity));
     }
+
+    /**
+     * input can't exceed 1
+     *
+     * @param input
+     * @return
+     */
+    private double clampIntensity(double input) {
+        return input > 1 ? 1 : input;
+    }
+
 }

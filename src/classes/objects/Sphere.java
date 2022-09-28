@@ -64,19 +64,16 @@ public class Sphere {
      * @param ray
      * @return new shape
      */
-    public Shape intersection(Ray ray) {
-
-        //normalize the direction of the ray
-        Vector3D normalizedDirection = ray.getDirection().normalize();
+    public IntersectionHandler intersection(Ray ray) {
 
         //gets vector from points: ray origin and sphere center
         Vector3D ocVec = ray.getOrigin().getVector(center);
 
         //get dot product of origin-center-Vector and normalizedDirection
-        double t = ocVec.dot(normalizedDirection);
+        double t = ocVec.dot(ray.getDirection());
 
         //length from ray origin to sphere center
-        Vector3D q = normalizedDirection.multiply(t).sub(ocVec);
+        Vector3D q = ray.getDirection().multiply(t).sub(ocVec);
 
         // |q|^2
         double p2 = q.dot(q);
@@ -84,14 +81,14 @@ public class Sphere {
         //radius^2
         double r2 = radius * radius;
 
-        if (p2 > r2) return new Shape(false); //a smart way to check if ray intersects before taking the sqrt
+        if (p2 > r2) return new IntersectionHandler(false); //a smart way to check if ray intersects before taking the sqrt
 
         t = t - Math.sqrt(r2 - p2);
 
         if (t < ray.getLength() && t > 0) {
-            return new Shape(true, t);
+            return new IntersectionHandler(true, t);
         }
-        return new Shape(false);
+        return new IntersectionHandler(false);
     }
 
 

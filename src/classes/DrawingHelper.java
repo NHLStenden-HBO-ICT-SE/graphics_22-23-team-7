@@ -1,16 +1,12 @@
 package classes;
 
-import classes.math.Point3D;
 import classes.math.Ray;
-import classes.math.Vector3D;
-import classes.objects.IntersectionHandler;
+import classes.objects.Shape;
 import classes.objects.Sphere;
 import classes.view.Camera;
 import classes.view.Light;
 
 import java.awt.*;
-
-import static classes.math.GenericMath.*;
 
 public class DrawingHelper {
     private final MainWindow window;
@@ -35,36 +31,16 @@ public class DrawingHelper {
             for (int i = 0; i < this.window.getWidth(); i++) {
 
                 Ray ray = camera.makeRay((double) i / this.window.getWidth(), (double) j / this.window.getHeight());
-                IntersectionHandler intersectionHandler = sphere.intersection(ray);
+                Shape shape = sphere.intersection(ray);
 
                 //check if ray intersects with sphere
-                if (intersectionHandler.isIntersected()) {
+                if (shape.isIntersected()) {
 
-                    //get point of intersection of sphere
-                    Point3D intersectionPoint = ray.getOrigin().addVector(ray.getDirection().multiply(intersectionHandler.getLength()));
+                    double intensity = light.calculateIntensity(shape.getPoint());
 
-                    //get direction from sphere to light
-                    Vector3D directionslRay = intersectionPoint.getVector(light.getPosition());
-
-                    //distance between light and sphere
-                    double slDistance = intersectionPoint.distance(light.getPosition());
-
-                    //create new ray from intersection to light
-                    Ray slRay = new Ray(intersectionPoint, directionslRay, slDistance);
-
-                    //get intersection from sphere and light
-                    var slIntersectionHandler = sphere.intersection(slRay);
-
-                    //init intensity
-                    double intensity = 0;
-
-                    if (!slIntersectionHandler.isIntersected())
-                        intensity = light.calculateIntensity(slDistance);
-
-
-                    //light on a black intersectionHandler
+                    //light on a black shape
                     //new color should be moved to light
-                    this.window.Draw(i, j, new Color(clamp((int) (255 * intensity), 0, 255), clamp((int) (255 * intensity), 0, 255), clamp((int) (255 * intensity), 0, 255)));
+                    this.window.Draw(i, j, new Color((int) (255 * intensity), (int) (255 * intensity), (int) (255 * intensity)));
                 }
             }
         }

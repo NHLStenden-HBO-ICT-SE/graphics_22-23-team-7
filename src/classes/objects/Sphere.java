@@ -3,9 +3,10 @@ package classes.objects;
 import classes.math.Point3D;
 import classes.math.Ray;
 import classes.math.Vector3D;
+import interfaces.objects.Shape;
 
-public class Sphere {
-    private Point3D center;
+public class Sphere implements Shape {
+    private Point3D origin;
     private double radius;
 
     /**
@@ -21,16 +22,17 @@ public class Sphere {
      * @param radius
      */
     public Sphere(Point3D point, double radius) {
-        this.center = point;
+        this.origin = point;
         this.radius = radius;
     }
 
     /**
      * gets center of the sphere
+     *
      * @return
      */
-    public Point3D getCenter() {
-        return center;
+    public Point3D getOrigin() {
+        return origin;
     }
 
     /**
@@ -38,12 +40,13 @@ public class Sphere {
      *
      * @param point
      */
-    public void setCenter(Point3D point) {
-        this.center = point;
+    public void setOrigin(Point3D point) {
+        this.origin = point;
     }
 
     /**
      * gets radius of sphere
+     *
      * @return
      */
     public double getRadius() {
@@ -61,16 +64,17 @@ public class Sphere {
 
     /**
      * calculates intersection ray -> sphere, returns a new object of shape
+     *
      * @param ray
      * @return new shape
      */
-    public Shape intersection(Ray ray) {
+    public IntersectionHandler intersection(Ray ray) {
 
         //normalize the direction of the ray
         Vector3D normalizedDirection = ray.getDirection().normalize();
 
         //gets vector from points: ray origin and sphere center
-        Vector3D ocVec = ray.getOrigin().getVector(center);
+        Vector3D ocVec = ray.getOrigin().getVector(origin);
 
         //get dot product of origin-center-Vector and normalizedDirection
         double t = ocVec.dot(normalizedDirection);
@@ -84,14 +88,15 @@ public class Sphere {
         //radius^2
         double r2 = radius * radius;
 
-        if (p2 > r2) return new Shape(false); //a smart way to check if ray intersects before taking the sqrt
+        if (p2 > r2)
+            return new IntersectionHandler(false); //a smart way to check if ray intersects before taking the sqrt
 
         t = t - Math.sqrt(r2 - p2);
 
         if (t < ray.getLength() && t > 0) {
-            return new Shape(true, ray.getOrigin().addVector(normalizedDirection.multiply(t)));
+            return new IntersectionHandler(true, t);
         }
-        return new Shape(false);
+        return new IntersectionHandler(false);
     }
 
 

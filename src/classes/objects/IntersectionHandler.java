@@ -17,7 +17,7 @@ public class IntersectionHandler {
     }
 
     /**
-     * @param intersects
+     * @param length
      */
     public IntersectionHandler(double length) {
         this(true, length);

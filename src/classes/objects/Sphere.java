@@ -89,7 +89,7 @@ public class Sphere {
         t = t - Math.sqrt(r2 - p2);
 
         if (t < ray.getLength() && t > 0) {
-            return new Shape(true, ray.getOrigin().addVector(normalizedDirection.multiply(t)));
+            return new Shape(true, t);
         }
         return new Shape(false);
     }

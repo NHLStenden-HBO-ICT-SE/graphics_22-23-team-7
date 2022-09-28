@@ -12,11 +12,19 @@ public class App {
 
         //sphere
         Point3D originS = new Point3D(0, 0, 12);
-        Sphere sphere = new Sphere(originS, 1);
+        Point3D originS2 = new Point3D(-1, 0, 12);
+        Sphere[] sphere = {
+                new Sphere(originS, 1),
+//                new Sphere(originS2, 1)
+        };
 
         //light
-        Point3D originL = new Point3D(0, 1, 10);
-        Light light = new Light(1.5, originL);
+        Point3D originL = new Point3D(2, 1, 5);
+        Point3D originL2 = new Point3D(-1, 0, 9);
+        Light[] light = {
+                new Light(30, originL),
+                new Light(2, originL2)
+        };
 
         //init drawinghelper
         DrawingHelper dh = new DrawingHelper(1920, 1080);

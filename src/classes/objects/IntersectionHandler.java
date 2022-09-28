@@ -1,11 +1,8 @@
 package classes.objects;
 
-import classes.math.Point3D;
-import classes.math.Vector3D;
-
-public class Shape {
-    private Vector3D vector;
+public class IntersectionHandler {
     private final boolean intersects;
+    private double length; //length
     private double intensity; //might not need this, have to check later
 
     //*****************************
@@ -15,17 +12,17 @@ public class Shape {
     /**
      * @param intersects
      */
-    public Shape(boolean intersects) {
-        this(intersects, null); //maybe change to new Point3D()
+    public IntersectionHandler(boolean intersects) {
+        this(intersects, 0); //maybe change to new Point3D()
     }
 
     /**
      * @param intersects
-     * @param vector
+     * @param length
      */
-    public Shape(boolean intersects, Vector3D vector) {
+    public IntersectionHandler(boolean intersects, double length) {
         this.intersects = intersects;
-        this.vector = vector;
+        this.length = length - 0.00001;
     }
 
     //*****************************
@@ -44,8 +41,8 @@ public class Shape {
      * gets point of shape
      * @return
      */
-    public Point3D getPoint() {
-        return vector;
+    public double getLength() {
+        return length;
     }
 
     /**

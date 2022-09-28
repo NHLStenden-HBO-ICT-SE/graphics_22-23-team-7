@@ -3,6 +3,7 @@ package classes.objects;
 import classes.math.Point3D;
 import classes.math.Ray;
 import classes.math.Vector3D;
+import errors.math.NegativeNumException;
 import interfaces.objects.Shape;
 
 public class Sphere implements Shape {
@@ -22,8 +23,8 @@ public class Sphere implements Shape {
      * @param radius
      */
     public Sphere(Point3D point, double radius) {
+        _setRadius(radius); //throws exception if radius is negative
         this.origin = point;
-        this.radius = radius;
     }
 
     /**
@@ -59,7 +60,25 @@ public class Sphere implements Shape {
      * @param radius
      */
     public void setRadius(double radius) {
-        this.radius = radius;
+        _setRadius(radius);
+    }
+
+    /**
+     * this is a private set, due to the possibility of children overriding "setRadius"
+     *
+     * @param radius
+     */
+    private void _setRadius(double radius) {
+        try {
+            //if radius is negative throw exception
+            if (radius < 0) throw new NegativeNumException();
+
+            //else ->
+            this.radius = radius;
+
+        } catch (NegativeNumException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

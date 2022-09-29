@@ -25,6 +25,7 @@ public class Scene {
 
     /**
      * calculates color of pixel that rays shoots through
+     *
      * @param ray
      * @return color of pixel
      */
@@ -63,6 +64,7 @@ public class Scene {
 
     /**
      * calculates intensity of light on point
+     *
      * @param point
      * @return intensity
      */
@@ -82,9 +84,6 @@ public class Scene {
             //loop through shapes
             for (Shape shape : shapes) {
 
-                //if shape is in the way of light go to the next
-                if (shape.intersection(ray).isIntersected()) continue;
-
                 //get the normal vector from shape
                 Vector3D N = shape.getOrigin().getVector(point).normalize();
 
@@ -94,6 +93,9 @@ public class Scene {
                 //if angle > 90 degrees go to the next
                 if (angle < 0) continue;
 
+                //if shape is in the way of light go to the next
+                if (doesRayHitShape(ray, point)) continue;
+
                 //incr intensity
                 intensity += angle * light.inverseSquareLaw(ray);
 
@@ -102,5 +104,21 @@ public class Scene {
         return intensity;
     }
 
+    private boolean doesRayHitShape(Ray ray, Point3D point) {
+        //loop through shapes
+        for (Shape shape : shapes) {
 
+            var a = point.distance(shape.getOrigin());
+
+            //if distance between point and shape origin is bigger than ray length we skip to the next shape
+            if (a > ray.getLength()) continue;
+
+            //get intersection of current shape
+            IntersectionHandler currentShape = shape.intersection(ray);
+
+            //if ray intersects return true
+            if (currentShape.isIntersected()) return true;
+        }
+        return false;
+    }
 }

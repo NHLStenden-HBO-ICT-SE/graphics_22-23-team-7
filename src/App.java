@@ -11,7 +11,7 @@ public class App {
         Vector3D direction = new Vector3D(0, 0, 1);
 
         //sphere
-        Point3D originS = new Point3D(1.5, 0, 9);
+        Point3D originS = new Point3D(1, 1, 9);
         Point3D originS2 = new Point3D(-1.5, 1, 12);
         Sphere[] sphere = {new Sphere(originS, 1), new Sphere(originS2, 1)};
 

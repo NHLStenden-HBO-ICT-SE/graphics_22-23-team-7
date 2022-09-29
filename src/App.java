@@ -18,7 +18,7 @@ public class App {
         //light
         Point3D originL = new Point3D(2, 1, 5);
         Point3D originL2 = new Point3D(-1, 0, 7);
-        Light[] light = {new Light(30, originL), new Light(2, originL2)};
+        Light[] light = {new Light(3, originL), new Light(2, originL2)};
 
         //init drawinghelper
         DrawingHelper dh = new DrawingHelper(1000, 700);

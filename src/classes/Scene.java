@@ -23,6 +23,11 @@ public class Scene {
         this.lights = lights;
     }
 
+    /**
+     * calculates color of pixel that rays shoots through
+     * @param ray
+     * @return color of pixel
+     */
     public Color calculatePixel(Ray ray) {
 
         var closestShape = getClosestShape(ray);
@@ -37,10 +42,13 @@ public class Scene {
     }
 
     private IntersectionHandler getClosestShape(Ray ray) {
+        //init closest shape
         var closestShape = new IntersectionHandler(false, Double.MAX_VALUE);
 
+        //loop through shapes
         for (Shape shape : shapes) {
 
+            //get intersection of current shape
             IntersectionHandler currentShape = shape.intersection(ray);
 
             //go to next shape if ray doesn't hit object
@@ -53,26 +61,40 @@ public class Scene {
         return closestShape;
     }
 
-    private double calculateIntensity(Point3D origin) {
+    /**
+     * calculates intensity of light on point
+     * @param point
+     * @return intensity
+     */
+    private double calculateIntensity(Point3D point) {
+        //init intensity
         double intensity = 0;
+
+        //loop through lights
         for (Light light : lights) {
 
-            Vector3D direction = origin.getVector(light.getPosition()).normalize();
+            //get normalized point light direction vector
+            Vector3D olDirection = point.getVector(light.getPosition()).normalize();
 
-            Ray ray = new Ray(origin, direction, origin.distance(light.getPosition()));
+            //make ray from point to light
+            Ray ray = new Ray(point, olDirection, point.distance(light.getPosition()));
 
-            intensity = 0;
-
+            //loop through shapes
             for (Shape shape : shapes) {
 
+                //if shape is in the way of light go to the next
                 if (shape.intersection(ray).isIntersected()) continue;
 
-                Vector3D N = shape.getOrigin().getVector(origin).normalize();
+                //get the normal vector from shape
+                Vector3D N = shape.getOrigin().getVector(point).normalize();
 
-                double angle = N.dot(direction);
+                //get the angle between normal and direction
+                double angle = N.dot(olDirection);
 
+                //if angle > 90 degrees go to the next
                 if (angle < 0) continue;
 
+                //incr intensity
                 intensity += angle * light.inverseSquareLaw(ray);
 
             }

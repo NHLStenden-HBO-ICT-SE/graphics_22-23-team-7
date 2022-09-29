@@ -2,7 +2,7 @@ package classes.objects;
 
 public class IntersectionHandler {
     private final boolean intersects;
-    private double length; //length
+    private final double length; //length
     private double intensity; //might not need this, have to check later
 
     //*****************************
@@ -13,7 +13,14 @@ public class IntersectionHandler {
      * @param intersects
      */
     public IntersectionHandler(boolean intersects) {
-        this(intersects, 0); //maybe change to new Point3D()
+        this(intersects, 0);
+    }
+
+    /**
+     * @param length
+     */
+    public IntersectionHandler(double length) {
+        this(true, length);
     }
 
     /**
@@ -31,6 +38,7 @@ public class IntersectionHandler {
 
     /**
      * gets intensity of the light hitting the shape
+     *
      * @return
      */
     public double getIntensity() {
@@ -39,6 +47,7 @@ public class IntersectionHandler {
 
     /**
      * gets point of shape
+     *
      * @return
      */
     public double getLength() {
@@ -47,6 +56,7 @@ public class IntersectionHandler {
 
     /**
      * returns true if ray intersects with shape
+     *
      * @return
      */
     public boolean isIntersected() {

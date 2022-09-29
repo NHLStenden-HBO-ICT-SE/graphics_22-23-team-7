@@ -1,16 +1,13 @@
 package classes;
 
-import classes.math.Point3D;
 import classes.math.Ray;
-import classes.math.Vector3D;
-import classes.objects.IntersectionHandler;
-import classes.objects.Sphere;
 import classes.view.Camera;
 import classes.view.Light;
+import interfaces.objects.Shape;
 
-import java.awt.*;
-
-import static classes.math.GenericMath.*;
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DrawingHelper {
     private final MainWindow window;
@@ -28,20 +25,75 @@ public class DrawingHelper {
         this.window = new MainWindow(width, height);
     }
 
-    public boolean draw(Camera camera, Sphere[] spheres, Light[] lights) {
+    public boolean draw(Camera camera, Shape[] shapes, Light[] lights) {
         // Render
-        for (int j = 0; j < this.window.getHeight(); j++) {
-            for (int i = 0; i < this.window.getWidth(); i++) {
 
-                Ray ray = camera.makeRay((double) i / this.window.getWidth(), (double) j / this.window.getHeight());
-                Scene scene = new Scene(camera, spheres, lights);
-
-                //light on a black intersectionHandler
-                //new color should be moved to light
-                this.window.Draw(i, j, scene.calculatePixel(ray));
+        // Get amount of threads available to the JVM
+        int availableCores = Runtime.getRuntime().availableProcessors();
+        // 10 is the maximum worker threads in the SwingWorker class
+        if (availableCores > 10) {
+            // Clamp at 10
+            availableCores = 10;
+        }
+        // Starting point
+        int start = 0;
+        int maxBatchSize = this.window.getHeight() / availableCores;
+        // List of batches
+        List<RenderBatch> renderBlocks = new ArrayList();
+        // List of background workers/threads
+        List<SwingWorker<Void, Void>> workers = new ArrayList();
+        int remainingLines = this.window.getHeight();
+        while (remainingLines > 0) {
+            // Check if the remaining lines are less than max batch size
+            if (remainingLines / maxBatchSize < 1) {
+                // Add a render job with the remainder of the pixels
+                renderBlocks.add(new RenderBatch(start, remainingLines % maxBatchSize));
+                remainingLines = 0;
+            } else {
+                // Add a render job with the maximum batch size and set the next start
+                renderBlocks.add(new RenderBatch(start, maxBatchSize));
+                remainingLines -= maxBatchSize;
+                start += maxBatchSize;
             }
         }
+
+        // Create render jobs based off batches
+        for (RenderBatch batch : renderBlocks) {
+            // Add render job to workers list
+            workers.add(new SwingWorker<Void, Void>() {
+                @Override
+                protected Void doInBackground() throws Exception {
+                    //horizontal pixels
+                    for (int j = batch.getStart(); j < batch.getStart() + batch.getLength(); j++) {
+                        //vertical pixels
+                        for (int i = 0; i < window.getWidth(); i++) {
+
+                            //create new ray current position on the screen, reason for division is normalization (between 0 and 1)
+                            Ray ray = camera.makeRay((double) i / window.getWidth(), (double) j / window.getHeight());
+
+                            Scene scene = new Scene(camera, shapes, lights);
+
+                            window.Draw(i, j, scene.calculatePixel(ray));
+
+                        }
+                    }
+                    return null;
+                }
+            });
+        }
+
+        // Execute all workers
+        for (SwingWorker<Void, Void> worker : workers) {
+            worker.execute();
+        }
+        // Wait for workers
+        while (workers.stream().anyMatch(w -> !w.isDone())) {
+        }
         return true;
+    }
+
+    public void update() {
+        window.update();
     }
 
     // Blank the screen

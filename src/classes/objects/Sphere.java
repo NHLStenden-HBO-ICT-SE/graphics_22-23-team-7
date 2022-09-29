@@ -3,9 +3,11 @@ package classes.objects;
 import classes.math.Point3D;
 import classes.math.Ray;
 import classes.math.Vector3D;
+import errors.math.NegativeNumException;
+import interfaces.objects.Shape;
 
-public class Sphere {
-    private Point3D center;
+public class Sphere implements Shape {
+    private Point3D origin;
     private double radius;
 
     /**
@@ -21,16 +23,17 @@ public class Sphere {
      * @param radius
      */
     public Sphere(Point3D point, double radius) {
-        this.center = point;
-        this.radius = radius;
+        _setRadius(radius); //throws exception if radius is negative
+        this.origin = point;
     }
 
     /**
      * gets center of the sphere
+     *
      * @return
      */
-    public Point3D getCenter() {
-        return center;
+    public Point3D getOrigin() {
+        return origin;
     }
 
     /**
@@ -38,12 +41,13 @@ public class Sphere {
      *
      * @param point
      */
-    public void setCenter(Point3D point) {
-        this.center = point;
+    public void setOrigin(Point3D point) {
+        this.origin = point;
     }
 
     /**
      * gets radius of sphere
+     *
      * @return
      */
     public double getRadius() {
@@ -56,24 +60,46 @@ public class Sphere {
      * @param radius
      */
     public void setRadius(double radius) {
-        this.radius = radius;
+        _setRadius(radius);
+    }
+
+    /**
+     * this is a private set, due to the possibility of children overriding "setRadius"
+     *
+     * @param radius
+     */
+    private void _setRadius(double radius) {
+        try {
+            //if radius is negative throw exception
+            if (radius < 0) throw new NegativeNumException();
+
+            //else ->
+            this.radius = radius;
+
+        } catch (NegativeNumException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * calculates intersection ray -> sphere, returns a new object of shape
+     *
      * @param ray
      * @return new shape
      */
     public IntersectionHandler intersection(Ray ray) {
 
+        //normalize the direction of the ray
+        Vector3D normalizedDirection = ray.getDirection().normalize();
+
         //gets vector from points: ray origin and sphere center
-        Vector3D ocVec = ray.getOrigin().getVector(center);
+        Vector3D ocVec = ray.getOrigin().getVector(origin);
 
         //get dot product of origin-center-Vector and normalizedDirection
-        double t = ocVec.dot(ray.getDirection());
+        double t = ocVec.dot(normalizedDirection);
 
         //length from ray origin to sphere center
-        Vector3D q = ray.getDirection().multiply(t).sub(ocVec);
+        Vector3D q = normalizedDirection.multiply(t).sub(ocVec);
 
         // |q|^2
         double p2 = q.dot(q);
@@ -81,7 +107,8 @@ public class Sphere {
         //radius^2
         double r2 = radius * radius;
 
-        if (p2 > r2) return new IntersectionHandler(false); //a smart way to check if ray intersects before taking the sqrt
+        if (p2 > r2)
+            return new IntersectionHandler(false); //a smart way to check if ray intersects before taking the sqrt
 
         t = t - Math.sqrt(r2 - p2);
 

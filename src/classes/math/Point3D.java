@@ -110,12 +110,12 @@ public class Point3D extends Dimension3<Point3D> {
     }
 
     @Override
-    public Point3D divide(int n) {
+    public Point3D divide(double n) {
         return new Point3D(x / n, y / n, z / n);
     }
 
     @Override
-    public void setDivide(int n) {
+    public void setDivide(double n) {
         x /= n;
         y /= n;
         z /= n;

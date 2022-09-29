@@ -35,9 +35,7 @@ public class Scene {
 
         if (!closestShape.isIntersected()) return Color.black;
 
-        Point3D intersectionPoint = ray.getOrigin().addVector(ray.getDirection().multiply(closestShape.getLength()));
-
-        double intensity = calculateIntensity(intersectionPoint);
+        double intensity = calculateIntensity(closestShape);
 
         return new Color(clamp((int) (255 * intensity), 0, 255), clamp((int) (255 * intensity), 0, 255), clamp((int) (255 * intensity), 0, 255));
     }
@@ -65,53 +63,52 @@ public class Scene {
     /**
      * calculates intensity of light on point
      *
-     * @param point
-     * @return intensity
+     * @param intersection
+     * @return
      */
-    private double calculateIntensity(Point3D point) {
+    private double calculateIntensity(IntersectionHandler intersection) {
         //init intensity
         double intensity = 0;
 
         //loop through lights
         for (Light light : lights) {
 
-            //get normalized point light direction vector
-            Vector3D olDirection = point.getVector(light.getPosition()).normalize();
+            var shape = intersection.getShape();
 
-            //make ray from point to light
-            Ray ray = new Ray(point, olDirection, point.distance(light.getPosition()));
+            Point3D intersectionPoint = intersection.calculateIntersectionPoint();
 
-            //loop through shapes
-            for (Shape shape : shapes) {
+            Point3D lightPos = light.getPosition();
 
-                //get the normal vector from shape
-                Vector3D N = shape.getOrigin().getVector(point).normalize();
+            //get normalized intersectionPoint light direction vector
+            Vector3D olDirection = intersectionPoint.getVector(lightPos).normalize();
 
-                //get the angle between normal and direction
-                double angle = N.dot(olDirection);
+            //get the normal vector from shape
+            Vector3D N = shape.getOrigin().getVector(intersectionPoint).normalize();
 
-                //if angle > 90 degrees go to the next
-                if (angle < 0) continue;
+            //get the angle between normal and direction
+            double angle = N.dot(olDirection);
 
-                //if shape is in the way of light go to the next
-                if (doesRayHitShape(ray, point)) continue;
+            //if angle > 90 degrees go to the next
+            if (angle < 0) continue;
 
-                //incr intensity
-                intensity += angle * light.inverseSquareLaw(ray);
+            Ray ray = new Ray(intersectionPoint, intersectionPoint.getVector(lightPos), intersectionPoint.distance(lightPos));
 
-            }
+            //if shape is in the way of light go to the next
+            if (isLightBlocked(ray, intersectionPoint)) continue;
+
+            //incr intensity
+            intensity += angle * light.inverseSquareLaw(ray);
+
         }
         return intensity;
     }
 
-    private boolean doesRayHitShape(Ray ray, Point3D point) {
+    private boolean isLightBlocked(Ray ray, Point3D point) {
         //loop through shapes
         for (Shape shape : shapes) {
 
-            var a = point.distance(shape.getOrigin());
-
             //if distance between point and shape origin is bigger than ray length we skip to the next shape
-            if (a > ray.getLength()) continue;
+            if (ray.getOrigin().distance(shape.getOrigin()) > ray.getLength()) continue;
 
             //get intersection of current shape
             IntersectionHandler currentShape = shape.intersection(ray);

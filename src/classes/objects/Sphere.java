@@ -89,17 +89,17 @@ public class Sphere implements Shape {
      */
     public IntersectionHandler intersection(Ray ray) {
 
-        //normalize the direction of the ray
-        Vector3D normalizedDirection = ray.getDirection().normalize();
+        //fast and smart way to check if ray is able to intersect sphere
+        if (!isRayInRangeOfShape(ray)) return new IntersectionHandler(false);
 
         //gets vector from points: ray origin and sphere center
         Vector3D ocVec = ray.getOrigin().getVector(origin);
 
         //get dot product of origin-center-Vector and normalizedDirection
-        double t = ocVec.dot(normalizedDirection);
+        double t = ocVec.dot(ray.getDirection());
 
         //length from ray origin to sphere center
-        Vector3D q = normalizedDirection.multiply(t).sub(ocVec);
+        Vector3D q = ray.getDirection().multiply(t).sub(ocVec);
 
         // |q|^2
         double p2 = q.dot(q);
@@ -107,15 +107,29 @@ public class Sphere implements Shape {
         //radius^2
         double r2 = radius * radius;
 
-        if (p2 > r2)
-            return new IntersectionHandler(false); //a smart way to check if ray intersects before taking the sqrt
+        if (p2 > r2) return new IntersectionHandler(false); //a smart way to check if ray intersects before taking the sqrt
 
+        //calculate distance to intersection
         t = t - Math.sqrt(r2 - p2);
 
-        if (t < ray.getLength() && t > 0) {
-            return new IntersectionHandler(true, t);
-        }
+        var owo = ray.getOrigin().distance(origin);
+
+        var uwu = owo - t;
+
+        //if we intersect sphere return the length
+        if (t < ray.getLength() && t > 0)
+            return new IntersectionHandler(true, t, this, ray);
+
+        //else
         return new IntersectionHandler(false);
+    }
+
+    /**
+     * @param ray
+     * @return
+     */
+    public Boolean isRayInRangeOfShape(Ray ray) {
+       return ray.getOrigin().distance(origin) - radius < ray.getLength();
     }
 
 

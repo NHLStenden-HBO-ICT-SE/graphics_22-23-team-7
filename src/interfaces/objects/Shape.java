@@ -8,4 +8,5 @@ public interface Shape {
 
     public Point3D getOrigin();
     public IntersectionHandler intersection(Ray ray);
+    public Boolean isRayInRangeOfShape(Ray ray);
 }

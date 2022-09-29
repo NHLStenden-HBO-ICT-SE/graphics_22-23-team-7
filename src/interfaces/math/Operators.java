@@ -71,7 +71,7 @@ public interface Operators<T extends Operators> {
      * @param n
      * @return division
      */
-    T divide(int n);
+    T divide(double n);
 
     /**
      * divides all elements in a generic type by n
@@ -79,5 +79,5 @@ public interface Operators<T extends Operators> {
      *
      * @param n
      */
-    void setDivide(int n);
+    void setDivide(double n);
 }

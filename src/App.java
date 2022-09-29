@@ -11,14 +11,18 @@ public class App {
         Vector3D direction = new Vector3D(0, 0, 1);
 
         //sphere
-        Point3D originS = new Point3D(1, 1, 9);
-        Point3D originS2 = new Point3D(-1.5, 1, 12);
-        Sphere[] sphere = {new Sphere(originS, 1), new Sphere(originS2, 1)};
+        Point3D originS = new Point3D(0, 1, 9);
+        Point3D originS2 = new Point3D(-2.5, 1, 12);
+        Sphere[] sphere = {
+                new Sphere(originS, 0.3),
+                new Sphere(originS2, 2)};
 
         //light
         Point3D originL = new Point3D(2, 1, 5);
-        Point3D originL2 = new Point3D(-1, 0, 7);
-        Light[] light = {new Light(3, originL), new Light(2, originL2)};
+        Point3D originL2 = new Point3D(-2.5, 1, 7);
+        Light[] light = {
+                new Light(10, originL),
+                new Light(3, originL2)};
 
         //init drawinghelper
         DrawingHelper dh = new DrawingHelper(1000, 700);
@@ -34,7 +38,6 @@ public class App {
 
             //starts timer
             long startTime = System.currentTimeMillis();
-
 
             //check if window size changed
             if (lastHeight != dh.getHeight() || lastWidth != dh.getWidth()) {
@@ -54,7 +57,7 @@ public class App {
             long endTime = System.currentTimeMillis();
 
             //prints timer
-            System.out.println(endTime - startTime);
+            System.out.println(1000 / (endTime - startTime));
         }
     }
 }

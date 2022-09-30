@@ -112,10 +112,6 @@ public class Sphere implements Shape {
         //calculate distance to intersection
         t = t - Math.sqrt(r2 - p2);
 
-        var owo = ray.getOrigin().distance(origin);
-
-        var uwu = owo - t;
-
         //if we intersect sphere return the length
         if (t < ray.getLength() && t > 0)
             return new IntersectionHandler(true, t, this, ray);

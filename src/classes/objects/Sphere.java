@@ -17,6 +17,13 @@ public class Sphere implements Shape {
     public Sphere() {
         this(new Point3D(), 1.0);
     }
+    /**
+     * center = 0,0,0
+     * radius = 1
+     */
+    public Sphere(Sphere sphere) {
+        this(sphere.getPosition(), sphere.getRadius());
+    }
 
     /**
      * @param point

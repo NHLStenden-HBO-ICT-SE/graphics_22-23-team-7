@@ -10,6 +10,7 @@ public class Planet extends Sphere {
     double mass; //amount of earth masses
     Vector3D acceleration;
     Vector3D velocity;
+    boolean ignore = false;
 
     public Planet(double mass, Vector3D velocity, Sphere sphere){
         super(sphere);
@@ -17,5 +18,8 @@ public class Planet extends Sphere {
         this.acceleration = new Vector3D();
         this.velocity = velocity;
     }
-
+    public Planet(double mass, Vector3D velocity, Sphere sphere, boolean ignore) {
+        this(mass, velocity, sphere);
+        this.ignore = ignore;
+    }
 }

@@ -14,13 +14,14 @@ public final class Gravity {
 
     private static void calculateAccelerations(Planet[] planets) {
         for (var planet : planets) {
+            if (planet.ignore) continue;
             planet.acceleration = nullVector;
 
             Point3D planetPos = planet.getPosition();
 
             for (var planet2 : planets) {
 
-                if (planet == planet2 || planet2.mass == 0) continue;
+                if (planet == planet2 || planet2.mass == 0 || planet2.ignore) continue;
 
                 Point3D planet2Pos = planet2.getPosition();
 

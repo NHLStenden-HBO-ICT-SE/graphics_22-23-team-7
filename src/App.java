@@ -11,9 +11,22 @@ import classes.view.Light;
 public class App {
     public static void main(String[] args) throws Exception {
         //
+        // Background
+        //
+        var posB = new Point3D(-2.5, 2, 42); //position
+
+        var sphereB = new Sphere(posB, 16);
+
+        //mass
+        double massB = 0; //massless object
+
+        //velocity
+        var velB = new Vector3D(0, 0, 0); //no velocity
+
+        //
         // small moon
         //
-        var posM = new Point3D(10, 0, 10); //position
+        var posM = new Point3D(-3, 0, 3); //position
 
         var sphereM = new Sphere(posM, 0.3);
 
@@ -21,7 +34,7 @@ public class App {
         double massM = 0; //massless object
 
         //velocity
-        var velM = new Vector3D(0, 0.1, 0);
+        var velM = new Vector3D(0.1, 0.1, 0);
 
 
         //
@@ -40,15 +53,19 @@ public class App {
         //
         // planets
         //
-        Planet[] planets = {new Planet(massM, velM, sphereM), new Planet(massBigM, velBigM, sphereBigM),};
+        Planet[] planets = {
+                new Planet(massM, velM, sphereM),
+                new Planet(massBigM, velBigM, sphereBigM),
+                new Planet(massB, velB, sphereB, true),
+        };
 
         //lights
-        Point3D originL = new Point3D(0, 0, 0);
-//        Point3D originL2 = new Point3D(-2.5, 1, 7);
+        Point3D originL = new Point3D(-4, -3, -1.3);
+        Point3D originL2 = new Point3D(3, 3, 10.5);
         Light[] lights = {
 
-                new Light(50, originL), //light1
-//                new Light(3, originL2) //light2
+                new Light(69, originL), //light1
+                new Light(12, originL2) //light2
         };
 
         //init drawinghelper

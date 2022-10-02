@@ -1,9 +1,6 @@
 package classes;
 
 import classes.math.Ray;
-import classes.view.Camera;
-import classes.view.Light;
-import interfaces.objects.Shape;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -25,9 +22,7 @@ public class DrawingHelper {
         this.window = new MainWindow(width, height);
     }
 
-    public boolean draw(Camera camera, Shape[] shapes, Light[] lights) {
-        // Render
-
+    public boolean drawScene(Scene scene) {
         // Get amount of threads available to the JVM
         int availableCores = Runtime.getRuntime().availableProcessors();
         // 10 is the maximum worker threads in the SwingWorker class
@@ -63,17 +58,16 @@ public class DrawingHelper {
             workers.add(new SwingWorker<Void, Void>() {
                 @Override
                 protected Void doInBackground() throws Exception {
+
                     //horizontal pixels
                     for (int j = batch.getStart(); j < batch.getStart() + batch.getLength(); j++) {
                         //vertical pixels
                         for (int i = 0; i < window.getWidth(); i++) {
 
                             //create new ray current position on the screen, reason for division is normalization (between 0 and 1)
-                            Ray ray = camera.makeRay((double) i / window.getWidth(), (double) j / window.getHeight());
+                            Ray ray = scene.getCamera().makeRay((double) i / window.getWidth(), (double) j / window.getHeight());
 
-                            Scene scene = new Scene(camera, shapes, lights);
-
-                            window.Draw(i, j, scene.calculatePixel(ray));
+                            window.draw(i, j, scene.calculatePixel(ray));
 
                         }
                     }

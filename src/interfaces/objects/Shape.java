@@ -6,7 +6,7 @@ import classes.objects.IntersectionHandler;
 
 public interface Shape {
 
-    public Point3D getOrigin();
-    public IntersectionHandler intersection(Ray ray);
-    public Boolean isRayInRangeOfShape(Ray ray);
+    Point3D getPosition();
+    IntersectionHandler intersection(Ray ray);
+    Boolean isRayInRangeOfShape(Ray ray);
 }

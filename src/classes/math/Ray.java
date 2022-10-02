@@ -1,7 +1,7 @@
 package classes.math;
 
 public class Ray {
-    private final Point3D origin; /*Ray origin */
+    private final Point3D position; /*Ray origin */
     private final Vector3D direction; /*Ray direction */
     private final double t; /*distance */
 
@@ -13,8 +13,8 @@ public class Ray {
         this(new Point3D(), direction, distance);
     }
 
-    public Ray(Point3D origin, Vector3D direction, double distance) {
-        this.origin = new Point3D(origin);
+    public Ray(Point3D position, Vector3D direction, double distance) {
+        this.position = new Point3D(position);
         this.direction = new Vector3D(direction).normalize();
         this.t = distance;
     }
@@ -28,8 +28,8 @@ public class Ray {
      *
      * @return origin
      */
-    public Point3D getOrigin() {
-        return origin;
+    public Point3D getPosition() {
+        return position;
     }
 
     /**

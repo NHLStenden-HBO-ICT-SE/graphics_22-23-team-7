@@ -98,7 +98,7 @@ public class Light {
      * @return intensity across distance
      */
     public double inverseSquareLaw(Ray ray) {
-        var length = ray.getOrigin().distance(this.position);
+        var length = ray.getPosition().distance(this.position);
         return intensity / (length * length);
     }
 

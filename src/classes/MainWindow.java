@@ -21,7 +21,7 @@ public class MainWindow extends JFrame {
     }
 
     // Draw a pixel
-    public void Draw(int x, int y, Color color) {
+    public void draw(int x, int y, Color color) {
         this.image.setRGB(x, y, color.getRGB());
     }
 

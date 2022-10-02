@@ -13,7 +13,7 @@ import java.awt.*;
 import static classes.math.GenericMath.clamp;
 
 public class Scene {
-    private final Camera camera;
+    private Camera camera;
     private final Shape[] shapes;
     private final Light[] lights;
 
@@ -21,6 +21,14 @@ public class Scene {
         this.camera = camera;
         this.shapes = shapes;
         this.lights = lights;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public void setCamera(Camera camera) {
+        this.camera = camera;
     }
 
     /**
@@ -40,6 +48,11 @@ public class Scene {
         return new Color(clamp((int) (255 * intensity), 0, 255), clamp((int) (255 * intensity), 0, 255), clamp((int) (255 * intensity), 0, 255));
     }
 
+    /**
+     * finds the closest shape
+     * @param ray
+     * @return
+     */
     private IntersectionHandler getClosestShape(Ray ray) {
         //init closest shape
         var closestShape = new IntersectionHandler(false, Double.MAX_VALUE);
@@ -83,7 +96,7 @@ public class Scene {
             Vector3D olDirection = intersectionPoint.getVector(lightPos).normalize();
 
             //get the normal vector from shape
-            Vector3D N = shape.getOrigin().getVector(intersectionPoint).normalize();
+            Vector3D N = shape.getPosition().getVector(intersectionPoint).normalize();
 
             //get the angle between normal and direction
             double angle = N.dot(olDirection);
@@ -94,7 +107,7 @@ public class Scene {
             Ray ray = new Ray(intersectionPoint, intersectionPoint.getVector(lightPos), intersectionPoint.distance(lightPos));
 
             //if shape is in the way of light go to the next
-            if (isLightBlocked(ray, intersectionPoint)) continue;
+            if (isLightBlocked(ray)) continue;
 
             //incr intensity
             intensity += angle * light.inverseSquareLaw(ray);
@@ -103,12 +116,17 @@ public class Scene {
         return intensity;
     }
 
-    private boolean isLightBlocked(Ray ray, Point3D point) {
+    /**
+     * calculates if light is blocked
+     * @param ray
+     * @return
+     */
+    private boolean isLightBlocked(Ray ray) {
         //loop through shapes
         for (Shape shape : shapes) {
 
             //if distance between point and shape origin is bigger than ray length we skip to the next shape
-            if (ray.getOrigin().distance(shape.getOrigin()) > ray.getLength()) continue;
+            if (ray.getPosition().distance(shape.getPosition()) > ray.getLength()) continue;
 
             //get intersection of current shape
             IntersectionHandler currentShape = shape.intersection(ray);

@@ -1,4 +1,5 @@
 import classes.DrawingHelper;
+import classes.Scene;
 import classes.math.Point3D;
 import classes.math.Vector3D;
 import classes.objects.Sphere;
@@ -10,17 +11,17 @@ public class App {
         //view direction
         Vector3D direction = new Vector3D(0, 0, 1);
 
-        //sphere
+        //spheres
         Point3D originS = new Point3D(0, 1, 9);
         Point3D originS2 = new Point3D(-2.5, 1, 12);
-        Sphere[] sphere = {
+        Sphere[] spheres = {
                 new Sphere(originS, 0.3),
                 new Sphere(originS2, 2)};
 
-        //light
+        //lights
         Point3D originL = new Point3D(2, 1, 5);
         Point3D originL2 = new Point3D(-2.5, 1, 7);
-        Light[] light = {
+        Light[] lights = {
                 new Light(10, originL),
                 new Light(3, originL2)};
 
@@ -28,7 +29,11 @@ public class App {
         DrawingHelper dh = new DrawingHelper(1000, 700);
 
         //init camera
-        Camera camera = new Camera(direction, 4F, dh.getHeight(), dh.getWidth());
+        Point3D positionC = new Point3D();
+        Camera camera = new Camera(direction,positionC, 4F, dh.getWidth(), dh.getHeight());
+
+        //init scene
+        Scene scene = new Scene(camera, spheres, lights);
 
         int lastHeight = dh.getHeight();
         int lastWidth = dh.getWidth();
@@ -41,17 +46,17 @@ public class App {
 
             //check if window size changed
             if (lastHeight != dh.getHeight() || lastWidth != dh.getWidth()) {
-                camera = new Camera(direction, 4F, dh.getHeight(), dh.getWidth()); //make new camera with proper canvas
+                scene.setCamera(new Camera(direction, positionC,4F, dh.getWidth(), dh.getHeight())); //make new camera with proper canvas
                 lastHeight = dh.getHeight();
                 lastWidth = dh.getWidth();
             }
-            if (dh.draw(camera, sphere, light)) {
+            if (dh.drawScene(scene)) {
                 dh.update();
                 // Additional sleep as update returns before finishing render
                 Thread.sleep(7, 500);
             }
             // Sphere movement
-//            sphere[0].setCenter(sphere[0].getCenter().add(new Point3D(0.01, 0, 0)));
+            spheres[0].setPosition(spheres[0].getPosition().add(new Point3D(-0.01, 0, 0)));
 
             //ends timer
             long endTime = System.currentTimeMillis();

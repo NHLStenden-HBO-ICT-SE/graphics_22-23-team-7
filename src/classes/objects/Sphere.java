@@ -7,7 +7,7 @@ import errors.math.NegativeNumException;
 import interfaces.objects.Shape;
 
 public class Sphere implements Shape {
-    private Point3D origin;
+    private Point3D position;
     private double radius;
 
     /**
@@ -24,7 +24,7 @@ public class Sphere implements Shape {
      */
     public Sphere(Point3D point, double radius) {
         _setRadius(radius); //throws exception if radius is negative
-        this.origin = point;
+        this.position = point;
     }
 
     /**
@@ -32,8 +32,8 @@ public class Sphere implements Shape {
      *
      * @return
      */
-    public Point3D getOrigin() {
-        return origin;
+    public Point3D getPosition() {
+        return position;
     }
 
     /**
@@ -41,8 +41,8 @@ public class Sphere implements Shape {
      *
      * @param point
      */
-    public void setOrigin(Point3D point) {
-        this.origin = point;
+    public void setPosition(Point3D point) {
+        this.position = point;
     }
 
     /**
@@ -93,7 +93,7 @@ public class Sphere implements Shape {
         if (!isRayInRangeOfShape(ray)) return new IntersectionHandler(false);
 
         //gets vector from points: ray origin and sphere center
-        Vector3D ocVec = ray.getOrigin().getVector(origin);
+        Vector3D ocVec = ray.getPosition().getVector(position);
 
         //get dot product of origin-center-Vector and normalizedDirection
         double t = ocVec.dot(ray.getDirection());
@@ -125,7 +125,7 @@ public class Sphere implements Shape {
      * @return
      */
     public Boolean isRayInRangeOfShape(Ray ray) {
-       return ray.getOrigin().distance(origin) - radius < ray.getLength();
+       return ray.getPosition().distance(position) - radius < ray.getLength();
     }
 
 

@@ -18,22 +18,22 @@ public class IntersectionHandler {
     //*****************************
 
     /**
-     * @param intersects
+     * @param intersects if ray intersects shape
      */
     public IntersectionHandler(boolean intersects) {
         this(intersects, 0, null, null);
     }
 
     /**
-     * @param length
+     * @param length length of ray when it intersects shape
      */
     public IntersectionHandler(double length) {
         this(true, length, null, null);
     }
 
     /**
-     * @param intersects
-     * @param length
+     * @param intersects if ray intersects shape
+     * @param length length if ray intersects shape
      */
     public IntersectionHandler(boolean intersects, double length) {
         this(intersects, length, null, null);
@@ -41,29 +41,30 @@ public class IntersectionHandler {
 
     /**
      *
-     * @param intersects
-     * @param length
+     * @param intersects if ray intersects shape
+     * @param length length if ray intersects shape
+     * @param shape which shape is being hit
      */
     public IntersectionHandler(boolean intersects, double length, Shape shape) {
         this(intersects, length, shape, null);
     }
     /**
-     *
-     * @param intersects
-     * @param length
-     * @param ray
+     * @param intersects if ray intersects shape
+     * @param length length if ray intersects shape
+     * @param ray the ray shooting at the shape
      */
     public IntersectionHandler(boolean intersects, double length, Ray ray) {
         this(intersects, length, null, ray);
     }
 
     /**
-     * @param intersects
-     * @param length
-     * @param shape
+     * @param intersects if ray intersects shape
+     * @param length length if ray intersects shape
+     * @param shape which shape is being hit
      */
     public IntersectionHandler(boolean intersects, double length, Shape shape, Ray ray) {
         this.intersects = intersects;
+        //TODO: do we need length, shape, ray if ray never hits shape
         this.length = length - 0.00001;
         this.shape = shape;
         this.ray = ray;
@@ -113,9 +114,9 @@ public class IntersectionHandler {
     }
 
     public Point3D calculateIntersectionPoint() {
-        return ray.getOrigin().addVector(ray.getDirection().multiply(length));
+        return ray.getPosition().addVector(ray.getDirection().multiply(length));
     }
     public Point3D calculateIntersectionPoint(Ray ray) {
-        return ray.getOrigin().addVector(ray.getDirection().multiply(length));
+        return ray.getPosition().addVector(ray.getDirection().multiply(length));
     }
 }

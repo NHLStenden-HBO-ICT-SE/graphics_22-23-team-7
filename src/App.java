@@ -6,6 +6,9 @@ import classes.objects.Sphere;
 import classes.view.Camera;
 import classes.view.Light;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 public class App {
     public static void main(String[] args) throws Exception {
         //view direction
@@ -38,6 +41,9 @@ public class App {
         int lastHeight = dh.getHeight();
         int lastWidth = dh.getWidth();
 
+        int lastFrameRate = 0,
+            lastFrameTime = 0;
+
         //repeatedly draw scene
         while (true) {
 
@@ -51,18 +57,31 @@ public class App {
                 lastWidth = dh.getWidth();
             }
             if (dh.drawScene(scene)) {
-                dh.update();
-                // Additional sleep as update returns before finishing render
-                Thread.sleep(7, 500);
+                BufferedImage image = dh.getImage();
+                // Use image here for video file rendering, no performance overlay on screen.
+
             }
             // Sphere movement
             spheres[0].setPosition(spheres[0].getPosition().add(new Point3D(-0.01, 0, 0)));
 
+            // Overlay here
+
+            if (lastFrameRate != 0 && lastFrameTime != 0) {
+                BufferedImage image = dh.getImage();
+                Graphics g = image.getGraphics();
+                g.setColor(Color.RED);
+                g.drawRoundRect(5, 25, 160, 50, 5, 5);
+                g.drawString(String.format("Framerate: %d", lastFrameRate), 15, 40);
+                g.drawString(String.format("Frametime: %d ms", lastFrameTime), 15, 65);
+            }
+
+            dh.update();
+            // Additional sleep as update returns before finishing render
+            Thread.sleep(7, 500);
             //ends timer
             long endTime = System.currentTimeMillis();
-
-            //prints timer
-            System.out.println(1000 / (endTime - startTime));
+            lastFrameRate = 1000 / (int)(endTime - startTime);
+            lastFrameTime = (int)(endTime - startTime);
         }
     }
 }

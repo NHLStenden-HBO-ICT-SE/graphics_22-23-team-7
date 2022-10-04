@@ -3,6 +3,7 @@ package classes;
 import classes.math.Ray;
 
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,10 @@ public class DrawingHelper {
     // Initialize DrawingHelper and window at a specified size
     public DrawingHelper(int width, int height) {
         this.window = new MainWindow(width, height);
+    }
+
+    public BufferedImage getImage() {
+        return this.window.getImage();
     }
 
     public boolean drawScene(Scene scene) {

@@ -20,6 +20,10 @@ public class MainWindow extends JFrame {
         this.setVisible(true);
     }
 
+    public BufferedImage getImage() {
+        return this.image;
+    }
+
     // Draw a pixel
     public void draw(int x, int y, Color color) {
         this.image.setRGB(x, y, color.getRGB());

@@ -97,9 +97,9 @@ public class Light {
      * @param ray
      * @return intensity across distance
      */
-    public double calculateIntensity(Ray ray) {
-        var length = ray.getOrigin().distance(this.position);
-        return clampIntensity(1 / ((length * length) / intensity));
+    public double inverseSquareLaw(Ray ray) {
+        var length = ray.getPosition().distance(this.position);
+        return intensity / (length * length);
     }
 
     /**
@@ -110,9 +110,9 @@ public class Light {
      * @param point
      * @return intensity across distance
      */
-    public double calculateIntensity(Point3D point) {
+    public double inverseSquareLaw(Point3D point) {
         var length = point.distance(this.position);
-        return clampIntensity(1 / ((length * length) / intensity));
+        return intensity / (length * length);
     }
 
     /**
@@ -124,18 +124,7 @@ public class Light {
      * @return intensity across distance
      */
 
-    public double calculateIntensity(double length) {
-        return clampIntensity(1 / ((length * length) / intensity));
+    public double inverseSquareLaw(double length) {
+        return intensity / (length * length);
     }
-
-    /**
-     * input can't exceed 1
-     *
-     * @param input
-     * @return
-     */
-    private double clampIntensity(double input) {
-        return input > 1 ? 1 : input;
-    }
-
 }

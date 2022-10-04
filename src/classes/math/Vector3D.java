@@ -1,7 +1,5 @@
 package classes.math;
 
-import interfaces.math.Operators;
-
 /**
  * ==============================================================
  * This class assumes when:
@@ -122,7 +120,7 @@ public class Vector3D extends Dimension3<Vector3D> {
      * @return division
      */
     @Override
-    public Vector3D divide(int n) {
+    public Vector3D divide(double n) {
         return new Vector3D(x / n, y / n, z / n);
     }
 
@@ -133,7 +131,7 @@ public class Vector3D extends Dimension3<Vector3D> {
      * @param n
      */
     @Override
-    public void setDivide(int n) {
+    public void setDivide(double n) {
         x /= n;
         y /= n;
         z /= n;
@@ -172,9 +170,9 @@ public class Vector3D extends Dimension3<Vector3D> {
     public Vector3D normalize() {
         double length = length();
 
-        if (length != 0) return new Vector3D(x / length, y / length, z / length);
+        if (length == 0) return new Vector3D();
 
-        return new Vector3D(0, 0, 0);
+        return new Vector3D(x, y, z).divide(length);
     }
 
     /**
@@ -186,9 +184,7 @@ public class Vector3D extends Dimension3<Vector3D> {
 
         if (length == 0) return;
 
-        x /= length;
-        y /= length;
-        z /= length;
+        setDivide(length);
 
     }
 

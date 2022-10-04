@@ -1,7 +1,5 @@
 package classes.math;
 
-import interfaces.math.Operators;
-
 /**
  * ==============================================================
  * This class assumes when:
@@ -47,8 +45,8 @@ public class Point3D extends Dimension3<Point3D> {
     /**
      * gets vector between two points
      *
-     * @param point
-     * @return
+     * @param point second point
+     * @return vector between point1 and point2
      */
     public Vector3D getVector(Point3D point) {
         return new Vector3D(point.x - x, point.y - y, point.z - z);
@@ -61,7 +59,7 @@ public class Point3D extends Dimension3<Point3D> {
     /**
      * calculates the distance between two points
      *
-     * @param point
+     * @param point point2
      * @return length
      */
     public double distance(Point3D point) {
@@ -110,12 +108,12 @@ public class Point3D extends Dimension3<Point3D> {
     }
 
     @Override
-    public Point3D divide(int n) {
+    public Point3D divide(double n) {
         return new Point3D(x / n, y / n, z / n);
     }
 
     @Override
-    public void setDivide(int n) {
+    public void setDivide(double n) {
         x /= n;
         y /= n;
         z /= n;

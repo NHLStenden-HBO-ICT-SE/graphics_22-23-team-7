@@ -1,4 +1,5 @@
 import classes.DrawingHelper;
+import classes.Recorder;
 import classes.Scene;
 import classes.math.Point3D;
 import classes.math.Vector3D;
@@ -13,9 +14,10 @@ import java.util.List;
 public class App {
     public static void main(String[] args) throws Exception {
         //stores fps and duration in seconds
-        int frames = 24;
-        int duration = 60;
+        int frames = 30;
+        int duration = 20;
         int currentframe = 0;
+        Recorder recorder = new Recorder(frames);
         // stores all bufferedimages. calculates length of video aswell
         BufferedImage[] images = new BufferedImage[(frames * duration)];
 
@@ -68,13 +70,15 @@ public class App {
 
 
                 //for recording. stacks bufferedimages for later use
-                if (!(currentframe >= (frames * duration) )){
-                   images[currentframe] = dh.getWindow().getImage();
+                if (currentframe < (frames * duration)){
+                   images[currentframe] = recorder.deepCopy(dh.getWindow().getImage());
                    currentframe++;
-                } else{
-                    //TODO: rendering into a mp4 file
-                    //wipes the list
-                    images = new BufferedImage[frames * duration];
+                } else if (currentframe == (frames * duration)){
+                    //rendering into a mp4 file
+                    recorder.generate(images, "C:\\Users\\bryan\\Documents\\school\\jaar 2\\", "raytracer");
+                    Thread.sleep(7, 500);
+                    //increase frames
+                    currentframe++;
                 }
 
             }

@@ -35,4 +35,8 @@ public class MainWindow extends JFrame {
         this.image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
         this.update();
     }
+    //returns the current buffered image
+    public BufferedImage getImage() {
+        return image;
+    }
 }

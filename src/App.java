@@ -6,8 +6,19 @@ import classes.objects.Sphere;
 import classes.view.Camera;
 import classes.view.Light;
 
+import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.List;
+
 public class App {
     public static void main(String[] args) throws Exception {
+        //stores fps and duration in seconds
+        int frames = 24;
+        int duration = 60;
+        int currentframe = 0;
+        // stores all bufferedimages. calculates length of video aswell
+        BufferedImage[] images = new BufferedImage[(frames * duration)];
+
         //view direction
         Vector3D direction = new Vector3D(0, 0, 1);
 
@@ -54,6 +65,18 @@ public class App {
                 dh.update();
                 // Additional sleep as update returns before finishing render
                 Thread.sleep(7, 500);
+
+
+                //for recording. stacks bufferedimages for later use
+                if (!(currentframe >= (frames * duration) )){
+                   images[currentframe] = dh.getWindow().getImage();
+                   currentframe++;
+                } else{
+                    //TODO: rendering into a mp4 file
+                    //wipes the list
+                    images = new BufferedImage[frames * duration];
+                }
+
             }
             // Sphere movement
             spheres[0].setPosition(spheres[0].getPosition().add(new Point3D(-0.01, 0, 0)));

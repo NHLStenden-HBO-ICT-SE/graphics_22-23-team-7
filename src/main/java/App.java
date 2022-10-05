@@ -15,7 +15,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         //stores fps and duration in seconds
         int frames = 30;
-        int duration = 20;
+        int duration = 10;
         int currentframe = 0;
         Recorder recorder = new Recorder(frames);
         // stores all bufferedimages. calculates length of video aswell
@@ -76,7 +76,6 @@ public class App {
                 } else if (currentframe == (frames * duration)){
                     //rendering into a mp4 file
                     recorder.generate(images, "C:\\Users\\bryan\\Documents\\school\\jaar 2\\", "raytracer");
-                    Thread.sleep(7, 500);
                     //increase frames
                     currentframe++;
                 }

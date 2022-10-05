@@ -4,23 +4,27 @@ import classes.math.Point3D;
 import classes.math.Ray;
 import classes.math.Vector3D;
 import classes.objects.IntersectionHandler;
+import classes.solarSystem.Planet;
 import classes.view.Camera;
 import classes.view.Light;
 import interfaces.objects.Shape;
 
 import java.awt.*;
+import java.util.Arrays;
 
 import static classes.math.GenericMath.clamp;
 
 public class Scene {
-    private Camera camera;
     private final Shape[] shapes;
+    private final Planet[] planets;
     private final Light[] lights;
+    private Camera camera;
 
     public Scene(Camera camera, Shape[] shapes, Light[] lights) {
         this.camera = camera;
         this.shapes = shapes;
         this.lights = lights;
+        this.planets = Arrays.stream(shapes).filter(shape -> shape instanceof Planet).toList().toArray(new Planet[0]);
     }
 
     public Camera getCamera() {
@@ -29,6 +33,10 @@ public class Scene {
 
     public void setCamera(Camera camera) {
         this.camera = camera;
+    }
+
+    public Planet[] getPlanets() {
+        return planets;
     }
 
     /**

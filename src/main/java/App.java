@@ -16,6 +16,7 @@ public class App {
         //stores fps and duration in seconds
         int frames = 30;
         int duration = 10;
+        //ceep track of current frame
         int currentframe = 0;
         Recorder recorder = new Recorder(frames);
         // stores all bufferedimages. calculates length of video aswell
@@ -69,9 +70,9 @@ public class App {
                 Thread.sleep(7, 500);
 
 
-                //for recording. stacks bufferedimages for later use
+                //for recording. stacks bufferedimages for later use and executes recording generator when duration has expired
                 if (currentframe < (frames * duration)){
-                   images[currentframe] = recorder.deepCopy(dh.getWindow().getImage());
+                   images[currentframe] = recorder.deepCopyBufferedImage(dh.getWindow().getImage());
                    currentframe++;
                 } else if (currentframe == (frames * duration)){
                     //rendering into a mp4 file

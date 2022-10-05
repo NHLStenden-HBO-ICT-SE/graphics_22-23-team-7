@@ -14,14 +14,16 @@ import java.util.List;
 public class App {
     public static void main(String[] args) throws Exception {
         //stores fps and duration in seconds
-        int frames = 30;
-        int duration = 30;
+        int frames = 60;
+        int duration = 3;
+        int totalframes = (frames * duration);
+        String recorderpath = "C:\\Users\\bryan\\Documents\\school\\jaar 2\\Snapshots raytracer\\";
         long heapspace = Runtime.getRuntime().freeMemory();
         //ceep track of current frame
         int currentframe = 0;
         Recorder recorder = new Recorder(frames);
         // stores all bufferedimages. calculates length of video aswell
-        BufferedImage[] images = new BufferedImage[(frames * duration)];
+        BufferedImage[] images = new BufferedImage[totalframes];
 
         //view direction
         Vector3D direction = new Vector3D(0, 0, 1);
@@ -72,22 +74,27 @@ public class App {
 
 
                 //for recording. stacks bufferedimages for later use and executes recording generator when duration has expired\
-                if (currentframe < (frames * duration)){
+                if (currentframe < totalframes){
                     //because of high resolution. the heap size can be too small. i have to catch the error since i cant seem to get the available heap size |Runtime.getRuntime().freeMemory()| correctly before it happends
                   try {
-                      images[currentframe] = recorder.deepCopyBufferedImage(dh.getWindow().getImage());
+                      recorder.snapShot(Recorder.deepCopyBufferedImage(dh.getWindow().getImage()), recorderpath, currentframe);
+                     // images[currentframe] = recorder.deepCopyBufferedImage(dh.getWindow().getImage());
                       currentframe++;
                   }
                   catch (OutOfMemoryError e) {
-                      //Todo: write error to screen & fix heap size bottleneck
+                      //Todo: write error to screen
                       System.out.println("ERROR: OUT OF HEAP SPACE, STOPPING RECORDING...");
-                      images = null;
-                      currentframe = (frames * duration)+1;
+                     // images = null;
+                      currentframe = totalframes+1;
                   }
 
-                } else if (currentframe == (frames * duration)){
+                } else if (currentframe == totalframes){
                     //rendering into a mp4 file
-                    recorder.generate(images, "C:\\Users\\bryan\\Documents\\school\\jaar 2\\", "raytracer");
+                    String[] strings = new String[totalframes];
+                    for (int i = 0; i <  totalframes; i++) {
+                        strings[i] = "frame"+i+".png";
+                    }
+                    recorder.generateFromMemory( recorderpath, strings);
                     images = new BufferedImage[(frames * duration)];
                     //increase frames
                     currentframe++;

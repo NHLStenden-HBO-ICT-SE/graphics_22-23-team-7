@@ -2,9 +2,12 @@ package errors.math;
 
 public class NegativeNumException extends Exception {
     public NegativeNumException() {
-        super("Number must not be negative");
+        this(new Throwable("Number must not be negative"));
+    }
+    public NegativeNumException(String msg) {
+        this(new Throwable(msg));
     }
     public NegativeNumException(Throwable err) {
-        super("Number must not be negative", err);
+        super(err);
     }
 }

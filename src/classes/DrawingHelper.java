@@ -1,6 +1,7 @@
 package classes;
 
 import classes.math.Ray;
+import classes.solarSystem.Gravity;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -58,7 +59,6 @@ public class DrawingHelper {
             workers.add(new SwingWorker<Void, Void>() {
                 @Override
                 protected Void doInBackground() throws Exception {
-
                     //horizontal pixels
                     for (int j = batch.getStart(); j < batch.getStart() + batch.getLength(); j++) {
                         //vertical pixels
@@ -83,6 +83,12 @@ public class DrawingHelper {
         // Wait for workers
         while (workers.stream().anyMatch(w -> !w.isDone())) {
         }
+
+        //
+        // move planets
+        //
+        Gravity.movePlanets(scene.getPlanets());
+
         return true;
     }
 

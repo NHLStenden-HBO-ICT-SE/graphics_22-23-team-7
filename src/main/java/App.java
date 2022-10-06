@@ -6,14 +6,13 @@ import classes.math.Vector3D;
 import classes.objects.Sphere;
 import classes.view.Camera;
 import classes.view.Light;
+import interfaces.objects.Shape;
 
 import javax.swing.filechooser.FileSystemView;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.List;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -28,31 +27,31 @@ public class App {
         }
         int currentFrame = 0;
         Recorder recorder = new Recorder(frames);
-        // stores all buffered images. calculates length of video aswell
-        BufferedImage[] images = new BufferedImage[totalFrames];
 
         //view direction
         Vector3D direction = new Vector3D(0, 0, 1);
 
-        //spheres
-        Point3D originS = new Point3D(0, 1, 9);
-        Point3D originS2 = new Point3D(-2.5, 1, 12);
-        Sphere[] spheres = {
-                new Sphere(originS, 0.3),
-                new Sphere(originS2, 2)};
+        //earth
+        Point3D earthPos = new Point3D(0, 0, 9);
+        Sphere earthS = new Sphere(earthPos, 1);
+        Vector3D earthVel = new Vector3D(0, 0, 0);
+
+        //satellite
+        Point3D satPos = new Point3D(3.5, -0.5, 8);
+        Sphere satS = new Sphere(satPos, 0.2);
+        Vector3D satVel = new Vector3D(0, 0, 0.1);
+
+        Shape[] spheres = {new Planet(0.8, earthVel, earthS), new Planet(0, satVel, satS),};
 
         //lights
-        Point3D originL = new Point3D(2, 1, 5);
-        Point3D originL2 = new Point3D(-2.5, 1, 7);
-        Light[] lights = {
-                new Light(10, originL),
-                new Light(3, originL2)};
+        Point3D originL = new Point3D(-8, 1, 5);
+        Light[] lights = {new Light(12, originL),};
 
         //init drawing-helper
-        DrawingHelper dh = new DrawingHelper(2560, 1600);
+        DrawingHelper dh = new DrawingHelper(700, 700);
 
         //init camera
-        Point3D positionC = new Point3D();
+        Point3D positionC = new Point3D(0, 0, -10);
         Camera camera = new Camera(direction, positionC, 4F, dh.getWidth(), dh.getHeight());
 
         //init scene
@@ -102,8 +101,6 @@ public class App {
                 }
 
             }
-            // Sphere movement
-            spheres[0].setPosition(spheres[0].getPosition().add(new Point3D(-0.01, 0, 0)));
 
             //ends timer
             long endTime = System.currentTimeMillis();

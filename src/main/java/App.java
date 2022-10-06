@@ -23,7 +23,6 @@ public class App {
         int currentframe = 0;
         Recorder recorder = new Recorder(frames);
         // stores all bufferedimages. calculates length of video aswell
-        BufferedImage[] images = new BufferedImage[totalframes];
 
         //view direction
         Vector3D direction = new Vector3D(0, 0, 1);
@@ -84,7 +83,6 @@ public class App {
                   catch (OutOfMemoryError e) {
                       //Todo: write error to screen
                       System.out.println("ERROR: OUT OF HEAP SPACE, STOPPING RECORDING...");
-                     // images = null;
                       currentframe = totalframes+1;
                   }
 
@@ -95,7 +93,6 @@ public class App {
                         strings[i] = "frame"+i+".png";
                     }
                     recorder.generateFromMemory( recorderpath, strings);
-                    images = new BufferedImage[(frames * duration)];
                     //increase frames
                     currentframe++;
                 }

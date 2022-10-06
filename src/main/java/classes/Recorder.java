@@ -15,6 +15,8 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
+
 /*
 Copy instance thx to: https://stackoverflow.com/questions/3514158/how-do-you-clone-a-bufferedimage
 other credits:
@@ -118,7 +120,7 @@ public class Recorder {
     //takes snapshots for the user
     public void snapShot(BufferedImage bufferedImage, String path,  String filename){
         try {
-            ImageIO.write(bufferedImage, "png", new File(path + filename + ".png"));
+            ImageIO.write(bufferedImage, "png", new File(Paths.get(path, filename + ".png").toString()));
         } catch (IOException e) {
             System.out.println("IOERROR, snapshot not taken. reason: " + e.getMessage());
         }
@@ -129,10 +131,10 @@ public class Recorder {
         SwingWorker<Void, Void> swingworker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                out = NIOUtils.writableFileChannel(path + "test.mp4");
+                out = NIOUtils.writableFileChannel(Paths.get(path,  "test.mp4").toString());
                 var encoder = new AWTSequenceEncoder(out, new Rational(fps, 1));
                 for (String file : files) {
-                    var fileactual = new File(path + file);
+                    File fileactual = new File(Paths.get(path,  file).toString());
                     encoder.encodeNativeFrame(AWTExtension.decodePNG(fileactual, ColorSpace.RGB));
                     fileactual.delete();
                 }

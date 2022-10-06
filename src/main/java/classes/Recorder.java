@@ -1,4 +1,5 @@
 package classes;
+
 import org.jcodec.api.SequenceEncoder;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.NIOUtils;
@@ -27,22 +28,23 @@ https://www.w3schools.com/java/java_files_delete.asp
 public class Recorder {
 
 
-
     // sequence encoder and other local variables
     private AWTSequenceEncoder enc;
     private int fps;
     private SeekableByteChannel out = null;
 
     //constructor for setting fps
-    public Recorder(int frames){
+    public Recorder(int frames) {
         fps = frames;
     }
 
 
-
-
-
-    //copy function to copy instance of BufferedImage
+    /**
+     * copy function to copy instance of BufferedImage
+     *
+     * @param bi the image to be copied
+     * @return the copied image
+     */
     public static BufferedImage deepCopyBufferedImage(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
@@ -51,12 +53,16 @@ public class Recorder {
     }
 
 
-
-
-    //generate a recording with given values with swingworker
-    public void generate(BufferedImage[] images, String path, String filename){
+    /**
+     * generate a recording with given values with swin gworker
+     *
+     * @param images   images to be processed
+     * @param path     save to path
+     * @param filename name of file
+     */
+    public void generate(BufferedImage[] images, String path, String filename) {
         //swingworker for multithreading
-         SwingWorker<Void, BufferedImage[]> swingworker = new SwingWorker<Void, BufferedImage[]>() {
+        SwingWorker<Void, BufferedImage[]> swingworker = new SwingWorker<Void, BufferedImage[]>() {
             @Override
             protected Void doInBackground() throws Exception {
                 //try catch for possible errors
@@ -83,42 +89,61 @@ public class Recorder {
             }
         };
         //actually execute the swingworker
-         swingworker.execute();
+        swingworker.execute();
     }
 
-    //generate a recording with given values
-    public void generatInSync(BufferedImage[] images, String path, String filename){
+    /**
+     * generate a recording with given values
+     *
+     * @param images   images to be processed
+     * @param path     save to path
+     * @param filename name of file
+     */
+    public void generatInSync(BufferedImage[] images, String path, String filename) {
 
 
-                //try catch for possible errors
-                try {
-                    //setting out channel
-                    out = NIOUtils.writableFileChannel(path + filename + ".mkv");
-                    // initializing encoder
-                    AWTSequenceEncoder encoder = new AWTSequenceEncoder(out, new Rational(fps, 1));
-                    for (var image : images) {
-                        // Encode the image
-                        encoder.encodeImage(image);
-                    }
-                    // Finalize the encoding, i.e. clear the buffers, write the header, etc.
-                    encoder.finish();
-                    //all catches
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    NIOUtils.closeQuietly(out);
-                }
+        //try catch for possible errors
+        try {
+            //setting out channel
+            out = NIOUtils.writableFileChannel(path + filename + ".mkv");
+            // initializing encoder
+            AWTSequenceEncoder encoder = new AWTSequenceEncoder(out, new Rational(fps, 1));
+            for (var image : images) {
+                // Encode the image
+                encoder.encodeImage(image);
+            }
+            // Finalize the encoding, i.e. clear the buffers, write the header, etc.
+            encoder.finish();
+            //all catches
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            NIOUtils.closeQuietly(out);
+        }
 
     }
-    //takes snapshots for recording
-    public void snapShot(BufferedImage bufferedImage, String path, int currentframe){
-            snapShot(bufferedImage, path,"frame" + currentframe);
+
+    /**
+     * takes snapshots for recording
+     *
+     * @param bufferedImage the frame to be saved
+     * @param path          save to path
+     * @param currentframe  the current frame of the simulation
+     */
+    public void snapShot(BufferedImage bufferedImage, String path, int currentframe) {
+        snapShot(bufferedImage, path, "frame" + currentframe);
     }
 
-    //takes snapshots for the user
-    public void snapShot(BufferedImage bufferedImage, String path,  String filename){
+    /**
+     * takes snapshots for the user
+     *
+     * @param bufferedImage the frame to be saved
+     * @param path          save to path
+     * @param filename      namne of the file
+     */
+    public void snapShot(BufferedImage bufferedImage, String path, String filename) {
         try {
             ImageIO.write(bufferedImage, "png", new File(Paths.get(path, filename + ".png").toString()));
         } catch (IOException e) {
@@ -126,17 +151,20 @@ public class Recorder {
         }
     }
 
-
-    public void generateFromMemory (String path, String[] files) {
+    /**
+     * @param path  Path to files
+     * @param files string[] of files like {"image0.png", "image1.png"}
+     */
+    public void generateFromMemory(String path, String[] files) {
         SwingWorker<Void, Void> swingworker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                out = NIOUtils.writableFileChannel(Paths.get(path,  "test.mp4").toString());
+                out = NIOUtils.writableFileChannel(Paths.get(path, "test.mp4").toString());
                 var encoder = new AWTSequenceEncoder(out, new Rational(fps, 1));
                 for (String file : files) {
-                    File fileactual = new File(Paths.get(path,  file).toString());
-                    encoder.encodeNativeFrame(AWTExtension.decodePNG(fileactual, ColorSpace.RGB));
-                    fileactual.delete();
+                    File fileActual = new File(Paths.get(path, file).toString());
+                    encoder.encodeNativeFrame(AWTExtension.decodePNG(fileActual, ColorSpace.RGB));
+                    fileActual.delete();
                 }
                 encoder.finish();
                 return null;

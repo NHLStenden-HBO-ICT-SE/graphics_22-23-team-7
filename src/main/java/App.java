@@ -20,18 +20,16 @@ public class App {
         //stores fps and duration in seconds
         int frames = 60;
         int duration = 3;
-        int totalframes = (frames * duration);
+        int totalFrames = (frames * duration);
         String documents = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
-        Path recorderpath = Paths.get(documents, "nhlstenden", "solarsystem", "recordings");
-        if (Files.notExists(recorderpath)) {
-            Files.createDirectories(recorderpath);
+        Path recorderPath = Paths.get(documents, "nhlstenden", "solarsystem", "recordings");
+        if (Files.notExists(recorderPath)) {
+            Files.createDirectories(recorderPath);
         }
-        long heapspace = Runtime.getRuntime().freeMemory();
-        //ceep track of current frame
-        int currentframe = 0;
+        int currentFrame = 0;
         Recorder recorder = new Recorder(frames);
-        // stores all bufferedimages. calculates length of video aswell
-        BufferedImage[] images = new BufferedImage[totalframes];
+        // stores all buffered images. calculates length of video aswell
+        BufferedImage[] images = new BufferedImage[totalFrames];
 
         //view direction
         Vector3D direction = new Vector3D(0, 0, 1);
@@ -50,12 +48,12 @@ public class App {
                 new Light(10, originL),
                 new Light(3, originL2)};
 
-        //init drawinghelper
+        //init drawing-helper
         DrawingHelper dh = new DrawingHelper(2560, 1600);
 
         //init camera
         Point3D positionC = new Point3D();
-        Camera camera = new Camera(direction,positionC, 4F, dh.getWidth(), dh.getHeight());
+        Camera camera = new Camera(direction, positionC, 4F, dh.getWidth(), dh.getHeight());
 
         //init scene
         Scene scene = new Scene(camera, spheres, lights);
@@ -65,13 +63,12 @@ public class App {
 
         //repeatedly draw scene
         while (true) {
-            heapspace = Runtime.getRuntime().freeMemory();
             //starts timer
             long startTime = System.currentTimeMillis();
 
             //check if window size changed
             if (lastHeight != dh.getHeight() || lastWidth != dh.getWidth()) {
-                scene.setCamera(new Camera(direction, positionC,4F, dh.getWidth(), dh.getHeight())); //make new camera with proper canvas
+                scene.setCamera(new Camera(direction, positionC, 4F, dh.getWidth(), dh.getHeight())); //make new camera with proper canvas
                 lastHeight = dh.getHeight();
                 lastWidth = dh.getWidth();
             }
@@ -81,28 +78,27 @@ public class App {
                 Thread.sleep(7, 500);
 
 
-                //for recording. stacks bufferedimages for later use and executes recording generator when duration has expired\
-                if (currentframe < totalframes){
+                //for recording. stacks buffered images for later use and executes recording generator when duration has expired\
+                if (currentFrame < totalFrames) {
                     //because of high resolution. the heap size can be too small. i have to catch the error since i cant seem to get the available heap size |Runtime.getRuntime().freeMemory()| correctly before it happends
-                  try {
-                      recorder.snapShot(Recorder.deepCopyBufferedImage(dh.getWindow().getImage()), recorderpath.toString(), currentframe);
-                     // images[currentframe] = recorder.deepCopyBufferedImage(dh.getWindow().getImage());
-                      currentframe++;
-                  }
-                  catch (OutOfMemoryError e) {
-                      //Todo: write error to screen
-                      System.out.println("ERROR: OUT OF HEAP SPACE, STOPPING RECORDING...");
-                      currentframe = totalframes+1;
-                  }
+                    try {
+                        recorder.snapShot(Recorder.deepCopyBufferedImage(dh.getWindow().getImage()), recorderPath.toString(), currentFrame);
 
-                } else if (currentframe == totalframes){
-                    //rendering into a mp4 file
-                    String[] strings = new String[totalframes];
-                    for (int i = 0; i <  totalframes; i++) {
-                        strings[i] = "frame"+i+".png";
+                        currentFrame++;
+                    } catch (OutOfMemoryError e) {
+                        //Todo: write error to screen
+                        System.out.println("ERROR: OUT OF HEAP SPACE, STOPPING RECORDING...");
+                        currentFrame = totalFrames + 1;
                     }
-                    recorder.generateFromMemory( recorderpath.toString(), strings);
-                    currentframe++;
+
+                } else if (currentFrame == totalFrames) {
+                    //rendering into a mp4 file
+                    String[] strings = new String[totalFrames];
+                    for (int i = 0; i < totalFrames; i++) {
+                        strings[i] = "frame" + i + ".png";
+                    }
+                    recorder.generateFromMemory(recorderPath.toString(), strings);
+                    currentFrame++;
                 }
 
             }

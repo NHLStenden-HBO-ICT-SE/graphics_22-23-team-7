@@ -7,7 +7,11 @@ import classes.objects.Sphere;
 import classes.view.Camera;
 import classes.view.Light;
 
+import javax.swing.filechooser.FileSystemView;
 import java.awt.image.BufferedImage;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,12 +21,17 @@ public class App {
         int frames = 60;
         int duration = 3;
         int totalframes = (frames * duration);
-        String recorderpath = "C:\\Users\\bryan\\Documents\\school\\jaar 2\\Snapshots raytracer\\";
+        String documents = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+        Path recorderpath = Paths.get(documents, "nhlstenden", "solarsystem", "recordings");
+        if (Files.notExists(recorderpath)) {
+            Files.createDirectories(recorderpath);
+        }
         long heapspace = Runtime.getRuntime().freeMemory();
         //ceep track of current frame
         int currentframe = 0;
         Recorder recorder = new Recorder(frames);
         // stores all bufferedimages. calculates length of video aswell
+        BufferedImage[] images = new BufferedImage[totalframes];
 
         //view direction
         Vector3D direction = new Vector3D(0, 0, 1);
@@ -76,13 +85,14 @@ public class App {
                 if (currentframe < totalframes){
                     //because of high resolution. the heap size can be too small. i have to catch the error since i cant seem to get the available heap size |Runtime.getRuntime().freeMemory()| correctly before it happends
                   try {
-                      recorder.snapShot(Recorder.deepCopyBufferedImage(dh.getWindow().getImage()), recorderpath, currentframe);
+                      recorder.snapShot(Recorder.deepCopyBufferedImage(dh.getWindow().getImage()), recorderpath.toString(), currentframe);
                      // images[currentframe] = recorder.deepCopyBufferedImage(dh.getWindow().getImage());
                       currentframe++;
                   }
                   catch (OutOfMemoryError e) {
                       //Todo: write error to screen
                       System.out.println("ERROR: OUT OF HEAP SPACE, STOPPING RECORDING...");
+                     // images = null;
                       currentframe = totalframes+1;
                   }
 
@@ -92,7 +102,8 @@ public class App {
                     for (int i = 0; i <  totalframes; i++) {
                         strings[i] = "frame"+i+".png";
                     }
-                    recorder.generateFromMemory( recorderpath, strings);
+                    recorder.generateFromMemory( recorderpath.toString(), strings);
+                    images = new BufferedImage[(frames * duration)];
                     //increase frames
                     currentframe++;
                 }

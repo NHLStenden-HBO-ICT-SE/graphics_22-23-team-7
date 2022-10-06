@@ -4,6 +4,7 @@ import classes.Scene;
 import classes.math.Point3D;
 import classes.math.Vector3D;
 import classes.objects.Sphere;
+import classes.solarSystem.Planet;
 import classes.view.Camera;
 import classes.view.Light;
 import interfaces.objects.Shape;

@@ -108,4 +108,8 @@ public class DrawingHelper {
     public int getWidth() {
         return this.window.getWidth();
     }
+    //returns current mainwindow. needed for mp4 renderer
+    public MainWindow getWindow() {
+        return window;
+    }
 }

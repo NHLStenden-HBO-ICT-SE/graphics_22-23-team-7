@@ -113,13 +113,15 @@ public final class Gravity {
      */
     public static void movePlanets(Planet... planets) {
         calculatePositions(planets);
+        if (planets.length < 2) return;
         calculateForce(planets);
         calculateVelocities(planets);
     }
 
     /**
      * calculates escape velocity of an object traveling around a planet at a specific distance
-     * @param planet main planet
+     *
+     * @param planet   main planet
      * @param distance between center points of planet and object
      * @return velocity
      */
@@ -134,7 +136,8 @@ public final class Gravity {
 
     /**
      * calculates the perfect (circular) velocity for an orbit around a planet
-     * @param planet main planet
+     *
+     * @param planet   main planet
      * @param distance disntance between center point of planet and object
      * @return velocity
      */

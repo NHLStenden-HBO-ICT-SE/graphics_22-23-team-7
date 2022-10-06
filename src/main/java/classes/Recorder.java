@@ -1,12 +1,10 @@
 package classes;
 
-import org.jcodec.api.SequenceEncoder;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.io.SeekableByteChannel;
 import org.jcodec.common.model.ColorSpace;
 import org.jcodec.common.model.Rational;
-import org.jcodec.scale.AWTUtil;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -27,10 +25,9 @@ https://www.w3schools.com/java/java_files_delete.asp
  */
 public class Recorder {
 
-
     // sequence encoder and other local variables
     private AWTSequenceEncoder enc;
-    private int fps;
+    private final int fps;
     private SeekableByteChannel out = null;
 
     //constructor for setting fps
@@ -61,8 +58,8 @@ public class Recorder {
      * @param filename name of file
      */
     public void generate(BufferedImage[] images, String path, String filename) {
-        //swingworker for multithreading
-        SwingWorker<Void, BufferedImage[]> swingworker = new SwingWorker<Void, BufferedImage[]>() {
+        //swingWorker for multithreading
+        SwingWorker<Void, BufferedImage[]> swingWorker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
                 //try catch for possible errors
@@ -88,8 +85,8 @@ public class Recorder {
                 return null;
             }
         };
-        //actually execute the swingworker
-        swingworker.execute();
+        //actually execute the swingWorker
+        swingWorker.execute();
     }
 
     /**
@@ -99,7 +96,7 @@ public class Recorder {
      * @param path     save to path
      * @param filename name of file
      */
-    public void generatInSync(BufferedImage[] images, String path, String filename) {
+    public void generateInSync(BufferedImage[] images, String path, String filename) throws FileNotFoundException {
 
 
         //try catch for possible errors
@@ -115,8 +112,6 @@ public class Recorder {
             // Finalize the encoding, i.e. clear the buffers, write the header, etc.
             encoder.finish();
             //all catches
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -156,7 +151,7 @@ public class Recorder {
      * @param files string[] of files like {"image0.png", "image1.png"}
      */
     public void generateFromMemory(String path, String[] files) {
-        SwingWorker<Void, Void> swingworker = new SwingWorker<Void, Void>() {
+        SwingWorker<Void, Void> swingWorker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
                 out = NIOUtils.writableFileChannel(Paths.get(path, "test.mp4").toString());
@@ -170,6 +165,6 @@ public class Recorder {
                 return null;
             }
         };
-        swingworker.execute();
+        swingWorker.execute();
     }
 }

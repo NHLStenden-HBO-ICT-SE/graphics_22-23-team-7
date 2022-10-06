@@ -92,7 +92,6 @@ public class App {
                   catch (OutOfMemoryError e) {
                       //Todo: write error to screen
                       System.out.println("ERROR: OUT OF HEAP SPACE, STOPPING RECORDING...");
-                     // images = null;
                       currentframe = totalframes+1;
                   }
 
@@ -103,8 +102,6 @@ public class App {
                         strings[i] = "frame"+i+".png";
                     }
                     recorder.generateFromMemory( recorderpath.toString(), strings);
-                    images = new BufferedImage[(frames * duration)];
-                    //increase frames
                     currentframe++;
                 }
 

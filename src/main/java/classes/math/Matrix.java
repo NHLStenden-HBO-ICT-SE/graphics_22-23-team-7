@@ -1,7 +1,9 @@
 package classes.math;
 
 
-public class Matrix <T extends Matrix>{
+import interfaces.math.Operators;
+
+public class Matrix <T extends Matrix> implements Operators<T> {
 
     private double[][] matrixContent;
   
@@ -65,19 +67,7 @@ public class Matrix <T extends Matrix>{
       }
   
       //substract input matrix from its own [needs testing]
-      private void subtract(double[][] second) 
-      {
-        int row = matrixContent.length;
-        int column = matrixContent[0].length;
-        double[][] sum = new double[row][column];
-    
-        for (int r = 0; r < row; r++) {
-            for (int c = 0; c < column; c++) {
-                sum[r][c] = matrixContent[r][c] - second[r][c];
-            }
-        }
-        this.matrixContent = sum;
-       }
+
 
        //multiply this matrix with the second [needs testing] returns result instead of setting
        private Matrix multiply(double[][] second) {
@@ -116,5 +106,68 @@ public class Matrix <T extends Matrix>{
                 return input;
             }
     }
-  
-  }
+
+    /**
+     * subtracts parameter matrix from matrix
+     * @param second the second matrix
+     * @return the summed matrix
+     */
+    @Override
+    public T sub(T second) {
+            int row = matrixContent.length;
+            int column = matrixContent[0].length;
+            double[][] sum = new double[row][column];
+
+            for (int r = 0; r < row; r++) {
+                for (int c = 0; c < column; c++) {
+                    sum[r][c] = matrixContent[r][c] - second.getMatrix()[r][c];
+                }
+            }
+            second.setMatrix(sum);
+            return second;
+    }
+
+    @Override
+    public void setSub(T second) {
+        int row = matrixContent.length;
+        int column = matrixContent[0].length;
+        double[][] sum = new double[row][column];
+
+        for (int r = 0; r < row; r++) {
+            for (int c = 0; c < column; c++) {
+                sum[r][c] = matrixContent[r][c] - second.getMatrix()[r][c];
+            }
+        }
+        this.matrixContent = sum;
+    }
+
+    @Override
+    public T add(T T) {
+        return null;
+    }
+
+    @Override
+    public void setAdd(T T) {
+
+    }
+
+    @Override
+    public T multiply(double n) {
+        return null;
+    }
+
+    @Override
+    public void setMultiply(double n) {
+
+    }
+
+    @Override
+    public T divide(double n) {
+        return null;
+    }
+
+    @Override
+    public void setDivide(double n) {
+
+    }
+}

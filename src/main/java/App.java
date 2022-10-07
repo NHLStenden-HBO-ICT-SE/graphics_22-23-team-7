@@ -18,8 +18,8 @@ import java.nio.file.Paths;
 public class App {
     public static void main(String[] args) throws Exception {
         //stores fps and duration in seconds
-        int frames = 60;
-        int duration = 3;
+        int frames = 30;
+        int duration = 30;
         int totalFrames = (frames * duration);
         String documents = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
         Path recorderPath = Paths.get(documents, "nhlstenden", "solarsystem", "recordings");
@@ -46,7 +46,7 @@ public class App {
 
         //lights
         Point3D originL = new Point3D(-8, 1, 5);
-        Light[] lights = {new Light(12, originL),};
+        Light[] lights = {new Light(20, originL),};
 
         //init drawing-helper
         DrawingHelper dh = new DrawingHelper(700, 700);

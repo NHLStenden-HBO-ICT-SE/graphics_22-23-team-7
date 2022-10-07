@@ -220,11 +220,11 @@ public class Vector3D extends Dimension3<Vector3D> {
     }
 
     public Matrix getMatrix() {
-        return new Matrix<>(new double[][]{{this.x}, {this.y}, {this.z}});
+        return new Matrix(new double[][]{{this.x}, {this.y}, {this.z}});
     }
 
     //sets matrix value to the vector3D
-    public void setMatrix(Matrix<Matrix> m) {
+    public void setMatrix(Matrix m) {
         this.x = m.getMatrix()[0][0];
         this.y = m.getMatrix()[1][0];
         this.z = m.getMatrix()[2][0];

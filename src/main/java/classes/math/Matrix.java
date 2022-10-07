@@ -182,14 +182,19 @@ public class Matrix implements Operators<Matrix> {
     public void setSub(Matrix second) {
         int row = matrixContent.length;
         int column = matrixContent[0].length;
-        double[][] sum = new double[row][column];
+        if (this.getRowSize() == second.getRowSize() && this.getColSize() == second.getColSize()) {
+            double[][] sum = new double[row][column];
 
-        for (int r = 0; r < row; r++) {
-            for (int c = 0; c < column; c++) {
-                sum[r][c] = matrixContent[r][c] - second.getMatrix()[r][c];
+            for (int r = 0; r < row; r++) {
+                for (int c = 0; c < column; c++) {
+                    sum[r][c] = matrixContent[r][c] - second.getMatrix()[r][c];
+                }
             }
+            this.matrixContent = sum;
+        } else {
+        System.out.println("WARNING: multiplication failed. rows or cols not equal");
         }
-        this.matrixContent = sum;
+
     }
 
     /**

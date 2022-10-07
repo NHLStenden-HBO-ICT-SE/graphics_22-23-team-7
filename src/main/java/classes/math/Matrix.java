@@ -116,10 +116,10 @@ public class Matrix implements Operators<Matrix> {
             int row = this.getRowSize();
             int column = input.getColSize();
             double[][] sum = new double[this.getRowSize()][input.getColSize()];
-            for (int z = 0; z < input.getColSize(); z++) {
-                for (int r = 0; r < row; r++) {
-                    for (int c = 0; c <= column; c++) {
-                        sum[r][z] += (this.matrixContent[r][c]) * (input.getMatrix()[c][z]);
+            for (int i = 0; i < sum.length; i++) {
+                for (int j = 0; j < sum[0].length; j++) {
+                    for (int k = 0; k < input.getRowSize(); k++) {
+                        sum[i][j] += (this.matrixContent[i][k]) * (input.getMatrix()[k][j]);
                     }
                 }
             }

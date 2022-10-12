@@ -19,7 +19,7 @@ public class Triangle implements Shape {
     private Point3D[] vertices = new Point3D[3];
     private Vector3D surfaceNormal = new Vector3D();
     private Point3D position;
-    public Triangle(Point3D vertice, Point3D vertice1, Point3D vertice2){
+    public Triangle(Point3D vertice, Point3D vertice1, Point3D vertice2) {
         vertices[0] = vertice;
         vertices[1] = vertice1;
         vertices[2] = vertice2;
@@ -32,14 +32,14 @@ public class Triangle implements Shape {
      *
      * @return vertices of the triangle
      */
-    public Point3D[] getVertices(){
+    public Point3D[] getVertices() {
         return this.vertices;
     }
 
     /**
      * sets specific index of triangle vertices
      * @param index index
-     * @param p new point
+     * @param p     new point
      */
     public void setVertex(int index, Point3D p) {
         this.vertices[index] = p;
@@ -50,19 +50,19 @@ public class Triangle implements Shape {
     /**
      * calculates service normal and saves it in the object for easy access. is called in the constructor and after changes.
      */
-    private void calcSurfaceNormal (){
+    private void calcSurfaceNormal() {
         //gets the two direction vectors
         Vector3D direction1 = vertices[0].getVector(vertices[1]);
         Vector3D direction2 = vertices[2].getVector(vertices[0]);
 
         //cross product
         surfaceNormal.x = ((direction1.y * direction2.z) - (direction1.z * direction2.y));
-        surfaceNormal.y = ((direction1.z * direction2.x) -(direction1.x * direction2.z));
+        surfaceNormal.y = ((direction1.z * direction2.x) - (direction1.x * direction2.z));
         surfaceNormal.z = ((direction1.x * direction2.y) - (direction1.y * direction2.x));
     }
 
-    public Vector3D getSurfaceNormal(){
-    return surfaceNormal;
+    public Vector3D getSurfaceNormal() {
+        return surfaceNormal;
     }
 
 
@@ -96,7 +96,7 @@ public class Triangle implements Shape {
          * direction1dot is the angle between the ray's direction and the triangle direction
          * if the angle is too small then the ray is probably in line with the triangle and
          * we don't intersect with it.
-        **/
+         **/
         if (direction1dot > -0.0000001 && direction1dot < 0.0000001) {
             return new IntersectionHandler(false);
         }
@@ -105,7 +105,7 @@ public class Triangle implements Shape {
         s = vertex0.getVector(ray.getPosition());
         u = f * (s.dot(crossproduct));
 
-       if (u < 0.0 || u > 1.0) {
+        if (u < 0.0 || u > 1.0) {
             return new IntersectionHandler(false);
         }
 

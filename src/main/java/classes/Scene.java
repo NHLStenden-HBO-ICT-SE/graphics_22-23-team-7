@@ -4,6 +4,8 @@ import classes.math.Point3D;
 import classes.math.Ray;
 import classes.math.Vector3D;
 import classes.objects.IntersectionHandler;
+import classes.objects.Sphere;
+import classes.objects.Triangle;
 import classes.solarSystem.Planet;
 import classes.view.Camera;
 import classes.view.Light;
@@ -78,6 +80,7 @@ public class Scene {
             if (currentShape.getLength() < closestShape.getLength()) closestShape = currentShape;
 
         }
+
         return closestShape;
     }
 
@@ -104,13 +107,13 @@ public class Scene {
             Vector3D olDirection = intersectionPoint.getVector(lightPos).normalize();
 
             //get the normal vector from shape
-            Vector3D N = shape.getPosition().getVector(intersectionPoint).normalize();
+            Vector3D N = shape.calcNormal(intersectionPoint).normalize();
 
             //get the angle between normal and direction
             double angle = N.dot(olDirection);
 
             //if angle > 90 degrees go to the next
-            if (angle < 0) continue;
+            if (angle < 0 ) continue;
 
             Ray ray = new Ray(intersectionPoint, intersectionPoint.getVector(lightPos), intersectionPoint.distance(lightPos));
 
@@ -140,8 +143,11 @@ public class Scene {
             IntersectionHandler currentShape = shape.intersection(ray);
 
             //if ray intersects return true
-            if (currentShape.isIntersected()) return true;
+            if (currentShape.isIntersected())
+                return true;
+
         }
+
         return false;
     }
 }

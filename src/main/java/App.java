@@ -4,6 +4,7 @@ import classes.Scene;
 import classes.math.Point3D;
 import classes.math.Vector3D;
 import classes.objects.Sphere;
+import classes.objects.Triangle;
 import classes.solarSystem.Planet;
 import classes.view.Camera;
 import classes.view.Light;
@@ -37,15 +38,16 @@ public class App {
         Sphere earthS = new Sphere(earthPos, 1);
         Vector3D earthVel = new Vector3D(0, 0, 0);
 
+
         //satellite
         Point3D satPos = new Point3D(3.5, -0.5, 8);
         Sphere satS = new Sphere(satPos, 0.2);
         Vector3D satVel = new Vector3D(0, 0, 0.1);
 
-        Shape[] spheres = {new Planet(0.8, earthVel, earthS), new Planet(0, satVel, satS),};
+        Shape[] spheres = {new Triangle(new Point3D(0,2,3), new Point3D(0,1,3), new Point3D(1,1,3))};
 
         //lights
-        Point3D originL = new Point3D(-8, 1, 5);
+        Point3D originL = new Point3D(0, 0, 0);
         Light[] lights = {new Light(12, originL),};
 
         //init drawing-helper

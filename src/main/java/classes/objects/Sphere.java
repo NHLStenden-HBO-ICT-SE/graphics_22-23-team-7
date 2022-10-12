@@ -128,5 +128,10 @@ public class Sphere implements Shape {
        return ray.getPosition().distance(position) - radius < ray.getLength();
     }
 
+    @Override
+    public Vector3D calcNormal(Point3D point) {
+       return position.getVector(point);
+    }
+
 
 }

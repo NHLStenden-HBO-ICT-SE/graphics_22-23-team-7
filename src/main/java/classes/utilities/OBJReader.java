@@ -68,30 +68,45 @@ public class OBJReader {
 
 
     private static Face[] parseFace(String[] values) {
+        Face[] val =  new Face[values.length-3];
+        int[] indices = new int[3];
 
-        try {
-            if (values.length == 5) {
+        for (int v = 1; v < values.length-2; v++) {
 
-                int[] indices = new int[]{Integer.parseInt(values[1], 10) - 1, Integer.parseInt(values[2], 10) - 1, Integer.parseInt(values[3], 10) - 1, Integer.parseInt(values[4], 10) - 1};
-                return new Face[]{
-                        new Face(new int[]{indices[0], indices[1], indices[2]}),
-                        new Face(new int[]{indices[0], indices[2], indices[3]})
-                };
-
-            } else if (values.length == 4) {
-                int[] indices = new int[]{Integer.parseInt(values[1], 10) - 1, Integer.parseInt(values[2], 10) - 1, Integer.parseInt(values[3], 10) - 1};
-                return new Face[]{new Face(new int[]{indices[0], indices[1], indices[2]})};
-            } else {
-                return new Face[]{new Face(new int[]{0, 0, 0})};
-            }
-        } catch (NumberFormatException e) {
-            return new Face[]{new Face(new int[]{0, 0, 0})};
+            indices[0] = Integer.parseInt(values[1], 10)-1;
+            indices[1] = Integer.parseInt(values[v+1], 10)-1;
+            indices[2] = Integer.parseInt(values[v+2], 10)-1;
+            val[v-1] = new Face(indices);
         }
 
-    }
+    return val;
 
+
+        /**
+         *     try {
+         *             //for squares
+         *             if (values.length == 5) {
+         *
+         *                 int[] indices = new int[]{Integer.parseInt(values[1], 10) - 1, Integer.parseInt(values[2], 10) - 1, Integer.parseInt(values[3], 10) - 1, Integer.parseInt(values[4], 10) - 1};
+         *                 return new Face[]{
+         *                         new Face(new int[]{indices[0], indices[1], indices[2]}),
+         *                         new Face(new int[]{indices[0], indices[2], indices[3]})
+         *                 };
+         *
+         *             } else {
+         *                 int[] indices = new int[]{Integer.parseInt(values[1], 10) - 1, Integer.parseInt(values[2], 10) - 1, Integer.parseInt(values[3], 10) - 1};
+         *                 return new Face[]{new Face(new int[]{indices[0], indices[1], indices[2]})};
+         *             }
+         *         } catch (NumberFormatException e) {
+         *             return new Face[]{new Face(new int[]{0, 0, 0})};
+         *         }
+         */
+
+    }
+    //for vertexes
     private static Point3D parseVertex(String[] values) {
         //set indexes for vertices
         return new Point3D(Double.parseDouble(values[1]), Double.parseDouble(values[2]), Double.parseDouble(values[3]));
     }
+
 }

@@ -19,6 +19,7 @@ public class Triangle implements Shape {
     private Point3D[] vertices = new Point3D[3];
     private Vector3D surfaceNormal = new Vector3D();
     private Point3D position;
+
     public Triangle(Point3D vertice, Point3D vertice1, Point3D vertice2) {
         vertices[0] = vertice;
         vertices[1] = vertice1;
@@ -34,7 +35,6 @@ public class Triangle implements Shape {
 
 
     /**
-     *
      * @return vertices of the triangle
      */
     public Point3D[] getVertices() {
@@ -43,12 +43,13 @@ public class Triangle implements Shape {
 
     /**
      * sets specific index of triangle vertices
+     *
      * @param index index
      * @param p     new point
      */
     public void setVertex(int index, Point3D p) {
         this.vertices[index] = p;
-       // calcSurfaceNormal();
+        // calcSurfaceNormal();
         calcPosition();
     }
 
@@ -143,7 +144,8 @@ public class Triangle implements Shape {
         //this.calcSurfaceNormal();
         return surfaceNormal;
     }
-    public void setNormal(Vector3D surfaceNormal){
+
+    public void setNormal(Vector3D surfaceNormal) {
         this.surfaceNormal = surfaceNormal;
     }
 }

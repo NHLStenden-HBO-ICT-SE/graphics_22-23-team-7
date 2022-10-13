@@ -43,9 +43,9 @@ public class OBJReader {
             switch (values[0]) {
 
                 case vertexNormal:
-                    for (Vector3D v : GetNormal(values))
-                    {
-                      normals.add(v);  ;
+                    for (Vector3D v : GetNormal(values)) {
+                        normals.add(v);
+                        ;
                     }
                     break;
                 case obj_vertex:
@@ -62,8 +62,8 @@ public class OBJReader {
             }
 
         }
-    if (normals.size() != 0)
-        return makemodel(faces, vertices, normals);
+        if (normals.size() != 0)
+            return makemodel(faces, vertices, normals);
         return makemodel(faces, vertices);
     }
 
@@ -95,7 +95,7 @@ public class OBJReader {
     private static Model makemodel(ArrayList<Face> faces, ArrayList<Point3D> vertices, ArrayList<Vector3D> normals) {
         var val = new ArrayList<Triangle>();
         for (Face face : faces) {
-            val.add(new Triangle(vertices.get(face.indices[0]), vertices.get(face.indices[1]), vertices.get(face.indices[2]),normals.get(face.normal)));
+            val.add(new Triangle(vertices.get(face.indices[0]), vertices.get(face.indices[1]), vertices.get(face.indices[2]), normals.get(face.normal)));
         }
         return new Model(val, new Point3D(0, 0, 0));
     }

@@ -3,9 +3,11 @@ import classes.Recorder;
 import classes.Scene;
 import classes.math.Point3D;
 import classes.math.Vector3D;
+import classes.objects.Model;
 import classes.objects.Sphere;
 import classes.objects.Triangle;
 import classes.solarSystem.Planet;
+import classes.utilities.OBJReader;
 import classes.view.Camera;
 import classes.view.Light;
 import interfaces.objects.Shape;
@@ -24,6 +26,12 @@ public class App {
         int totalFrames = (frames * duration);
         String documents = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
         Path recorderPath = Paths.get(documents, "nhlstenden", "solarsystem", "recordings");
+        Path modelPath = Paths.get(documents, "nhlstenden", "solarsystem", "Models");
+
+        Model model = OBJReader.parseObj(modelPath + "\\gun.obj");
+        model.setPosition(new Point3D(0,0,15));
+
+
         if (Files.notExists(recorderPath)) {
             Files.createDirectories(recorderPath);
         }
@@ -44,11 +52,14 @@ public class App {
         Sphere satS = new Sphere(satPos, 0.2);
         Vector3D satVel = new Vector3D(0, 0, 0.1);
 
-        Shape[] spheres = {new Triangle(new Point3D(0,2,3), new Point3D(0,1,3), new Point3D(1,1,3))};
+        Shape[] spheres = model.getTriangles().stream().toList().toArray(new Shape[model.getTriangles().size()]);
 
         //lights
         Point3D originL = new Point3D(0, 0, 0);
-        Light[] lights = {new Light(12, originL),};
+        Point3D originL2 = new Point3D(0, 2, 0);
+        Point3D originL3 = new Point3D(2, 2, 0);
+        Point3D originL4 = new Point3D(2, 0, 0);
+        Light[] lights = new Light[]{new Light(30, originL), new Light(30, originL2), new Light(30, originL3)};
 
         //init drawing-helper
         DrawingHelper dh = new DrawingHelper(700, 700);

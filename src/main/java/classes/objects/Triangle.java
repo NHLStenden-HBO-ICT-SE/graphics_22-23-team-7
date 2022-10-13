@@ -138,4 +138,7 @@ public class Triangle implements Shape {
         this.calcSurfaceNormal();
         return surfaceNormal;
     }
+    public void setNormal(Vector3D surfaceNormal){
+        this.surfaceNormal = surfaceNormal;
+    }
 }

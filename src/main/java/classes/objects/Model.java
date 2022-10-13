@@ -1,14 +1,15 @@
 package classes.objects;
 
-import classes.ModelLoader;
 import classes.math.Point3D;
 import classes.math.Ray;
 import classes.math.Vector3D;
 import interfaces.objects.Shape;
 
+import java.util.ArrayList;
+
 public class Model implements Shape {
 
-    private Triangle[] triangles;
+    private ArrayList<Triangle> triangles;
     private Point3D position = new Point3D(0, 0, 0);
 
     /**
@@ -17,7 +18,7 @@ public class Model implements Shape {
      * @param triangles the parts
      * @param position  position
      */
-    public Model(Triangle[] triangles, Point3D position) {
+    public Model(ArrayList<Triangle> triangles, Point3D position) {
         this.triangles = triangles;
         setPosition(position);
     }
@@ -48,7 +49,7 @@ public class Model implements Shape {
      *
      * @return the model's triangles
      */
-    public Triangle[] getTriangles() {
+    public ArrayList<Triangle> getTriangles() {
         return triangles;
     }
 
@@ -57,7 +58,7 @@ public class Model implements Shape {
      *
      * @param triangles the new triangles
      */
-    public void setTriangles(Triangle[] triangles) {
+    public void setTriangles(ArrayList<Triangle> triangles) {
         this.triangles = triangles;
     }
 

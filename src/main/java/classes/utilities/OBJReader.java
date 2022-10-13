@@ -72,13 +72,23 @@ public class OBJReader {
         int[] indices = new int[3];
 
         for (int v = 1; v < values.length-2; v++) {
-
-            indices[0] = Integer.parseInt(values[1], 10)-1;
-            indices[1] = Integer.parseInt(values[v+1], 10)-1;
-            indices[2] = Integer.parseInt(values[v+2], 10)-1;
-            val[v-1] = new Face(indices);
+            if (values[1].contains("//")) {
+                indices[0] = Integer.parseInt(values[1].split("//")[0], 10) - 1;
+                indices[1] = Integer.parseInt(values[v + 1].split("//")[0], 10) - 1;
+                indices[2] = Integer.parseInt(values[v + 2].split("//")[0], 10) - 1;
+                val[v - 1] = new Face(indices);
+            } else if (values[1].contains("/")) {
+                indices[0] = Integer.parseInt(values[1].split("/")[0], 10) - 1;
+                indices[1] = Integer.parseInt(values[v + 1].split("/")[0], 10) - 1;
+                indices[2] = Integer.parseInt(values[v + 2].split("/")[0], 10) - 1;
+                val[v - 1] = new Face(indices);
+            } else {
+                indices[0] = Integer.parseInt(values[1], 10) - 1;
+                indices[1] = Integer.parseInt(values[v + 1], 10) - 1;
+                indices[2] = Integer.parseInt(values[v + 2], 10) - 1;
+                val[v - 1] = new Face(indices);
+            }
         }
-
     return val;
 
 

@@ -1,6 +1,7 @@
 package classes.utilities;
 
 import classes.math.Point3D;
+import classes.math.Vector3D;
 import classes.objects.Triangle;
 import classes.objects.Model;
 
@@ -23,10 +24,13 @@ public class OBJReader {
         ArrayList<Point3D> vertices = new ArrayList<>();
         ArrayList<Triangle> triangles = new ArrayList<>();
         ArrayList<Face> faces = new ArrayList<>();
+        ArrayList<Vector3D> normals = new ArrayList<>();
         //for reading the file
         FileReader fileReader = new FileReader(new File(file));
         //for going trough the file later in mem
         BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+
         while (true) {
             String line = bufferedReader.readLine();
             if (line == null) {
@@ -38,12 +42,17 @@ public class OBJReader {
 
             switch (values[0]) {
 
+                case vertexNormal:
+                    for (Vector3D v : GetNormal(values))
+                    {
+                      normals.add(v);  ;
+                    }
+                    break;
                 case obj_vertex:
                     vertices.add(parseVertex(values));
                     break;
                 case obj_faces:
-                    for (Face f: parseFace(values))
-                    {
+                    for (Face f : parseFace(values)) {
                         faces.add(f);
                     }
                     break;
@@ -53,9 +62,42 @@ public class OBJReader {
             }
 
         }
-
+    if (normals.size() != 0)
+        return makemodel(faces, vertices, normals);
         return makemodel(faces, vertices);
+    }
 
+    private static Vector3D[] GetNormal(String[] values) {
+        Vector3D[] val = new Vector3D[values.length - 3];
+        Double[] axis = new Double[3];
+
+        for (int v = 1; v < values.length - 2; v++) {
+            if (values[1].contains("//")) {
+                axis[0] = Double.parseDouble(values[1].split("//")[0]) - 1;
+                axis[1] = Double.parseDouble(values[v + 1].split("//")[0]) - 1;
+                axis[2] = Double.parseDouble(values[v + 2].split("//")[0]) - 1;
+                val[v - 1] = new Vector3D(axis[0], axis[1], axis[2]);
+            } else if (values[1].contains("/")) {
+                axis[0] = Double.parseDouble(values[1].split("/")[0]) - 1;
+                axis[1] = Double.parseDouble(values[v + 1].split("/")[0]) - 1;
+                axis[2] = Double.parseDouble(values[v + 2].split("/")[0]) - 1;
+                val[v - 1] = new Vector3D(axis[0], axis[1], axis[2]);
+            } else {
+                axis[0] = Double.parseDouble(values[1]) - 1;
+                axis[1] = Double.parseDouble(values[v + 1]) - 1;
+                axis[2] = Double.parseDouble(values[v + 2]) - 1;
+                val[v - 1] = new Vector3D(axis[0], axis[1], axis[2]);
+            }
+        }
+        return val;
+    }
+
+    private static Model makemodel(ArrayList<Face> faces, ArrayList<Point3D> vertices, ArrayList<Vector3D> normals) {
+        var val = new ArrayList<Triangle>();
+        for (Face face : faces) {
+            val.add(new Triangle(vertices.get(face.indices[0]), vertices.get(face.indices[1]), vertices.get(face.indices[2]),normals.get(face.normal)));
+        }
+        return new Model(val, new Point3D(0, 0, 0));
     }
 
     private static Model makemodel(ArrayList<Face> faces, ArrayList<Point3D> vertices) {
@@ -68,10 +110,10 @@ public class OBJReader {
 
 
     private static Face[] parseFace(String[] values) {
-        Face[] val =  new Face[values.length-3];
+        Face[] val = new Face[values.length - 3];
         int[] indices = new int[3];
 
-        for (int v = 1; v < values.length-2; v++) {
+        for (int v = 1; v < values.length - 2; v++) {
             if (values[1].contains("//")) {
                 indices[0] = Integer.parseInt(values[1].split("//")[0], 10) - 1;
                 indices[1] = Integer.parseInt(values[v + 1].split("//")[0], 10) - 1;
@@ -81,6 +123,8 @@ public class OBJReader {
                 indices[0] = Integer.parseInt(values[1].split("/")[0], 10) - 1;
                 indices[1] = Integer.parseInt(values[v + 1].split("/")[0], 10) - 1;
                 indices[2] = Integer.parseInt(values[v + 2].split("/")[0], 10) - 1;
+                if (values[1].split("/").length > 1)
+                    val[v - 1] = new Face(indices, Integer.parseInt(values[v + 2].split("/")[1], 10) - 1);
                 val[v - 1] = new Face(indices);
             } else {
                 indices[0] = Integer.parseInt(values[1], 10) - 1;
@@ -89,7 +133,7 @@ public class OBJReader {
                 val[v - 1] = new Face(indices);
             }
         }
-    return val;
+        return val;
 
 
         /**
@@ -113,6 +157,7 @@ public class OBJReader {
          */
 
     }
+
     //for vertexes
     private static Point3D parseVertex(String[] values) {
         //set indexes for vertices

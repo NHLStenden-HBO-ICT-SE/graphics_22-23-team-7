@@ -20,6 +20,13 @@ public class OBJReader {
     private final static String vertexNormal = "vn";
     private final static String obj_faces = "f";
 
+    /**
+     * parses a obj file to an object model
+     * @param file
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static Model parseObj(String file) throws FileNotFoundException, IOException {
         ArrayList<Point3D> vertices = new ArrayList<>();
         ArrayList<Triangle> triangles = new ArrayList<>();
@@ -62,11 +69,14 @@ public class OBJReader {
             }
 
         }
-//        if (normals.size() != 0)
-//            return makemodel(faces, vertices, normals);
         return makemodel(faces, vertices);
     }
 
+    /**
+     * for getting the vertex normals of the string
+     * @param values the line of the file
+     * @return normal vector
+     */
     private static Vector3D[] GetNormal(String[] values) {
         Vector3D[] val = new Vector3D[values.length - 3];
         Double[] axis = new Double[3];
@@ -92,6 +102,13 @@ public class OBJReader {
         return val;
     }
 
+    /**
+     * combines extracted info to convert to triangles
+     * @param faces faces
+     * @param vertices vertices
+     * @param normals vertex normals
+     * @return
+     */
     private static Model makemodel(ArrayList<Face> faces, ArrayList<Point3D> vertices, ArrayList<Vector3D> normals) {
         var val = new ArrayList<Triangle>();
         for (Face face : faces) {
@@ -100,6 +117,13 @@ public class OBJReader {
         return new Model(val, new Point3D(0, 0, 0));
     }
 
+
+    /**
+     * combines extracted info to convert to triangles
+     * @param faces faces
+     * @param vertices vertices
+     * @return
+     */
     private static Model makemodel(ArrayList<Face> faces, ArrayList<Point3D> vertices) {
         var val = new ArrayList<Triangle>();
         for (Face face : faces) {
@@ -108,7 +132,11 @@ public class OBJReader {
         return new Model(val, new Point3D(0, 0, 0));
     }
 
-
+    /**
+     * get the face from the line and check format
+     * @param values line of file
+     * @return returns list of faces
+     */
     private static Face[] parseFace(String[] values) {
         Face[] val = new Face[values.length - 3];
         int[] indices = new int[3];
@@ -135,29 +163,13 @@ public class OBJReader {
         }
         return val;
 
-
-        /**
-         *     try {
-         *             //for squares
-         *             if (values.length == 5) {
-         *
-         *                 int[] indices = new int[]{Integer.parseInt(values[1], 10) - 1, Integer.parseInt(values[2], 10) - 1, Integer.parseInt(values[3], 10) - 1, Integer.parseInt(values[4], 10) - 1};
-         *                 return new Face[]{
-         *                         new Face(new int[]{indices[0], indices[1], indices[2]}),
-         *                         new Face(new int[]{indices[0], indices[2], indices[3]})
-         *                 };
-         *
-         *             } else {
-         *                 int[] indices = new int[]{Integer.parseInt(values[1], 10) - 1, Integer.parseInt(values[2], 10) - 1, Integer.parseInt(values[3], 10) - 1};
-         *                 return new Face[]{new Face(new int[]{indices[0], indices[1], indices[2]})};
-         *             }
-         *         } catch (NumberFormatException e) {
-         *             return new Face[]{new Face(new int[]{0, 0, 0})};
-         *         }
-         */
-
     }
 
+    /**
+     * get the vertices from the line
+     * @param values the line from the file
+     * @return the vertex as point3D
+     */
     //for vertexes
     private static Point3D parseVertex(String[] values) {
         //set indexes for vertices

@@ -62,8 +62,8 @@ public class OBJReader {
             }
 
         }
-        if (normals.size() != 0)
-            return makemodel(faces, vertices, normals);
+//        if (normals.size() != 0)
+//            return makemodel(faces, vertices, normals);
         return makemodel(faces, vertices);
     }
 
@@ -103,7 +103,7 @@ public class OBJReader {
     private static Model makemodel(ArrayList<Face> faces, ArrayList<Point3D> vertices) {
         var val = new ArrayList<Triangle>();
         for (Face face : faces) {
-            val.add(new Triangle(vertices.get(face.indices[0]), vertices.get(face.indices[1]), vertices.get(face.indices[2])));
+            val.add(new Triangle(vertices.get(face.indices[2]), vertices.get(face.indices[1]), vertices.get(face.indices[0])));
         }
         return new Model(val, new Point3D(0, 0, 0));
     }

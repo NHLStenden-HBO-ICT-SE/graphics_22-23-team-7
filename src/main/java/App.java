@@ -28,8 +28,11 @@ public class App {
         Path recorderPath = Paths.get(documents, "nhlstenden", "solarsystem", "recordings");
         Path modelPath = Paths.get(documents, "nhlstenden", "solarsystem", "Models");
 
-        Model model = OBJReader.parseObj(modelPath + "\\gun.obj");
-        model.setPosition(new Point3D(0,0,15));
+        Model model = OBJReader.parseObj(modelPath + "\\untitled.obj");
+        model.setPosition(new Point3D(0,5,5));
+
+
+
 
 
         if (Files.notExists(recorderPath)) {
@@ -59,14 +62,14 @@ public class App {
         Point3D originL2 = new Point3D(0, 2, 0);
         Point3D originL3 = new Point3D(2, 2, 0);
         Point3D originL4 = new Point3D(2, 0, 0);
-        Light[] lights = new Light[]{new Light(30, originL), new Light(30, originL2), new Light(30, originL3)};
+        Light[] lights = new Light[]{new Light(30, originL)};
 
         //init drawing-helper
         DrawingHelper dh = new DrawingHelper(700, 700);
 
         //init camera
         Point3D positionC = new Point3D(0, 0, -10);
-        Camera camera = new Camera(direction, positionC, 4F, dh.getWidth(), dh.getHeight());
+        Camera camera = new Camera(direction, positionC, 1F, dh.getWidth(), dh.getHeight());
 
         //init scene
         Scene scene = new Scene(camera, spheres, lights);

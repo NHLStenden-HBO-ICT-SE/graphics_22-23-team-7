@@ -1,12 +1,27 @@
 package classes.utilities;
-//dont add public for package private
- class Face{
+//don't add public for package private
+
+/**
+ * Face class for the OBJReader
+ */
+class Face {
     int[] indices;
     int normal;
-    Face(int[] indices){
-        this.indices=indices;
+
+    /**
+     * constructor for only indices
+     * @param indices
+     */
+    Face(int[] indices) {
+        this.indices = indices;
     }
-    Face(int[] indices, int normal){
+
+    /**
+     * constructor when normals are given
+     * @param indices
+     * @param normal
+     */
+    Face(int[] indices, int normal) {
         this(indices);
         this.normal = normal;
     }

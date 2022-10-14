@@ -13,13 +13,17 @@ import interfaces.objects.Shape;
 public class Triangle implements Shape {
 
 
-    /**
-     * Triangle constructor. sets vertices.
-     */
     private Point3D[] vertices = new Point3D[3];
     private Vector3D surfaceNormal = new Vector3D();
     private Point3D position;
 
+    /**
+     * triangle constructor
+     *
+     * @param vertice
+     * @param vertice1
+     * @param vertice2
+     */
     public Triangle(Point3D vertice, Point3D vertice1, Point3D vertice2) {
         vertices[0] = vertice;
         vertices[1] = vertice1;
@@ -28,6 +32,14 @@ public class Triangle implements Shape {
         calcPosition();
     }
 
+    /**
+     * triangle constructor with custom normal direction
+     *
+     * @param vertice
+     * @param vertice1
+     * @param vertice2
+     * @param surfaceNormal
+     */
     public Triangle(Point3D vertice, Point3D vertice1, Point3D vertice2, Vector3D surfaceNormal) {
         this(vertice, vertice1, vertice2);
         this.surfaceNormal = surfaceNormal;
@@ -65,22 +77,41 @@ public class Triangle implements Shape {
         surfaceNormal.x = ((direction1.y * direction2.z) - (direction1.z * direction2.y));
         surfaceNormal.y = ((direction1.z * direction2.x) - (direction1.x * direction2.z));
         surfaceNormal.z = ((direction1.x * direction2.y) - (direction1.y * direction2.x));
+        surfaceNormal = surfaceNormal.normalize();
     }
 
+    /**
+     * gets surface normals
+     *
+     * @return
+     */
     public Vector3D getSurfaceNormal() {
         return surfaceNormal;
     }
 
-
+    /**
+     * calculates center of triangle
+     */
     private void calcPosition() {
         this.position = new Point3D((vertices[0].add(vertices[1].add(vertices[2]))).divide(3));
     }
 
+    /**
+     * returns position
+     *
+     * @return center of triangle
+     */
     @Override
     public Point3D getPosition() {
         return position;
     }
 
+    /**
+     * intersection with ray
+     *
+     * @param ray the ray
+     * @return IntersectionHandler of the intersect
+     */
     @Override
     public IntersectionHandler intersection(Ray ray) {
         //easy access scoped pointer vars
@@ -134,17 +165,35 @@ public class Triangle implements Shape {
         return new IntersectionHandler(true, distance, this, ray);
     }
 
+    /**
+     * checks if ray is in range
+     *
+     * @param ray the ray
+     * @return if is in range bool
+     */
     @Override
     public Boolean isRayInRangeOfShape(Ray ray) {
         return ray.getPosition().distance(this.getPosition()) < ray.getLength();
     }
 
+    /**
+     * recalculate surface normals
+     *
+     * @param point
+     * @return
+     */
     @Override
     public Vector3D calcNormal(Point3D point) {
-        //this.calcSurfaceNormal();
+        //this.surfaceNormal = this.position.getVector(point).normalize();
+        calcSurfaceNormal();
         return surfaceNormal;
     }
 
+    /**
+     * sets surface normal
+     *
+     * @param surfaceNormal the surface normal
+     */
     public void setNormal(Vector3D surfaceNormal) {
         this.surfaceNormal = surfaceNormal;
     }

@@ -107,7 +107,8 @@ public class Sphere implements Shape {
         //radius^2
         double r2 = radius * radius;
 
-        if (p2 > r2) return new IntersectionHandler(false); //a smart way to check if ray intersects before taking the sqrt
+        if (p2 > r2)
+            return new IntersectionHandler(false); //a smart way to check if ray intersects before taking the sqrt
 
         //calculate distance to intersection
         t = t - Math.sqrt(r2 - p2);
@@ -125,7 +126,12 @@ public class Sphere implements Shape {
      * @return
      */
     public Boolean isRayInRangeOfShape(Ray ray) {
-       return ray.getPosition().distance(position) - radius < ray.getLength();
+        return ray.getPosition().distance(position) - radius < ray.getLength();
+    }
+
+    @Override
+    public Vector3D calcNormal(Point3D point) {
+        return position.getVector(point);
     }
 
 

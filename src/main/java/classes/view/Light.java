@@ -6,7 +6,6 @@ import classes.math.Ray;
 public class Light {
     private Point3D position;
     private double intensity;
-    private Color color; //add later
 
     //*****************************
     // Constructors
@@ -17,17 +16,7 @@ public class Light {
      * @param position
      */
     public Light(double intensity, Point3D position) {
-        this(intensity, position, new Color());
-    }
-
-    /**
-     * @param intensity
-     * @param position
-     * @param color
-     */
-    public Light(double intensity, Point3D position, Color color) {
         this.intensity = intensity;
-        this.color = color;
         this.position = position;
     }
 
@@ -53,23 +42,6 @@ public class Light {
         this.intensity = intensity;
     }
 
-    /**
-     * gets color of the light
-     *
-     * @return
-     */
-    public Color getColor() {
-        return color;
-    }
-
-    /**
-     * gets color of the light
-     *
-     * @param color
-     */
-    public void setColor(Color color) {
-        this.color = color;
-    }
 
     /**
      * get position of light

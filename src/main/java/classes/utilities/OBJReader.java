@@ -5,6 +5,7 @@ import classes.math.Vector3D;
 import classes.objects.Triangle;
 import classes.objects.Model;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -127,7 +128,7 @@ public class OBJReader {
     private static Model makemodel(ArrayList<Face> faces, ArrayList<Point3D> vertices) {
         var val = new ArrayList<Triangle>();
         for (Face face : faces) {
-            val.add(new Triangle(vertices.get(face.indices[2]), vertices.get(face.indices[1]), vertices.get(face.indices[0])));
+            val.add(new Triangle(vertices.get(face.indices[2]), vertices.get(face.indices[1]), vertices.get(face.indices[0]), new Color(50,50,50)));
         }
         return new Model(val, new Point3D(0, 0, 0));
     }

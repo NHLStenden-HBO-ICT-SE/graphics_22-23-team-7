@@ -5,9 +5,10 @@ import classes.math.Ray;
 import classes.math.Vector3D;
 import interfaces.objects.Shape;
 
+import java.awt.*;
 import java.util.ArrayList;
 
-public class Model implements Shape {
+public class Model {
 
     private ArrayList<Triangle> triangles;
     private Point3D position = new Point3D(0, 0, 0);
@@ -44,6 +45,7 @@ public class Model implements Shape {
     }
 
 
+
     /**
      * returns all triangles
      *
@@ -67,51 +69,14 @@ public class Model implements Shape {
      *
      * @return position
      */
-    @Override
     public Point3D getPosition() {
         return position;
     }
 
-    /**
-     * checks if ray has intersected with any of the triangles. once one hits true we dont have to go over the others.
-     *
-     * @param ray
-     * @return
-     */
-    @Override
-    public IntersectionHandler intersection(Ray ray) {
-        for (Triangle t : triangles) {
-            var intersection = t.intersection(ray);
-            if (intersection.isIntersected())
-                return intersection;
+    public void modelColor (Color color){
+        for (Triangle t : triangles)
+        {
+            t.setColor(color);
         }
-        return new IntersectionHandler(false);
-    }
-
-    /**
-     * checks if ray is in range of any of the triangles. once one hits true we dont have to go over the others.
-     *
-     * @param ray the casted ray
-     * @return if the ray is in range
-     */
-    @Override
-    public Boolean isRayInRangeOfShape(Ray ray) {
-        for (Triangle t : triangles) {
-            var rangeOfShape = t.isRayInRangeOfShape(ray);
-            if (rangeOfShape)
-                return rangeOfShape;
-        }
-        return false;
-    }
-
-    /**
-     * not implemented
-     *
-     * @param point
-     * @return
-     */
-    @Override
-    public Vector3D calcNormal(Point3D point) {
-        return null;
     }
 }

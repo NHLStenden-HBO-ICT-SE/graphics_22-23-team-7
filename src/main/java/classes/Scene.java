@@ -51,11 +51,14 @@ public class Scene {
 
         var closestShape = getClosestShape(ray);
 
+
         if (!closestShape.isIntersected()) return Color.black;
 
         double intensity = calculateIntensity(closestShape);
 
-        return new Color(clamp((int) (255 * intensity), 0, 255), clamp((int) (255 * intensity), 0, 255), clamp((int) (255 * intensity), 0, 255));
+        var shape = closestShape.getShape().getColor();
+
+        return new Color(clamp((int) (shape.getRed() * intensity), 0, 255), clamp((int) (shape.getGreen() * intensity), 0, 255), clamp((int) (shape.getBlue() * intensity), 0, 255));
     }
 
     /**

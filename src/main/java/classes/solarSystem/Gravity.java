@@ -147,7 +147,7 @@ public final class Gravity {
         } catch (ZeroNumException e) {
             throw new RuntimeException(e);
         }
-        return (G * planet.getMass() / Math.pow(distance, 2));
+        return Math.sqrt(G * planet.getMass() / distance);
     }
 }
 

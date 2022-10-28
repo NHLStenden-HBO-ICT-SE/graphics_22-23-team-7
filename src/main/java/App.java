@@ -58,7 +58,7 @@ public class App {
 
         models.forEach(m -> shapes.addAll(m.getTriangles()));
         planets.add(new Planet(0.2, new Vector3D(), earthOrigin));
-        planets.add(new Planet(0, new Vector3D(0.05, 0.02, 0), moonOrigin));
+        planets.add(new Planet(0, new Vector3D(0.02, 0.04, 0), moonOrigin));
 
         if (Files.notExists(recorderPath)) {
             Files.createDirectories(recorderPath);
@@ -90,6 +90,8 @@ public class App {
         int lastHeight = dh.getHeight();
         int lastWidth = dh.getWidth();
 
+        Vector3D rotationVector = new Vector3D(0, 0, 1);
+
         //repeatedly draw scene
         while (true) {
             //starts timer
@@ -105,6 +107,13 @@ public class App {
                 dh.update();
                 // Additional sleep as update returns before finishing render
                 Thread.sleep(7, 500);
+
+                models.get(models.size() - 1).getTriangles().forEach(x -> {
+                    var positions = x.getVertices();
+                    x.setVertex(0, Quaternion.rotation(rotationVector, positions[0], 10));
+                    x.setVertex(1, Quaternion.rotation(rotationVector, positions[1], 10));
+                    x.setVertex(2, Quaternion.rotation(rotationVector, positions[2], 10));
+                });
 
                 for (int i = 0; i < 100; i++) {
                     Gravity.movePlanets(planets.toArray(new Planet[0]));

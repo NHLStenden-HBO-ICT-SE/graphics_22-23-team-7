@@ -30,7 +30,7 @@ public class Triangle implements Shape {
      * @param surfaceNormal
      */
     public Triangle(Point3D vertice, Point3D vertice1, Point3D vertice2, Vector3D surfaceNormal) {
-        this(vertice, vertice1, vertice2, Color.white);
+        this(vertice, vertice1, vertice2, Color.red);
         this.surfaceNormal = surfaceNormal;
     }
 

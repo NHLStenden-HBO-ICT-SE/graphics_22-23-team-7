@@ -60,7 +60,7 @@ public class Camera {
         var position = topLeft.addVector(widthV).addVector(heightV);
 
         //return ray
-        return new Ray(this.position, this.position.getVector(position), 400); //TODO: change distance to a variable
+        return new Ray(this.position, this.position.getVector(position), 4000); //TODO: change distance to a variable
     }
 
     public Point3D GetPosition(){

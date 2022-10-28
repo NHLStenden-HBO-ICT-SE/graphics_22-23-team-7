@@ -28,7 +28,8 @@ public class OBJReader {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static Model parseObj(String file) throws FileNotFoundException, IOException {
+
+    public static Model parseObj(String file, Color color) throws FileNotFoundException, IOException {
         ArrayList<Point3D> vertices = new ArrayList<>();
         ArrayList<Triangle> triangles = new ArrayList<>();
         ArrayList<Face> faces = new ArrayList<>();
@@ -70,7 +71,10 @@ public class OBJReader {
             }
 
         }
-        return makemodel(faces, vertices);
+        return makeModel(faces, vertices, color);
+    }
+    public static Model parseObj(String file) throws FileNotFoundException, IOException {
+        return parseObj(file, new Color(50,50,50));
     }
 
     /**
@@ -110,7 +114,7 @@ public class OBJReader {
      * @param normals vertex normals
      * @return
      */
-    private static Model makemodel(ArrayList<Face> faces, ArrayList<Point3D> vertices, ArrayList<Vector3D> normals) {
+    private static Model makeModel(ArrayList<Face> faces, ArrayList<Point3D> vertices, ArrayList<Vector3D> normals) {
         var val = new ArrayList<Triangle>();
         for (Face face : faces) {
             val.add(new Triangle(vertices.get(face.indices[0]), vertices.get(face.indices[1]), vertices.get(face.indices[2]), normals.get(face.normal)));
@@ -125,10 +129,14 @@ public class OBJReader {
      * @param vertices vertices
      * @return
      */
-    private static Model makemodel(ArrayList<Face> faces, ArrayList<Point3D> vertices) {
+    private static Model makeModel(ArrayList<Face> faces, ArrayList<Point3D> vertices) {
+        return makeModel(faces, vertices, new Color(50,50,50));
+    }
+
+    private static Model makeModel(ArrayList<Face> faces, ArrayList<Point3D> vertices, Color color) {
         var val = new ArrayList<Triangle>();
         for (Face face : faces) {
-            val.add(new Triangle(vertices.get(face.indices[2]), vertices.get(face.indices[1]), vertices.get(face.indices[0]), new Color(50,50,50)));
+            val.add(new Triangle(vertices.get(face.indices[2]), vertices.get(face.indices[1]), vertices.get(face.indices[0]), color));
         }
         return new Model(val, new Point3D(0, 0, 0));
     }

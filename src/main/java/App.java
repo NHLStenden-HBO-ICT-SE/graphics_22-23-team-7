@@ -13,10 +13,13 @@ import classes.view.Light;
 import interfaces.objects.Shape;
 
 import javax.swing.filechooser.FileSystemView;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -28,12 +31,28 @@ public class App {
         Path recorderPath = Paths.get(documents, "nhlstenden", "solarsystem", "recordings");
         Path modelPath = Paths.get(documents, "nhlstenden", "solarsystem", "Models");
 
-        Model model = OBJReader.parseObj(modelPath + "\\untitled.obj");
-        model.setPosition(new Point3D(0,5,5));
-
-
-
-
+        Point3D earthOrigin = new Point3D(0, 0, 10);
+        java.util.List<Model> models = new ArrayList<>();
+        java.util.List<Shape> shapes = new ArrayList<>();
+        int[] colors = new int[] {
+                0x6DA100,
+                0x9FC57C,
+                0x42A6F2,
+                0x358E00,
+                0xB8BF71,
+                0xD07A47,
+                0xDCA967,
+                0xE3C066,
+                0xE19152,
+                0xF5F5F5,
+                0xFDBD6A
+        };
+        for (int i = 0; i < colors.length; i++) {
+            Model model = OBJReader.parseObj(Paths.get(modelPath.toString(), "earth", Integer.toHexString(colors[i]).toUpperCase() + ".obj").toString(), new Color(colors[i]));
+            model.setPosition(earthOrigin);
+            models.add(model);
+        }
+        models.forEach(m -> shapes.addAll(m.getTriangles()));
 
         if (Files.notExists(recorderPath)) {
             Files.createDirectories(recorderPath);
@@ -44,35 +63,23 @@ public class App {
         //view direction
         Vector3D direction = new Vector3D(0, 0, 1);
 
-        //earth
-        Point3D earthPos = new Point3D(0, 0, 9);
-        Sphere earthS = new Sphere(earthPos, 1);
-        Vector3D earthVel = new Vector3D(0, 0, 0);
-
-
-        //satellite
-        Point3D satPos = new Point3D(3.5, -0.5, 8);
-        Sphere satS = new Sphere(satPos, 0.2);
-        Vector3D satVel = new Vector3D(0, 0, 0.1);
-
-        Shape[] spheres = model.getTriangles().stream().toList().toArray(new Shape[model.getTriangles().size()]);
-
         //lights
-        Point3D originL = new Point3D(0, 0, 0);
+        Point3D originL = new Point3D(5, 5, 0);
         Point3D originL2 = new Point3D(0, 2, 0);
         Point3D originL3 = new Point3D(2, 2, 0);
         Point3D originL4 = new Point3D(2, 0, 0);
-        Light[] lights = new Light[]{new Light(30, originL)};
+        Light[] lights = new Light[]{new Light(50, originL)};
 
         //init drawing-helper
-        DrawingHelper dh = new DrawingHelper(700, 700);
+        DrawingHelper dh = new DrawingHelper(640, 480);
 
         //init camera
-        Point3D positionC = new Point3D(0, 0, -10);
+        Point3D positionC = new Point3D(0, 0, 0);
         Camera camera = new Camera(direction, positionC, 1F, dh.getWidth(), dh.getHeight());
 
         //init scene
-        Scene scene = new Scene(camera, spheres, lights);
+        // TODO
+        Scene scene = new Scene(camera, shapes.toArray(new Shape[0]), lights);
 
         int lastHeight = dh.getHeight();
         int lastWidth = dh.getWidth();

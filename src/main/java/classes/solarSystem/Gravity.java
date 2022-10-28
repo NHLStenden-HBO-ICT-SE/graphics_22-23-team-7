@@ -111,7 +111,7 @@ public final class Gravity {
      *
      * @param planets
      */
-    public static void movePlanets(Planet... planets) {
+    public static void movePlanets(Planet[] planets) {
         calculatePositions(planets);
         if (planets.length < 2) return;
         calculateForce(planets);

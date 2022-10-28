@@ -6,7 +6,6 @@ import classes.math.Vector3D;
 import classes.objects.IntersectionHandler;
 import classes.objects.Sphere;
 import classes.objects.Triangle;
-import classes.solarSystem.Planet;
 import classes.view.Camera;
 import classes.view.Light;
 import interfaces.objects.Shape;
@@ -18,7 +17,6 @@ import static classes.math.GenericMath.clamp;
 
 public class Scene {
     private final Shape[] shapes;
-    private final Planet[] planets;
     private final Light[] lights;
     private Camera camera;
 
@@ -26,7 +24,6 @@ public class Scene {
         this.camera = camera;
         this.shapes = shapes;
         this.lights = lights;
-        this.planets = Arrays.stream(shapes).filter(shape -> shape instanceof Planet).toList().toArray(new Planet[0]);
     }
 
     public Camera getCamera() {
@@ -35,10 +32,6 @@ public class Scene {
 
     public void setCamera(Camera camera) {
         this.camera = camera;
-    }
-
-    public Planet[] getPlanets() {
-        return planets;
     }
 
     /**

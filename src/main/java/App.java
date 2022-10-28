@@ -4,8 +4,7 @@ import classes.Scene;
 import classes.math.Point3D;
 import classes.math.Vector3D;
 import classes.objects.Model;
-import classes.objects.Sphere;
-import classes.objects.Triangle;
+import classes.solarSystem.Gravity;
 import classes.solarSystem.Planet;
 import classes.utilities.OBJReader;
 import classes.view.Camera;
@@ -14,12 +13,10 @@ import interfaces.objects.Shape;
 
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -32,8 +29,12 @@ public class App {
         Path modelPath = Paths.get(documents, "nhlstenden", "solarsystem", "Models");
 
         Point3D earthOrigin = new Point3D(0, 0, 10);
+        Point3D moonOrigin = new Point3D(0, 0, 5);
+        Model moon = OBJReader.parseObj(Paths.get(modelPath.toString(), "earth", "Moon.obj").toString(), Color.lightGray);
+        moon.setPosition(moonOrigin);
         java.util.List<Model> models = new ArrayList<>();
         java.util.List<Shape> shapes = new ArrayList<>();
+        java.util.List<Planet> planets = new ArrayList<>();
         int[] colors = new int[] {
                 0x6DA100,
                 0x9FC57C,
@@ -52,7 +53,12 @@ public class App {
             model.setPosition(earthOrigin);
             models.add(model);
         }
+
+        models.add(moon);
+
         models.forEach(m -> shapes.addAll(m.getTriangles()));
+        planets.add(new Planet(0.2, new Vector3D(), earthOrigin));
+        planets.add(new Planet(0, new Vector3D(0.05, 0.02, 0), moonOrigin));
 
         if (Files.notExists(recorderPath)) {
             Files.createDirectories(recorderPath);
@@ -71,7 +77,7 @@ public class App {
         Light[] lights = new Light[]{new Light(50, originL)};
 
         //init drawing-helper
-        DrawingHelper dh = new DrawingHelper(640, 480);
+        DrawingHelper dh = new DrawingHelper(320, 240);
 
         //init camera
         Point3D positionC = new Point3D(0, 0, 0);
@@ -91,7 +97,7 @@ public class App {
 
             //check if window size changed
             if (lastHeight != dh.getHeight() || lastWidth != dh.getWidth()) {
-                scene.setCamera(new Camera(direction, positionC, 4F, dh.getWidth(), dh.getHeight())); //make new camera with proper canvas
+                scene.setCamera(new Camera(direction, positionC, 1F, dh.getWidth(), dh.getHeight())); //make new camera with proper canvas
                 lastHeight = dh.getHeight();
                 lastWidth = dh.getWidth();
             }
@@ -100,6 +106,24 @@ public class App {
                 // Additional sleep as update returns before finishing render
                 Thread.sleep(7, 500);
 
+                for (int i = 0; i < 100; i++) {
+                    Gravity.movePlanets(planets.toArray(new Planet[0]));
+                }
+
+                earthOrigin = planets.get(0).getPosition();
+                moonOrigin = planets.get(1).getPosition();
+
+                for (int i = 0; i < models.size(); i++) {
+                    Model model = models.get(i);
+                    if (i == models.size() - 1) { // Moon
+                        model.setPosition(moonOrigin);
+                        models.set(i, model);
+                    }
+                    else {
+                        model.setPosition(earthOrigin);
+                        models.set(i, model);
+                    }
+                }
 
                 //for recording. stacks buffered images for later use and executes recording generator when duration has expired\
                 if (currentFrame < totalFrames) {

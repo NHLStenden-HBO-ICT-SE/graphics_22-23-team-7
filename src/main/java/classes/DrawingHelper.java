@@ -87,7 +87,6 @@ public class DrawingHelper {
         //
         // move planets
         //
-        Gravity.movePlanets(scene.getPlanets());
 
         return true;
     }

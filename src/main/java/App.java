@@ -3,6 +3,7 @@ import classes.Recorder;
 import classes.Scene;
 import classes.math.Point3D;
 import classes.math.Vector3D;
+import classes.math.imaginary.Quaternion;
 import classes.objects.Model;
 import classes.solarSystem.Gravity;
 import classes.solarSystem.Planet;

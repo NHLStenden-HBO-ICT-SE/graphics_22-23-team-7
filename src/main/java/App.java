@@ -36,19 +36,7 @@ public class App {
         java.util.List<Model> models = new ArrayList<>();
         java.util.List<Shape> shapes = new ArrayList<>();
         java.util.List<Planet> planets = new ArrayList<>();
-        int[] colors = new int[] {
-                0x6DA100,
-                0x9FC57C,
-                0x42A6F2,
-                0x358E00,
-                0xB8BF71,
-                0xD07A47,
-                0xDCA967,
-                0xE3C066,
-                0xE19152,
-                0xF5F5F5,
-                0xFDBD6A
-        };
+        int[] colors = new int[]{0x6DA100, 0x9FC57C, 0x42A6F2, 0x358E00, 0xB8BF71, 0xD07A47, 0xDCA967, 0xE3C066, 0xE19152, 0xF5F5F5, 0xFDBD6A};
         for (int i = 0; i < colors.length; i++) {
             Model model = OBJReader.parseObj(Paths.get(modelPath.toString(), "earth", Integer.toHexString(colors[i]).toUpperCase() + ".obj").toString(), new Color(colors[i]));
             model.setPosition(earthOrigin);
@@ -109,12 +97,14 @@ public class App {
                 // Additional sleep as update returns before finishing render
                 Thread.sleep(7, 500);
 
-                models.get(models.size() - 1).getTriangles().forEach(x -> {
-                    var positions = x.getVertices();
-                    x.setVertex(0, Quaternion.rotation(rotationVector, positions[0], 10));
-                    x.setVertex(1, Quaternion.rotation(rotationVector, positions[1], 10));
-                    x.setVertex(2, Quaternion.rotation(rotationVector, positions[2], 10));
-                });
+                for (int i = 0; i < models.size() - 1; i++) {
+                    models.get(i).getTriangles().forEach(x -> {
+                        var positions = x.getVertices();
+                        x.setVertex(0, Quaternion.rotation(rotationVector, positions[0], 10));
+                        x.setVertex(1, Quaternion.rotation(rotationVector, positions[1], 10));
+                        x.setVertex(2, Quaternion.rotation(rotationVector, positions[2], 10));
+                    });
+                }
 
                 for (int i = 0; i < 100; i++) {
                     Gravity.movePlanets(planets.toArray(new Planet[0]));
@@ -128,8 +118,7 @@ public class App {
                     if (i == models.size() - 1) { // Moon
                         model.setPosition(moonOrigin);
                         models.set(i, model);
-                    }
-                    else {
+                    } else {
                         model.setPosition(earthOrigin);
                         models.set(i, model);
                     }

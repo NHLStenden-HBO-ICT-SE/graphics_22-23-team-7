@@ -28,6 +28,7 @@ public class App {
         String documents = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
         Path recorderPath = Paths.get(documents, "nhlstenden", "solarsystem", "recordings");
         Path modelPath = Paths.get(documents, "nhlstenden", "solarsystem", "Models");
+        Path backgroundpath = Paths.get(documents,"nhlstenden", "solarsystem", "background.jpg");
 
         Point3D earthOrigin = new Point3D(0, 0, 0);
         Point3D moonOrigin = new Point3D(0, 0, -5);
@@ -74,7 +75,7 @@ public class App {
 
         //init scene
         // TODO
-        Scene scene = new Scene(camera, shapes.toArray(new Shape[0]), lights);
+        Scene scene = new Scene(camera, shapes.toArray(new Shape[0]), lights, backgroundpath);
 
         int lastHeight = dh.getHeight();
         int lastWidth = dh.getWidth();

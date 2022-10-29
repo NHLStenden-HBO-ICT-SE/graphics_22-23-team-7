@@ -67,7 +67,7 @@ public class DrawingHelper {
                             //create new ray current position on the screen, reason for division is normalization (between 0 and 1)
                             Ray ray = scene.getCamera().makeRay((double) i / window.getWidth(), (double) j / window.getHeight());
 
-                            window.draw(i, j, scene.calculatePixel(ray));
+                            window.draw(i, j, scene.calculatePixel(ray, i, j));
 
                         }
                     }

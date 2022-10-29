@@ -29,8 +29,8 @@ public class App {
         Path recorderPath = Paths.get(documents, "nhlstenden", "solarsystem", "recordings");
         Path modelPath = Paths.get(documents, "nhlstenden", "solarsystem", "Models");
 
-        Point3D earthOrigin = new Point3D(0, 0, 10);
-        Point3D moonOrigin = new Point3D(0, 0, 5);
+        Point3D earthOrigin = new Point3D(0, 0, 0);
+        Point3D moonOrigin = new Point3D(0, 0, -5);
         Model moon = OBJReader.parseObj(Paths.get(modelPath.toString(), "earth", "Moon.obj").toString(), Color.lightGray);
         moon.setPosition(moonOrigin);
         java.util.List<Model> models = new ArrayList<>();
@@ -59,7 +59,7 @@ public class App {
         Vector3D direction = new Vector3D(0, 0, 1);
 
         //lights
-        Point3D originL = new Point3D(5, 5, 0);
+        Point3D originL = new Point3D(5, 5, -10);
         Point3D originL2 = new Point3D(0, 2, 0);
         Point3D originL3 = new Point3D(2, 2, 0);
         Point3D originL4 = new Point3D(2, 0, 0);
@@ -69,7 +69,7 @@ public class App {
         DrawingHelper dh = new DrawingHelper(320, 240);
 
         //init camera
-        Point3D positionC = new Point3D(0, 0, 0);
+        Point3D positionC = new Point3D(0, 0, -10);
         Camera camera = new Camera(direction, positionC, 1F, dh.getWidth(), dh.getHeight());
 
         //init scene
@@ -79,7 +79,7 @@ public class App {
         int lastHeight = dh.getHeight();
         int lastWidth = dh.getWidth();
 
-        Vector3D rotationVector = new Vector3D(0, 0, 1);
+        Vector3D rotationVector = new Vector3D(0.5, -0.5, 0);
 
         //repeatedly draw scene
         while (true) {
@@ -106,9 +106,8 @@ public class App {
                     });
                 }
 
-                for (int i = 0; i < 100; i++) {
-                    Gravity.movePlanets(planets.toArray(new Planet[0]));
-                }
+                Gravity.movePlanets(planets.toArray(new Planet[0]));
+
 
                 earthOrigin = planets.get(0).getPosition();
                 moonOrigin = planets.get(1).getPosition();

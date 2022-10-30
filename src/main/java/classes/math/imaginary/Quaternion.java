@@ -13,6 +13,13 @@ public class Quaternion {
     //real number
     private final double real;
 
+    /**
+     *
+     * @param real
+     * @param i
+     * @param j
+     * @param k
+     */
     public Quaternion(double real, double i, double j, double k) {
         this.real = real;
         this.i = i;
@@ -63,85 +70,5 @@ public class Quaternion {
         double jN = (real * quaternion.j - i * quaternion.k + j * quaternion.real + k * quaternion.i);
         double kN = (real * quaternion.k + i * quaternion.j - j * quaternion.i + k * quaternion.real);
         return new Quaternion(realN, iN, jN, kN);
-    }
-
-    /**
-     * subtracts two generic types
-     *
-     * @param T
-     * @return subtraction
-     */
-    public Quaternion sub(Quaternion T) {
-        return null;
-    }
-
-    /**
-     * subtracts two generic types
-     * and sets the current object to the result
-     *
-     * @param T
-     */
-    public void setSub(Quaternion T) {
-
-    }
-
-    /**
-     * calculates the sum of this dimension3 and another 3D dimension3
-     *
-     * @param T
-     * @return sum
-     */
-    public Quaternion add(Quaternion T) {
-        return null;
-    }
-
-    /**
-     * calculates the sum of this T and another T
-     * and sets the current object to the result
-     *
-     * @param T
-     */
-    public void setAdd(Quaternion T) {
-
-    }
-
-    /**
-     * multiplication of generic type with n
-     *
-     * @param n
-     * @return multiplication
-     */
-    public Quaternion multiply(double n) {
-        return null;
-    }
-
-    /**
-     * multiplication of generic type with n
-     * and sets the current object to the result
-     *
-     * @param n
-     */
-    public void setMultiply(double n) {
-
-    }
-
-    /**
-     * divides all elements in a generic type by n
-     *
-     * @param n
-     * @return division
-     */
-    public Quaternion divide(double n) {
-        return null;
-    }
-
-    /**
-     * divides all elements in a generic type by n
-     * and sets the current object to the result
-     *
-     * @param n
-     */
-    public void setDivide(double n) {
-
     }
 }

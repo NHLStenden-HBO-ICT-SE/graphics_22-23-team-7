@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class App {
     public static void main(String[] args) throws Exception {
         //stores fps and duration in seconds
-        int frames = 60;
+        int frames = 10;
         int duration = 3;
         int totalFrames = (frames * duration);
         String documents = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
@@ -98,12 +98,13 @@ public class App {
                 // Additional sleep as update returns before finishing render
                 Thread.sleep(7, 500);
 
-                for (int i = 0; i < models.size() - 1; i++) {
+                for (int i = 0; i < models.size(); i++) {
+                    var modelPos = models.get(i).getPosition();
                     models.get(i).getTriangles().forEach(x -> {
                         var positions = x.getVertices();
-                        x.setVertex(0, Quaternion.rotation(rotationVector, positions[0], 10));
-                        x.setVertex(1, Quaternion.rotation(rotationVector, positions[1], 10));
-                        x.setVertex(2, Quaternion.rotation(rotationVector, positions[2], 10));
+                        x.setVertex(0, Quaternion.rotation(rotationVector, positions[0].sub(modelPos), 2).add(modelPos));
+                        x.setVertex(1, Quaternion.rotation(rotationVector, positions[1].sub(modelPos), 2).add(modelPos));
+                        x.setVertex(2, Quaternion.rotation(rotationVector, positions[2].sub(modelPos), 2).add(modelPos));
                     });
                 }
 

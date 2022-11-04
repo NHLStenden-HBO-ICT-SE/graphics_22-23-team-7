@@ -33,15 +33,10 @@ public class Model {
     public void setPosition(Point3D position) {
         for (Triangle t : triangles) {
             for (int i = 0; i < 3; i++) {
-                t.setVertex(i, t.getVertices()[i].sub(this.position));
+                t.setVertex(i, t.getVertices()[i].add(position.sub(this.position)));
             }
         }
         this.position = position;
-        for (Triangle t : triangles) {
-            for (int i = 0; i < 3; i++) {
-                t.setVertex(i, t.getVertices()[i].add(this.position));
-            }
-        }
     }
 
 

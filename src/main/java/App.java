@@ -22,15 +22,16 @@ import java.util.ArrayList;
 public class App {
     public static void main(String[] args) throws Exception {
         //stores fps and duration in seconds
-        int frames = 60;
+        int frames = 10;
         int duration = 3;
         int totalFrames = (frames * duration);
         String documents = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
         Path recorderPath = Paths.get(documents, "nhlstenden", "solarsystem", "recordings");
         Path modelPath = Paths.get(documents, "nhlstenden", "solarsystem", "Models");
+        Path backgroundpath = Paths.get(documents,"nhlstenden", "solarsystem", "background.jpg");
 
-        Point3D earthOrigin = new Point3D(0, 0, 10);
-        Point3D moonOrigin = new Point3D(0, 0, 5);
+        Point3D earthOrigin = new Point3D(0, 0, 0);
+        Point3D moonOrigin = new Point3D(0, 0, -5);
         Model moon = OBJReader.parseObj(Paths.get(modelPath.toString(), "earth", "Moon.obj").toString(), Color.lightGray);
         moon.setPosition(moonOrigin);
         java.util.List<Model> models = new ArrayList<>();
@@ -59,7 +60,7 @@ public class App {
         Vector3D direction = new Vector3D(0, 0, 1);
 
         //lights
-        Point3D originL = new Point3D(5, 5, 0);
+        Point3D originL = new Point3D(5, 5, -10);
         Point3D originL2 = new Point3D(0, 2, 0);
         Point3D originL3 = new Point3D(2, 2, 0);
         Point3D originL4 = new Point3D(2, 0, 0);
@@ -69,17 +70,17 @@ public class App {
         DrawingHelper dh = new DrawingHelper(320, 240);
 
         //init camera
-        Point3D positionC = new Point3D(0, 0, 0);
+        Point3D positionC = new Point3D(0, 0, -10);
         Camera camera = new Camera(direction, positionC, 1F, dh.getWidth(), dh.getHeight());
 
         //init scene
         // TODO
-        Scene scene = new Scene(camera, shapes.toArray(new Shape[0]), lights);
+        Scene scene = new Scene(camera, shapes.toArray(new Shape[0]), lights, backgroundpath);
 
         int lastHeight = dh.getHeight();
         int lastWidth = dh.getWidth();
 
-        Vector3D rotationVector = new Vector3D(0, 0, 1);
+        Vector3D rotationVector = new Vector3D(0.5, -0.5, 0);
 
         //repeatedly draw scene
         while (true) {
@@ -97,18 +98,18 @@ public class App {
                 // Additional sleep as update returns before finishing render
                 Thread.sleep(7, 500);
 
-                for (int i = 0; i < models.size() - 1; i++) {
+                for (int i = 0; i < models.size(); i++) {
+                    var modelPos = models.get(i).getPosition();
                     models.get(i).getTriangles().forEach(x -> {
                         var positions = x.getVertices();
-                        x.setVertex(0, Quaternion.rotation(rotationVector, positions[0], 10));
-                        x.setVertex(1, Quaternion.rotation(rotationVector, positions[1], 10));
-                        x.setVertex(2, Quaternion.rotation(rotationVector, positions[2], 10));
+                        x.setVertex(0, Quaternion.rotation(rotationVector, positions[0].sub(modelPos), 2).add(modelPos));
+                        x.setVertex(1, Quaternion.rotation(rotationVector, positions[1].sub(modelPos), 2).add(modelPos));
+                        x.setVertex(2, Quaternion.rotation(rotationVector, positions[2].sub(modelPos), 2).add(modelPos));
                     });
                 }
 
-                for (int i = 0; i < 100; i++) {
-                    Gravity.movePlanets(planets.toArray(new Planet[0]));
-                }
+                Gravity.movePlanets(planets.toArray(new Planet[0]));
+
 
                 earthOrigin = planets.get(0).getPosition();
                 moonOrigin = planets.get(1).getPosition();

@@ -71,12 +71,11 @@ public class Triangle implements Shape {
     /**
      * sets specific index of triangle vertices
      *
-     * @param index index
+     * @param index index (starting at 0)
      * @param p     new point
      */
     public void setVertex(int index, Point3D p) {
         this.vertices[index] = p;
-        // calcSurfaceNormal();
         calcPosition();
     }
 

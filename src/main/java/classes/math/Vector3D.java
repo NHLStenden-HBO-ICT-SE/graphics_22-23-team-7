@@ -213,10 +213,10 @@ public class Vector3D extends Dimension3<Vector3D> {
      * returns angle in degrees
      *
      * @param vector
-     * @return angle of vector
+     * @return angle of vector (in degrees)
      */
     public double angle(Vector3D vector) {
-        return Math.acos(this.dot(vector) / (this.length() * vector.length()));
+        return Math.toDegrees(Math.acos(this.dot(vector) / (this.length() * vector.length())));
     }
 
     public Matrix getMatrix() {

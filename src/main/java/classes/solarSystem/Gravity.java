@@ -111,7 +111,7 @@ public final class Gravity {
      *
      * @param planets
      */
-    public static void movePlanets(Planet... planets) {
+    public static void movePlanets(Planet[] planets) {
         calculatePositions(planets);
         if (planets.length < 2) return;
         calculateForce(planets);
@@ -147,7 +147,7 @@ public final class Gravity {
         } catch (ZeroNumException e) {
             throw new RuntimeException(e);
         }
-        return (G * planet.getMass() / Math.pow(distance, 2));
+        return Math.sqrt(G * planet.getMass() / distance);
     }
 }
 

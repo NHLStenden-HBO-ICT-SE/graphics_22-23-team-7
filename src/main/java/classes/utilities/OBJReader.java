@@ -2,12 +2,16 @@ package classes.utilities;
 
 import classes.math.Point3D;
 import classes.math.Vector3D;
-import classes.objects.Triangle;
 import classes.objects.Model;
+import classes.objects.Triangle;
 
 import java.awt.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * inspired by:
@@ -23,62 +27,70 @@ public class OBJReader {
 
     /**
      * parses a obj file to an object model
+     *
      * @param file
      * @return
      * @throws FileNotFoundException
      * @throws IOException
      */
 
-    public static Model parseObj(String file, Color color) throws FileNotFoundException, IOException {
+    public static Model parseObj(Color color, String... file) throws FileNotFoundException, IOException {
         ArrayList<Point3D> vertices = new ArrayList<>();
         ArrayList<Triangle> triangles = new ArrayList<>();
         ArrayList<Face> faces = new ArrayList<>();
         ArrayList<Vector3D> normals = new ArrayList<>();
         //for reading the file
-        FileReader fileReader = new FileReader(new File(file));
-        //for going trough the file later in mem
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+        try {
+            FileReader fileReader = new FileReader(PathHandler.getFile(file));
+            //for going through the file later in mem
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
 
 
-        while (true) {
-            String line = bufferedReader.readLine();
-            if (line == null) {
-                break;
-            }
-            String[] values = line.split(" ");
-            //break if no lines
-
-
-            switch (values[0]) {
-
-                case vertexNormal:
-                    for (Vector3D v : GetNormal(values)) {
-                        normals.add(v);
-                        ;
-                    }
+            while (true) {
+                String line = bufferedReader.readLine();
+                if (line == null) {
                     break;
-                case obj_vertex:
-                    vertices.add(parseVertex(values));
-                    break;
-                case obj_faces:
-                    for (Face f : parseFace(values)) {
-                        faces.add(f);
-                    }
-                    break;
-                default: {
-                    continue;
                 }
-            }
+                String[] values = line.split(" ");
+                //break if no lines
 
+
+                switch (values[0]) {
+
+                    case vertexNormal:
+                        for (Vector3D v : GetNormal(values)) {
+                            normals.add(v);
+                        }
+                        break;
+                    case obj_vertex:
+                        vertices.add(parseVertex(values));
+                        break;
+                    case obj_faces:
+                        Collections.addAll(faces, parseFace(values));
+                        break;
+                    default: {
+                        continue;
+                    }
+                }
+
+            }
+            return makeModel(faces, vertices, color);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        return makeModel(faces, vertices, color);
+
+
     }
-    public static Model parseObj(String file) throws FileNotFoundException, IOException {
-        return parseObj(file, new Color(50,50,50));
+
+    public static Model parseObj(String file) throws IOException {
+        return parseObj(new Color(50, 50, 50), file);
     }
 
     /**
      * for getting the vertex normals of the string
+     *
      * @param values the line of the file
      * @return normal vector
      */
@@ -109,9 +121,10 @@ public class OBJReader {
 
     /**
      * combines extracted info to convert to triangles
-     * @param faces faces
+     *
+     * @param faces    faces
      * @param vertices vertices
-     * @param normals vertex normals
+     * @param normals  vertex normals
      * @return
      */
     private static Model makeModel(ArrayList<Face> faces, ArrayList<Point3D> vertices, ArrayList<Vector3D> normals) {
@@ -125,12 +138,13 @@ public class OBJReader {
 
     /**
      * combines extracted info to convert to triangles
-     * @param faces faces
+     *
+     * @param faces    faces
      * @param vertices vertices
      * @return
      */
     private static Model makeModel(ArrayList<Face> faces, ArrayList<Point3D> vertices) {
-        return makeModel(faces, vertices, new Color(50,50,50));
+        return makeModel(faces, vertices, new Color(50, 50, 50));
     }
 
     private static Model makeModel(ArrayList<Face> faces, ArrayList<Point3D> vertices, Color color) {
@@ -143,6 +157,7 @@ public class OBJReader {
 
     /**
      * get the face from the line and check format
+     *
      * @param values line of file
      * @return returns list of faces
      */
@@ -176,6 +191,7 @@ public class OBJReader {
 
     /**
      * get the vertices from the line
+     *
      * @param values the line from the file
      * @return the vertex as point3D
      */

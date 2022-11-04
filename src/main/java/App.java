@@ -8,38 +8,31 @@ import classes.objects.Model;
 import classes.solarSystem.Gravity;
 import classes.solarSystem.Planet;
 import classes.utilities.OBJReader;
+import classes.utilities.PathHandler;
 import classes.view.Camera;
 import classes.view.Light;
 import interfaces.objects.Shape;
 
-import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        //stores fps and duration in seconds
-        int frames = 10;
-        int duration = 3;
-        int totalFrames = (frames * duration);
-        String documents = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
-        Path recorderPath = Paths.get(documents, "nhlstenden", "solarsystem", "recordings");
-        Path modelPath = Paths.get(documents, "nhlstenden", "solarsystem", "Models");
-        Path backgroundpath = Paths.get(documents,"nhlstenden", "solarsystem", "background.jpg");
-
+        //init background image
+        Path backgroundpath = Path.of(PathHandler.getFile("background.jpg"));
+        //init point earth
         Point3D earthOrigin = new Point3D(0, 0, 0);
+        //init point moon
         Point3D moonOrigin = new Point3D(0, 0, -5);
-        Model moon = OBJReader.parseObj(Paths.get(modelPath.toString(), "earth", "Moon.obj").toString(), Color.lightGray);
+        Model moon = OBJReader.parseObj(Color.lightGray, "models", "Moon.obj");
         moon.setPosition(moonOrigin);
         java.util.List<Model> models = new ArrayList<>();
         java.util.List<Shape> shapes = new ArrayList<>();
         java.util.List<Planet> planets = new ArrayList<>();
         int[] colors = new int[]{0x6DA100, 0x9FC57C, 0x42A6F2, 0x358E00, 0xB8BF71, 0xD07A47, 0xDCA967, 0xE3C066, 0xE19152, 0xF5F5F5, 0xFDBD6A};
         for (int i = 0; i < colors.length; i++) {
-            Model model = OBJReader.parseObj(Paths.get(modelPath.toString(), "earth", Integer.toHexString(colors[i]).toUpperCase() + ".obj").toString(), new Color(colors[i]));
+            Model model = OBJReader.parseObj(new Color(colors[i]), "models", "earth", Integer.toHexString(colors[i]).toUpperCase() + ".obj");
             model.setPosition(earthOrigin);
             models.add(model);
         }
@@ -50,20 +43,14 @@ public class App {
         planets.add(new Planet(0.2, new Vector3D(), earthOrigin));
         planets.add(new Planet(0, new Vector3D(0.02, 0.04, 0), moonOrigin));
 
-        if (Files.notExists(recorderPath)) {
-            Files.createDirectories(recorderPath);
-        }
-        int currentFrame = 0;
-        Recorder recorder = new Recorder(frames);
+        //init recorder
+        Recorder recorder = new Recorder(10, 1);
 
-        //view direction
+        //init view direction
         Vector3D direction = new Vector3D(0, 0, 1);
 
-        //lights
+        //init lights
         Point3D originL = new Point3D(5, 5, -10);
-        Point3D originL2 = new Point3D(0, 2, 0);
-        Point3D originL3 = new Point3D(2, 2, 0);
-        Point3D originL4 = new Point3D(2, 0, 0);
         Light[] lights = new Light[]{new Light(50, originL)};
 
         //init drawing-helper
@@ -74,9 +61,7 @@ public class App {
         Camera camera = new Camera(direction, positionC, 1F, dh.getWidth(), dh.getHeight());
 
         //init scene
-        // TODO
         Scene scene = new Scene(camera, shapes.toArray(new Shape[0]), lights, backgroundpath);
-
         int lastHeight = dh.getHeight();
         int lastWidth = dh.getWidth();
 
@@ -124,29 +109,11 @@ public class App {
                         models.set(i, model);
                     }
                 }
-
-                //for recording. stacks buffered images for later use and executes recording generator when duration has expired\
-                if (currentFrame < totalFrames) {
-                    //because of high resolution. the heap size can be too small. i have to catch the error since i cant seem to get the available heap size |Runtime.getRuntime().freeMemory()| correctly before it happends
-                    try {
-                        recorder.snapShot(Recorder.deepCopyBufferedImage(dh.getWindow().getImage()), recorderPath.toString(), currentFrame);
-
-                        currentFrame++;
-                    } catch (OutOfMemoryError e) {
-                        //Todo: write error to screen
-                        System.out.println("ERROR: OUT OF HEAP SPACE, STOPPING RECORDING...");
-                        currentFrame = totalFrames + 1;
-                    }
-
-                } else if (currentFrame == totalFrames) {
-                    //rendering into a mp4 file
-                    String[] strings = new String[totalFrames];
-                    for (int i = 0; i < totalFrames; i++) {
-                        strings[i] = "frame" + i + ".png";
-                    }
-                    recorder.generateFromMemory(recorderPath.toString(), strings);
-                    currentFrame++;
+                // checks if the recorder is finished.
+                if (recorder.isRecording()) {
+                    recorder.generateImage(dh);
                 }
+
 
             }
 

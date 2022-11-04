@@ -32,7 +32,13 @@ public class Scene {
         this.lights = lights;
         //loading file for background image
         file = new File(path.toString());
-        image = ImageIO.read(file);
+        try {
+            image = ImageIO.read(file);
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     public Camera getCamera() {

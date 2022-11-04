@@ -1,9 +1,6 @@
 package classes.objects;
 
 import classes.math.Point3D;
-import classes.math.Ray;
-import classes.math.Vector3D;
-import interfaces.objects.Shape;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,23 +20,6 @@ public class Model {
         this.triangles = triangles;
         setPosition(position);
     }
-
-
-    /**
-     * moves the model back to its zero position and moves it to the new coordinates.
-     *
-     * @param position the new position
-     */
-    public void setPosition(Point3D position) {
-        for (Triangle t : triangles) {
-            for (int i = 0; i < 3; i++) {
-                t.setVertex(i, t.getVertices()[i].add(position.sub(this.position)));
-            }
-        }
-        this.position = position;
-    }
-
-
 
     /**
      * returns all triangles
@@ -68,9 +48,22 @@ public class Model {
         return position;
     }
 
-    public void modelColor (Color color){
-        for (Triangle t : triangles)
-        {
+    /**
+     * moves the model back to its zero position and moves it to the new coordinates.
+     *
+     * @param position the new position
+     */
+    public void setPosition(Point3D position) {
+        for (Triangle t : triangles) {
+            for (int i = 0; i < 3; i++) {
+                t.setVertex(i, t.getVertices()[i].add(position.sub(this.position)));
+            }
+        }
+        this.position = position;
+    }
+
+    public void modelColor(Color color) {
+        for (Triangle t : triangles) {
             t.setColor(color);
         }
     }

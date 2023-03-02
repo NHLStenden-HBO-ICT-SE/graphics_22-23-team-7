@@ -1,5 +1,6 @@
 package classes;
 
+import classes.utilities.PathHandler;
 import org.jcodec.api.awt.AWTSequenceEncoder;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.io.SeekableByteChannel;
@@ -14,6 +15,8 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /*
@@ -25,16 +28,33 @@ https://www.w3schools.com/java/java_files_delete.asp
  */
 public class Recorder {
 
+    private final int fps;
+    private final int totalFrames;
     // sequence encoder and other local variables
     private AWTSequenceEncoder enc;
-    private final int fps;
     private SeekableByteChannel out = null;
+    private int currentFrame = 0;
+    private final String recordingPath = PathHandler.getFile("recordings");
 
-    //constructor for setting fps
-    public Recorder(int frames) {
-        fps = frames;
+    private boolean isRecording = true;
+
+    /**
+     * @param fps
+     * @param duration
+     */
+    public Recorder(int fps, int duration) {
+        if (Files.notExists(Path.of(recordingPath))) {
+            try {
+                Files.createDirectories(Path.of(recordingPath));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        int totalFrames = (fps * duration);
+        this.fps = fps;
+        this.totalFrames = totalFrames;
+
     }
-
 
     /**
      * copy function to copy instance of BufferedImage
@@ -166,5 +186,38 @@ public class Recorder {
             }
         };
         swingWorker.execute();
+    }
+
+    /**
+     * For recording. stacks buffered images for later use and executes recording encoder when duration has expired.
+     *
+     * @param dh
+     */
+    public void generateImage(DrawingHelper dh) {
+        if (currentFrame < totalFrames) {
+            //because of high resolution. the heap size can be too small. I have to catch the error since I cant seem to get the available heap size |Runtime.getRuntime().freeMemory()| correctly before it happends
+            try {
+                snapShot(Recorder.deepCopyBufferedImage(dh.getWindow().getImage()), recordingPath, currentFrame);
+
+                currentFrame++;
+            } catch (OutOfMemoryError e) {
+                //Todo: write error to screen
+                System.out.println("ERROR: OUT OF HEAP SPACE, STOPPING RECORDING...");
+                currentFrame = totalFrames + 1;
+            }
+
+        } else if (currentFrame == totalFrames) {
+            //rendering into a mp4 file
+            String[] strings = new String[totalFrames];
+            for (int i = 0; i < totalFrames; i++) {
+                strings[i] = "frame" + i + ".png";
+            }
+            generateFromMemory(recordingPath, strings);
+            isRecording = false;
+        }
+    }
+
+    public boolean isRecording() {
+        return isRecording;
     }
 }

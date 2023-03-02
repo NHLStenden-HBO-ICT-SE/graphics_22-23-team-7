@@ -1,13 +1,11 @@
 package classes.objects;
 
 import classes.math.Point3D;
-import classes.math.Ray;
-import classes.math.Vector3D;
-import interfaces.objects.Shape;
 
+import java.awt.*;
 import java.util.ArrayList;
 
-public class Model implements Shape {
+public class Model {
 
     private ArrayList<Triangle> triangles;
     private Point3D position = new Point3D(0, 0, 0);
@@ -22,27 +20,6 @@ public class Model implements Shape {
         this.triangles = triangles;
         setPosition(position);
     }
-
-
-    /**
-     * moves the model back to its zero position and moves it to the new coordinates.
-     *
-     * @param position the new position
-     */
-    public void setPosition(Point3D position) {
-        for (Triangle t : triangles) {
-            for (int i = 0; i < 3; i++) {
-                t.setVertex(i, t.getVertices()[i].sub(this.position));
-            }
-        }
-        this.position = position;
-        for (Triangle t : triangles) {
-            for (int i = 0; i < 3; i++) {
-                t.setVertex(i, t.getVertices()[i].add(this.position));
-            }
-        }
-    }
-
 
     /**
      * returns all triangles
@@ -67,51 +44,27 @@ public class Model implements Shape {
      *
      * @return position
      */
-    @Override
     public Point3D getPosition() {
         return position;
     }
 
     /**
-     * checks if ray has intersected with any of the triangles. once one hits true we dont have to go over the others.
+     * moves the model back to its zero position and moves it to the new coordinates.
      *
-     * @param ray
-     * @return
+     * @param position the new position
      */
-    @Override
-    public IntersectionHandler intersection(Ray ray) {
+    public void setPosition(Point3D position) {
         for (Triangle t : triangles) {
-            var intersection = t.intersection(ray);
-            if (intersection.isIntersected())
-                return intersection;
+            for (int i = 0; i < 3; i++) {
+                t.setVertex(i, t.getVertices()[i].add(position.sub(this.position)));
+            }
         }
-        return new IntersectionHandler(false);
+        this.position = position;
     }
 
-    /**
-     * checks if ray is in range of any of the triangles. once one hits true we dont have to go over the others.
-     *
-     * @param ray the casted ray
-     * @return if the ray is in range
-     */
-    @Override
-    public Boolean isRayInRangeOfShape(Ray ray) {
+    public void modelColor(Color color) {
         for (Triangle t : triangles) {
-            var rangeOfShape = t.isRayInRangeOfShape(ray);
-            if (rangeOfShape)
-                return rangeOfShape;
+            t.setColor(color);
         }
-        return false;
-    }
-
-    /**
-     * not implemented
-     *
-     * @param point
-     * @return
-     */
-    @Override
-    public Vector3D calcNormal(Point3D point) {
-        return null;
     }
 }

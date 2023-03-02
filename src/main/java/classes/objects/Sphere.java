@@ -6,25 +6,40 @@ import classes.math.Vector3D;
 import errors.math.NegativeNumException;
 import interfaces.objects.Shape;
 
+import java.awt.*;
+
 public class Sphere implements Shape {
     private Point3D position;
     private double radius;
+    private Color color;
 
     /**
      * center = 0,0,0
      * radius = 1
+     * color  = white
      */
     public Sphere() {
-        this(new Point3D(), 1.0);
+        this(new Point3D(), 1.0, Color.white);
+    }
+
+    /**
+     *
+     * @param position
+     * @param radius
+     * color = white
+     */
+    public Sphere(Point3D position, double radius) {
+        this(position, radius, Color.white);
     }
 
     /**
      * @param point
      * @param radius
      */
-    public Sphere(Point3D point, double radius) {
+    public Sphere(Point3D point, double radius, Color color) {
         _setRadius(radius); //throws exception if radius is negative
         this.position = point;
+        this.color = color;
     }
 
     /**
@@ -34,6 +49,11 @@ public class Sphere implements Shape {
      */
     public Point3D getPosition() {
         return position;
+    }
+
+    @Override
+    public Color getColor() {
+        return this.color;
     }
 
     /**

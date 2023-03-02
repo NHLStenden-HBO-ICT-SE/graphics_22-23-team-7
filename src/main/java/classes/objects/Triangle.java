@@ -5,6 +5,8 @@ import classes.math.Ray;
 import classes.math.Vector3D;
 import interfaces.objects.Shape;
 
+import java.awt.*;
+
 
 /**
  * intersection thx to kaya: https://github.com/NHLStenden-HBO-ICT-SE/graphics_22-23-graphics-groep-2
@@ -17,20 +19,7 @@ public class Triangle implements Shape {
     private Vector3D surfaceNormal = new Vector3D();
     private Point3D position;
 
-    /**
-     * triangle constructor
-     *
-     * @param vertice
-     * @param vertice1
-     * @param vertice2
-     */
-    public Triangle(Point3D vertice, Point3D vertice1, Point3D vertice2) {
-        vertices[0] = vertice;
-        vertices[1] = vertice1;
-        vertices[2] = vertice2;
-        this.calcSurfaceNormal();
-        calcPosition();
-    }
+    private Color color;
 
     /**
      * triangle constructor with custom normal direction
@@ -41,10 +30,36 @@ public class Triangle implements Shape {
      * @param surfaceNormal
      */
     public Triangle(Point3D vertice, Point3D vertice1, Point3D vertice2, Vector3D surfaceNormal) {
-        this(vertice, vertice1, vertice2);
+        this(vertice, vertice1, vertice2, Color.red);
         this.surfaceNormal = surfaceNormal;
     }
 
+    /**
+     * triangle constructor with custom normal direction
+     *
+     * @param vertice
+     * @param vertice1
+     * @param vertice2
+     */
+    public Triangle(Point3D vertice, Point3D vertice1, Point3D vertice2) {
+        this(vertice, vertice1, vertice2, Color.white);
+    }
+
+    /**
+     * triangle constructor
+     *
+     * @param vertice
+     * @param vertice1
+     * @param vertice2
+     */
+    public Triangle(Point3D vertice, Point3D vertice1, Point3D vertice2, Color color) {
+        vertices[0] = vertice;
+        vertices[1] = vertice1;
+        vertices[2] = vertice2;
+        this.calcSurfaceNormal();
+        this.color = color;
+        calcPosition();
+    }
 
     /**
      * @return vertices of the triangle
@@ -56,12 +71,11 @@ public class Triangle implements Shape {
     /**
      * sets specific index of triangle vertices
      *
-     * @param index index
+     * @param index index (starting at 0)
      * @param p     new point
      */
     public void setVertex(int index, Point3D p) {
         this.vertices[index] = p;
-        // calcSurfaceNormal();
         calcPosition();
     }
 
@@ -104,6 +118,15 @@ public class Triangle implements Shape {
     @Override
     public Point3D getPosition() {
         return position;
+    }
+
+    @Override
+    public Color getColor() {
+        return this.color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     /**

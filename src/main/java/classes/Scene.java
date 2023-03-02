@@ -6,27 +6,39 @@ import classes.math.Vector3D;
 import classes.objects.IntersectionHandler;
 import classes.objects.Sphere;
 import classes.objects.Triangle;
-import classes.solarSystem.Planet;
 import classes.view.Camera;
 import classes.view.Light;
 import interfaces.objects.Shape;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
-import java.util.Arrays;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 
 import static classes.math.GenericMath.clamp;
 
 public class Scene {
     private final Shape[] shapes;
-    private final Planet[] planets;
     private final Light[] lights;
     private Camera camera;
+    private BufferedImage image;
+    private File file;
 
-    public Scene(Camera camera, Shape[] shapes, Light[] lights) {
+    public Scene(Camera camera, Shape[] shapes, Light[] lights, Path path) throws IOException {
         this.camera = camera;
         this.shapes = shapes;
         this.lights = lights;
-        this.planets = Arrays.stream(shapes).filter(shape -> shape instanceof Planet).toList().toArray(new Planet[0]);
+        //loading file for background image
+        file = new File(path.toString());
+        try {
+            image = ImageIO.read(file);
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     public Camera getCamera() {
@@ -37,25 +49,33 @@ public class Scene {
         this.camera = camera;
     }
 
-    public Planet[] getPlanets() {
-        return planets;
-    }
-
     /**
      * calculates color of pixel that rays shoots through
      *
      * @param ray
      * @return color of pixel
      */
-    public Color calculatePixel(Ray ray) {
+    public Color calculatePixel(Ray ray,int i ,int j) {
 
         var closestShape = getClosestShape(ray);
 
-        if (!closestShape.isIntersected()) return Color.black;
+
+        if (!closestShape.isIntersected()) {
+
+
+            // setting the color from the image
+            int clr = image.getRGB(i, j);
+            int r =   (clr & 0x00ff0000) >> 16;
+            int g = (clr & 0x0000ff00) >> 8;
+            int b =   clr & 0x000000ff;
+            return new Color(r, g, b);
+        };
 
         double intensity = calculateIntensity(closestShape);
 
-        return new Color(clamp((int) (255 * intensity), 0, 255), clamp((int) (255 * intensity), 0, 255), clamp((int) (255 * intensity), 0, 255));
+        var shape = closestShape.getShape().getColor();
+
+        return new Color(clamp((int) (shape.getRed() * intensity), 0, 255), clamp((int) (shape.getGreen() * intensity), 0, 255), clamp((int) (shape.getBlue() * intensity), 0, 255));
     }
 
     /**
